@@ -15,7 +15,7 @@ exports.handler = async (event) => {
       response = await saveUser(JSON.parse(event.body));
       break;
     case 'GET':
-      if (event.path === '/api/fetch-registered-events') {
+      if (event.path === '/api/register-for-event') {
         response = await fetchRegisteredEvents();
       } else {
         response = await getUsers();
