@@ -3,9 +3,9 @@ import { useNavigation } from '@react-navigation/native';
 import { View, Text, Animated, TouchableOpacity, Image, StyleSheet, Pressable, TextInput, Easing, Keyboard } from 'react-native';
 import { ImageBackground } from 'react-native';
 import CheckBox from 'react-native-check-box';
-import { Auth } from 'aws-amplify';
+import  {Auth}  from 'aws-amplify';
 import {Amplify} from 'aws-amplify';
-import config from '../aws-exports'; // Import Amplify config
+import config from '../aws-export'; // Import Amplify config
 Amplify.configure(config); // Configure Amplify
 
 
