@@ -3,6 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import { View, Text, TouchableOpacity, Image, StyleSheet, Pressable, TextInput, Button } from 'react-native';
 import { NavigationStackScreenProps } from 'react-navigation-stack';
 import { ImageBackground } from 'react-native';
+import Amplify from 'aws-amplify';
 import CheckBox from 'react-native-check-box'
 const Signup = ({navigation}) => {
 
