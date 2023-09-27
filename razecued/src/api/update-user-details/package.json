@@ -1,0 +1,9 @@
+{
+  "name": "update-user-details-api",
+  "version": "1.0.0",
+  "description": "AWS Lambda function for updating User Details API",
+  "main": "index.js",
+  "dependencies": {
+    "aws-sdk": "^2.1037.0"
+  }
+}

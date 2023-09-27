@@ -1,0 +1,7 @@
+{
+  "name": "fetch-event-details-eventdesc-api",
+  "version": "1.0.0",
+  "description": "AWS Lambda function for fetching Event Details (EventDesc screen) API",
+  "main": "index.js",
+  "dependencies": {}
+}

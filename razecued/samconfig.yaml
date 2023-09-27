@@ -1,0 +1,12 @@
+default:
+  deploy:
+    parameters:
+      stack_name: razecued
+      resolve_s3: true
+      s3_prefix: razecued
+      region: us-east-1
+      confirm_changeset: true
+      capabilities: CAPABILITY_IAM
+      disable_rollback: true
+      image_repositories: []
+version: 0.1

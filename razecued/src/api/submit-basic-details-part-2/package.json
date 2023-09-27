@@ -1,0 +1,10 @@
+{
+    "name": "user-basic-details2-api",
+    "version": "1.0.0",
+    "description": "AWS Lambda function for the User Basic Details2 API",
+    "main": "index.js",
+    "dependencies": {
+      "aws-sdk": "^2.1037.0"
+    }
+  }
+  

@@ -1,0 +1,15 @@
+{
+  "name": "user-registration-api",
+  "version": "1.0.0",
+  "description": "AWS Lambda function for user registration API",
+  "main": "index.js",
+  "dependencies": {
+    "aws-sdk": "^2.1000.0", 
+    "aws-serverless-express": "^3.5.0" 
+  },
+  "author": "Atul Rajput",
+  "license": "MIT",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}

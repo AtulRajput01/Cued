@@ -1,0 +1,7 @@
+{
+  "name": "fetch-events-news-feed-api",
+  "version": "1.0.0",
+  "description": "AWS Lambda function for fetching Event Data (news feed screen) API",
+  "main": "index.js",
+  "dependencies": {}
+}

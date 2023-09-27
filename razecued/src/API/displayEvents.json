@@ -1,0 +1,68 @@
+{
+    "displayEvents": [
+      {
+        "id": 1,
+        "name": "Hackathon",
+        "organization": "GBU Noida",
+        "location": "GBU Auditotorium",
+        "date": "25th-30th Dec 2023",
+        "registrationDeadline": "30th Nov 2023",
+        "image": "path/to/event1-image.jpg",
+        "time": "5pm-8pm",
+        "registrations": "250",
+        "entryFee": "free",
+        "lastdate": "28th Dec 2023",
+        "video_url": "https://www.youtube.com/watch?v=pKigGYwZj5E",
+        "description": "A hackathon, also known as a codefest, is a social coding event that brings computer programmers and other interested people together to improve upon or build a new software program. The word hackathon is a portmanteau of the words hacker, which means clever programmer, and marathon, an event marked by endurance.",
+        "video_title": "Code Fodd"
+      },
+      {
+        "id": 2,
+        "name": "Chess-O-Shaah",
+        "organization": "IIT Madras",
+        "location": "IITM Sports hall",
+        "date": "7th-15th Jan 2022",
+        "registrationDeadline": "30th Nov 2023",
+        "image": "path/to/event2-image.jpg",
+        "time": "5pm-8pm",
+        "registrations": "230",
+        "entryFee": "free",
+        "lastdate": "13th Jan 2023",
+        "video_title": "Mess the Chess",
+        "video_url": "https://www.youtube.com/watch?v=0mvwoxMdFkM",
+        "description": "Chess is a board game for two players, called White and Black, each controlling an army of chess pieces in their color, with the objective to checkmate the opponent's king. It is sometimes called international chess or Western chess to distinguish it from related games such as xiangqi (Chinese chess) and shogi (Japanese chess). The recorded history of chess goes back at least to the emergence of a similar game, chaturanga, in seventh century India. The rules of chess as they are known today emerged in Europe at the end of the 15th century, with standardization and universal acceptance by the end of the 19th century. "
+      },
+      {
+        "id": 3,
+        "name": "Standup Comedy",
+        "organization": "NIT Durgapur",
+        "location": "Comedy Hall",
+        "date": "4th-9th April 2023",
+        "registrationDeadline": "30th Nov 2023",
+        "image": "path/to/event3-image.jpg",
+        "time": "2pm-6pm",
+        "registrations": "200",
+        "entryFee": "Rs.100/person",
+        "lastdate": "8th April 2023",
+        "video_title": "Laught with Ashish",
+        "video_url": "https://www.youtube.com/watch?v=jaMEkbILo2Q",
+        "description": "Despite being a diverse, vibrant and multifaceted phenomenon, relatively little academic attention has been paid in analysing Indian stand-up comedy. This paper attempts to address this imbalance by offering pathways in the analysis of stand-up comedy. Employing examples from the performances of the comedians and adopting discourse analysis methodology, this paper focuses on the issues like language ideology, identity and gender embeddedness in Indian Stand-up comedy. We have argued that the comedy employs several performative techniques such as linguistic code switching and calculative pauses to create humor."
+      },
+      {
+        "id": 4,
+        "name": "TED Talk",
+        "organization": "IIT Delhi",
+        "location": " IITD Academic Block",
+        "date": "10th-12th Dec 2023",
+        "registrationDeadline": "30th Nov 2023",
+        "image": "path/to/event4-image.jpg",
+        "time": "5pm-8pm",
+        "registrations": "150",
+        "entryFee": "free",
+        "lastdate": "11th Dec 2023",
+        "video_title": "Ted Talk",
+        "video_url": "https://www.youtube.com/watch?v=0NV1KdWRHck",
+        "description": "We all know someone with boundless curiosity and a passion for learning new things. At its core, TED Membership is a special community created for people just like that. Through our member events and conversations, we're bringing together people from around the world to dive deeper into the ideas that excite them."
+      }
+    ]
+  }
