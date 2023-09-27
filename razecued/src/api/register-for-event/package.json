@@ -1,0 +1,7 @@
+{
+  "name": "register-for-event-api",
+  "version": "1.0.0",
+  "description": "AWS Lambda function for register-for-event API",
+  "main": "index.js",
+  "dependencies": {}
+}
