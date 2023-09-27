@@ -4,10 +4,6 @@ import { View, Text, Animated, TouchableOpacity, Image, StyleSheet, Pressable, T
 import { ImageBackground } from 'react-native';
 import CheckBox from 'react-native-check-box';
 import { Auth } from 'aws-amplify';
-import {Amplify} from 'aws-amplify';
-import config from '../aws-exports'; // Import Amplify config
-Amplify.configure(config); // Configure Amplify
-
 
 const RegisterAndSignup = ({ navigation }) => {
   const transY = useRef(new Animated.Value(0));
