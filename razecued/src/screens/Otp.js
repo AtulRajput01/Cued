@@ -5,7 +5,7 @@ import { Auth } from 'aws-amplify';
 const OTPVerification = ({ navigation, route }) => {
   const { email } = route.params;
   const [otp, setOTP] = useState('');
-  const [error, setError] = useState('');
+  const [verificationResponse, setVerificationResponse] = useState(null);
 
   const handleVerifyOTP = async () => {
     try {
