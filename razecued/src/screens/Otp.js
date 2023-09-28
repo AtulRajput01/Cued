@@ -10,7 +10,7 @@ const OTPVerification = ({ navigation, route }) => {
   const handleVerifyOTP = async () => {
     try {
       await Auth.confirmSignUp(email, otp);
-      // OTP verification successful, navigate to the next screen (e.g., BasicDetail)
+      // OTP verification successful, navigate to the next screen 
       navigation.navigate('BasicDetail');
     } catch (error) {
       console.error('Error:', error);
