@@ -10,7 +10,7 @@ const OTPVerification = ({ navigation, route }) => {
   const handleVerifyOTP = async () => {
     try {
       await Auth.confirmSignUp(email, otp);
-      // OTP verification successful, navigate to the next screen 
+      // OTP verification successful, navigate to the next screen
       navigation.navigate('BasicDetail');
     } catch (error) {
       console.error('Error:', error);
@@ -28,20 +28,6 @@ const OTPVerification = ({ navigation, route }) => {
       />
       <Button title="Verify OTP" onPress={handleVerifyOTP} />
       {error ? <Text style={{ color: 'red' }}>{error}</Text> : null} {/* Display error message */}
-    </View>
-  );
-};
-
-
-  return (
-    <View>
-      <Text>Enter the OTP sent to your email:</Text>
-      <TextInput
-        placeholder="OTP"
-        value={otp}
-        onChangeText={setOTP}
-      />
-      <Button title="Verify OTP" onPress={handleVerifyOTP} />
     </View>
   );
 };
