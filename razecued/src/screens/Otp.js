@@ -1,22 +1,37 @@
-// OTPVerification.js
-import React, { useState } from 'react';
+import React, { useState, useState } from 'react';
 import { View, Text, TextInput, Button } from 'react-native';
 import { Auth } from 'aws-amplify';
 
 const OTPVerification = ({ navigation, route }) => {
   const { email } = route.params;
   const [otp, setOTP] = useState('');
+  const [error, setError] = useState('');
 
   const handleVerifyOTP = async () => {
     try {
       await Auth.confirmSignUp(email, otp);
-      // OTP verification successful, navigate to the next screen
+      // OTP verification successful, navigate to the next screen (e.g., BasicDetail)
       navigation.navigate('BasicDetail');
     } catch (error) {
       console.error('Error:', error);
-      // Handle OTP verification failure, display an error message
+      setError('Invalid OTP. Please try again.'); // Set an error message for invalid OTP
     }
   };
+
+  return (
+    <View>
+      <Text>Enter the OTP sent to your email:</Text>
+      <TextInput
+        placeholder="OTP"
+        value={otp}
+        onChangeText={setOTP}
+      />
+      <Button title="Verify OTP" onPress={handleVerifyOTP} />
+      {error ? <Text style={{ color: 'red' }}>{error}</Text> : null} {/* Display error message */}
+    </View>
+  );
+};
+
 
   return (
     <View>
