@@ -14,25 +14,47 @@ const Signup = ({navigation}) => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [registrationResponse, setRegistrationResponse] = useState(null);
 
-  const handleSignup = async () => {
-    try {
-      // Fetch the JSON data from the local file
-      const response = await fetch('../API/Register.json');
-      const data = await response.json();
+const handleSignup = async () => {
+  try {
+    // Validate email format
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+      setRegistrationResponse('Invalid email address');
+      return;
+    }
 
-      // Handle the response as needed
-      if (data.success) {
-        setRegistrationResponse(data.message);
-        // You can also navigate to the next screen upon successful registration
-        navigation.navigate('BasicDetail');
-      } else {
-        setRegistrationResponse(data.message);
-      }
-    } catch (error) {
-      console.error('Error:', error);
+    // Check if passwords match
+    if (password !== confirmPassword) {
+      setRegistrationResponse('Passwords do not match');
+      return;
+    }
+
+    // Ensure password meets strength requirements
+    if (!/^(?=.*[A-Za-z])(?=.*\d).{8,}$/.test(password)) {
+      setRegistrationResponse('Password must be at least 8 characters and include at least one letter and one number.');
+      return;
+    }
+
+    // Register the user using Amplify
+    await Auth.signUp({
+      username: email, // Use email as the username
+      password,
+    });
+
+    // If registration is successful, navigate to the OTP screen
+    navigation.navigate('OTP', { email });
+
+  } catch (error) {
+    console.error('Error:', error);
+
+    // Handle the specific error message for invalid OTP
+    if (error.code === 'UsernameExistsException') {
+      setRegistrationResponse('User with this email already exists. Please log in.');
+    } else {
       setRegistrationResponse('An error occurred during registration');
     }
-  };
+  }
+};
 
   
   return (
