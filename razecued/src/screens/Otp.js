@@ -1,58 +1,37 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput,TouchableOpacity, StyleSheet, ImageBackground } from 'react-native';
+import React, { useState, useState } from 'react';
+import { View, Text, TextInput, Button } from 'react-native';
+import { Auth } from 'aws-amplify';
 
-const Otp = () => {
-  
-  const [otp, setOtp] = useState(['', '', '', '', '', '']);
+const OTPVerification = ({ navigation, route }) => {
+  const { email } = route.params;
+  const [otp, setOTP] = useState('');
+  const [verificationResponse, setVerificationResponse] = useState(null);
 
-  const handleChangeText = (text, index) => {
-    const newOtp = [...otp];
-    newOtp[index] = text;
-    setOtp(newOtp);
+  const handleVerifyOTP = async () => {
+    try {
+      await Auth.confirmSignUp(email, otp);
+      // OTP verification successful, navigate to the next screen
+      navigation.navigate('BasicDetail');
+    } catch (error) {
+      console.error('Error:', error);
+      setError('Invalid OTP. Please try again.'); // Set an error message for invalid OTP
+    }
   };
 
   return (
-
-    <ImageBackground
-    source={require('../../assets/images/Loginbg.jpg')} 
-      style={styles.backgroundImage}>
-    <View style={styles.container}>
-      
-      <View style={styles.header1}>
-        <Text style={styles.Account}>Account</Text>
-      </View>
-      <View style={styles.header}>
-        <Text style={styles.verify}>Verification.</Text>
-      </View>
-      <View style={styles.header}>
-        <Text style={styles.alert}>For your security, we want to make sure it is really you.</Text>
-      </View>
-      <View style={styles.header}>
-        <Text style={styles.title}>Enter code</Text>
-        <Text style={styles.resend}>Resend code</Text>
-      </View>
-      <View style={styles.otpContainer}>
-        {otp.map((digit, index) => (
-          <TextInput
-            key={index}
-            style={styles.otpInput}
-            onChangeText={(text) => handleChangeText(text, index)}
-            value={digit}
-            keyboardType="numeric"
-            maxLength={1}
-          />
-        ))}
-      </View>
-      <View style={styles.header}>
-        <Text style={styles.confirm}>We have sent the OPT to your registered number, Please do not share the OTP with anyone</Text>
-      </View>
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('BasicDetails2')}>
-                <Text style={styles.buttonText}>Next</Text>
-              </TouchableOpacity>
+    <View>
+      <Text>Enter the OTP sent to your email:</Text>
+      <TextInput
+        placeholder="OTP"
+        value={otp}
+        onChangeText={setOTP}
+      />
+      <Button title="Verify OTP" onPress={handleVerifyOTP} />
+      {error ? <Text style={{ color: 'red' }}>{error}</Text> : null} {/* Display error message */}
     </View>
-    </ImageBackground>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
@@ -159,4 +138,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Otp;
+export default OTPVerification;
