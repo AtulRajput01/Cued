@@ -5,7 +5,22 @@ import { NavigationStackScreenProps } from 'react-navigation-stack';
 import { ImageBackground } from 'react-native';
 import Amplify from 'aws-amplify';
 import { Auth } from 'aws-amplify';
+import { createStackNavigator } from '@react-navigation/stack'; // Added import for createStackNavigator
 import CheckBox from 'react-native-check-box'
+
+//Navigator Configuration: Define navigator
+const Stack = createStackNavigator();
+
+function AppNavigator() {
+  return (
+    <Stack.Navigator>
+      {/* Other screens */}
+      <Stack.Screen name="OTP" component={OtpScreen} />
+    </Stack.Navigator>
+  );
+}
+
+
 const Signup = ({navigation}) => {
 
   const [name, setName] = useState('');
