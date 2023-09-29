@@ -1,8 +1,8 @@
-import React, { useState, useState } from 'react';
-import { View, Text, TextInput, Button } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text,StyleSheet, TextInput, Button } from 'react-native';
 import { Auth } from 'aws-amplify';
 
-const OTPVerification = ({ navigation, route }) => {
+const Otp = ({ navigation, route }) => {
   const { email } = route.params;
   const [otp, setOTP] = useState('');
   const [verificationResponse, setVerificationResponse] = useState(null);
@@ -138,4 +138,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OTPVerification;
+export default Otp;

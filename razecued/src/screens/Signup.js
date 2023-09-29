@@ -15,7 +15,7 @@ function AppNavigator() {
   return (
     <Stack.Navigator>
       {/* Other screens */}
-      <Stack.Screen name="OTP" component={OtpScreen} />
+      <Stack.Screen name="Otp" component={OtpScreen} />
     </Stack.Navigator>
   );
 }
@@ -57,7 +57,7 @@ const handleSignup = async () => {
     });
 
     // If registration is successful, navigate to the OTP screen
-    navigation.navigate('OTP', { email });
+    navigation.navigate('Otp', { email });
 
   } catch (error) {
     console.error('Error:', error);
