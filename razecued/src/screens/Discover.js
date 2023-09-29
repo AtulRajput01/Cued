@@ -13,8 +13,8 @@ import profileIcon from '../../assets/images/profile.png';
 import tokenIcon from '../../assets/images/token.png';
 import Token from './Token';
 import { ImageBackground } from 'react-native';
-import { sortBy } from 'lodash';
 import DisplayEventDesc from './DisplayEventDesc';
+import Otp from './Otp';
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -527,6 +527,7 @@ const AppStackNavigator = () => {
       {/* EventDesc screen */}
       <Stack.Screen name="EventDesc" component={EventDesc} options={{ headerShown: false }} />
       <Stack.Screen name="DisplayEventDesc" component={DisplayEventDesc} options={{ headerShown: false }} />
+      <Stack.Screen name="Otp" component={Otp} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 };

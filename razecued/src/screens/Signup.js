@@ -42,7 +42,7 @@ const handleSignup = async () => {
     });
 
     // If registration is successful, navigate to the OTP screen
-    navigation.navigate('OTP', { email });
+    navigation.navigate('Otp', { email });
 
   } catch (error) {
     console.error('Error:', error);
