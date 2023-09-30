@@ -6,6 +6,29 @@ import { ImageBackground } from 'react-native';
 
 
 const BasicDetail2 = ({navigation}) => {
+
+  const handleSaveBasicDetails2 = async () => {
+    try {
+      // Provide the file path to the JSON file
+      const filePath = 'https://hk1630uulc.execute-api.us-east-1.amazonaws.com/Dev/submit-basic-details-part-2'; // Replace with your actual file path
+
+      // Fetch the JSON data using the provided file path
+      const response = await fetch(filePath);
+      const data = await response.json();
+
+      // Handle the response as needed
+      if (data.success) {
+        setBasicDetailResponse(data.message);
+        // You can also navigate to the next screen upon successful data save
+         navigation.navigate('BasicDetails2');
+      } else {
+        setBasicDetailResponse(data.message);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setBasicDetailResponse('An error occurred while saving basic details');
+    }
+  };
   
   return (
 

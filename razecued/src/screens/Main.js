@@ -1,6 +1,5 @@
 import { createStackNavigator } from "react-navigation-stack";
 import { createAppContainer } from "react-navigation";
-
 import Splash from './Splash';
 import BasicDetail from './BasicDetail';
 import Discover from "./Discover";
@@ -12,6 +11,8 @@ import Token from "./Token"
 import BasicDetails2 from "./BasicDetails2";
 import Otp from "./Otp";
 import DisplayEventDesc from "./DisplayEventDesc";
+import UserDetail from "./Userdetail";
+import { touch } from "react-native-fs";
 
 
 

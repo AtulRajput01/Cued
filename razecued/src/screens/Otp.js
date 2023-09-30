@@ -3,10 +3,10 @@ import { View, Text, StyleSheet,TextInput, Button } from 'react-native';
 import { Auth } from 'aws-amplify';
 
 const Otp = ({ navigation, route }) => {
-  const { email } = route.params;
+  const { email } = route?.params || {};
   const [otp, setOTP] = useState('');
   const [verificationResponse, setVerificationResponse] = useState(null);
-
+  const [error, setError] = useState(null); 
   const handleVerifyOTP = async () => {
     try {
       await Auth.confirmSignUp(email, otp);
@@ -27,7 +27,7 @@ const Otp = ({ navigation, route }) => {
         onChangeText={setOTP}
       />
       <Button title="Verify OTP" onPress={handleVerifyOTP} />
-      {error ? <Text style={{ color: 'red' }}>{error}</Text> : null} {/* Display error message */}
+      {error ? <Text style={{ color: 'red' }}>{error}</Text> : null}
     </View>
   );
 };

@@ -15,6 +15,7 @@ import Token from './Token';
 import { ImageBackground } from 'react-native';
 import DisplayEventDesc from './DisplayEventDesc';
 import Otp from './Otp';
+import Signup from './Signup';
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -29,7 +30,7 @@ const Discover = () => {
   const [searchText, setSearchText] = React.useState('');
 
   const recommendedData = require('../API/Recommended.json');
-  const [recommendedEvents, setRecommendedEvents] = useState((recommendedData.events));
+  const [recommendedEvents, setRecommendedEvents] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const displayEventData = require('../API/displayEvents.json');
@@ -38,11 +39,11 @@ const Discover = () => {
   
   // Simulate fetching data from your Recommended API
   useEffect(() => {
-    fetch('../API/Recommended.json')
+    fetch('https://hk1630uulc.execute-api.us-east-1.amazonaws.com/Dev/fetch-events')
       .then((response) => response.json())
       .then((data) => {
         // Sort recommended events by registrations in descending order
-        const sortedEvents = recommendedData.events.sort((a, b) => b.registrations - a.registrations);
+        const sortedEvents = data.events.sort((a, b) => b.registrations - a.registrations);
         setRecommendedEvents(sortedEvents);
         setLoading(false);
       })
@@ -520,6 +521,7 @@ const Stack = createStackNavigator();
 // AppStackNavigator contains the tab navigator and EventDesc screen
 const AppStackNavigator = () => {
   return (
+    
     <Stack.Navigator>
       {/* Home screen is the tab navigator */}
       <Stack.Screen name="Home" component={AppNavigator} options={{ headerShown: false }} />
@@ -528,7 +530,9 @@ const AppStackNavigator = () => {
       <Stack.Screen name="EventDesc" component={EventDesc} options={{ headerShown: false }} />
       <Stack.Screen name="DisplayEventDesc" component={DisplayEventDesc} options={{ headerShown: false }} />
       <Stack.Screen name="Otp" component={Otp} options={{ headerShown: false }} />
+      <Stack.Screen name="Signup" component={Signup} options={{ headerShown: false }} />
     </Stack.Navigator>
+    
   );
 };
 

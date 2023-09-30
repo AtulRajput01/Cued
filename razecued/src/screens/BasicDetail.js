@@ -13,7 +13,7 @@ const BasicDetail = ({navigation}) => {
   const handleSaveBasicDetails = async () => {
     try {
       // Provide the file path to the JSON file
-      const filePath = '../API/BasicDetail.json'; // Replace with your actual file path
+      const filePath = 'https://hk1630uulc.execute-api.us-east-1.amazonaws.com/Dev/submit-basic-details'; // Replace with your actual file path
 
       // Fetch the JSON data using the provided file path
       const response = await fetch(filePath);
