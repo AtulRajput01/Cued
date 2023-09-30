@@ -56,6 +56,27 @@ const handleSignup = async () => {
       password,
     });
 
+    // Make a POST request to the registration endpoint
+    const response = await fetch('https://hk1630uulc.execute-api.us-east-1.amazonaws.com/Dev/user-registration', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        password,
+      }),
+    });
+
+    if (!response.ok) {
+      // Handle non-successful responses
+      const errorData = await response.json();
+      setRegistrationResponse(`Registration failed: ${errorData.message}`);
+      return;
+    }
+
+    
     // If registration is successful, navigate to the OTP screen
     navigation.navigate('Otp', { email });
 
