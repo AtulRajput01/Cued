@@ -1,16 +1,15 @@
 const AWS = require('aws-sdk');
-const { v4: uuidv4 } = require('uuid');
 
 AWS.config.update({
   region: 'us-east-1',
 });
 
-const dynamoDBTableName = 'users';
+const dynamoDBTableName = 'Users'; // DynamoDB table name
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 exports.handler = async (event) => {
   try {
-    const { httpMethod, path } = event;
+    const { httpMethod, path, requestContext } = event;
 
     if (httpMethod === 'POST' && path === '/api/submit-basic-details-part-2') {
       const { age, gender, dateOfBirth, phoneNumber, alternatePhoneNumber } = JSON.parse(event.body);
@@ -23,10 +22,10 @@ exports.handler = async (event) => {
         };
       }
 
-      // Generate a unique user ID using UUID
-      const userId = uuidv4();
+      // Retrieve the Cognito user ID from the request context
+      const userId = requestContext.authorizer.claims.sub;
 
-      // Implement the logic to sanitize inputs (if necessary)
+      // Implement the logic to sanitize inputs
 
       // Implement the logic to save user basic details to your DynamoDB table
       await saveUserToDynamoDB(userId, age, gender, dateOfBirth, phoneNumber, alternatePhoneNumber);
@@ -58,7 +57,7 @@ exports.handler = async (event) => {
 // Function to save user details to DynamoDB
 const saveUserToDynamoDB = async (userId, age, gender, dateOfBirth, phoneNumber, alternatePhoneNumber) => {
   const params = {
-    TableName: dynamoDBTableName,
+    TableName: 'Users',
     Item: {
       userId,
       age,
