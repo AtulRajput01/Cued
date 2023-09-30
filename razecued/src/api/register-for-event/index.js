@@ -1,19 +1,23 @@
 const AWS = require('aws-sdk');
 
 AWS.config.update({
-  region: 'us-east-1'
+  region: 'us-east-1',
 });
 
-const dynamoDBTableName = 'users';
+const usersTableName = 'Users';
+const eventsTableName = 'Events';
 const dynamodb = new AWS.DynamoDB.DocumentClient();
-const userPath = '/users';
 
 exports.handler = async (event) => {
   let response;
   console.log(event);
   switch (event.httpMethod) {
     case 'POST':
-      response = await saveUser(JSON.parse(event.body));
+      if (event.path === '/api/register-event') {
+        response = await registerEvent(JSON.parse(event.body));
+      } else {
+        response = await saveUser(JSON.parse(event.body));
+      }
       break;
     case 'GET':
       if (event.path === '/api/fetch-registered-events') {
@@ -37,15 +41,40 @@ exports.handler = async (event) => {
 
 async function saveUser(requestBody) {
   const params = {
-    TableName: dynamoDBTableName,
-    Item: requestBody
+    TableName: usersTableName,
+    Item: requestBody,
   };
-  return await dynamodb.put(params).promise()
+  return await dynamodb
+    .put(params)
+    .promise()
     .then(() => {
       const body = {
         Operation: 'SAVE',
         Message: 'SUCCESS',
-        Item: requestBody
+        Item: requestBody,
+      };
+      return buildResponse(200, body);
+    })
+    .catch((error) => {
+      console.error(error);
+      return buildResponse(500, 'Internal Server Error');
+    });
+}
+
+async function registerEvent(requestBody) {
+  const params = {
+    TableName: eventsTableName,
+    Item: requestBody,
+  };
+
+  return await dynamodb
+    .put(params)
+    .promise()
+    .then(() => {
+      const body = {
+        success: true,
+        message: 'Event registered successfully',
+        data: requestBody,
       };
       return buildResponse(200, body);
     })
@@ -57,25 +86,26 @@ async function saveUser(requestBody) {
 
 async function fetchRegisteredEvents() {
   // Logic to fetch registered events
+  // Replace with your actual logic to fetch events from the 'Events' table
   const eventData = [
     {
-      "eventId": "1",
-      "eventPoster": "https.//poster.jpg",
-      "eventName": "Music Festival",
-      "eventDescription": "Join us for a night of music and fun."
+      eventId: '1',
+      eventPoster: 'https.//poster.jpg',
+      eventName: 'Music Festival',
+      eventDescription: 'Join us for a night of music and fun.',
     },
     {
-      "eventId": "2",
-      "eventPoster": "https.//poster.jpg",
-      "eventName": "Art Exhibition",
-      "eventDescription": "Explore beautiful artworks from local artists."
-    }
+      eventId: '2',
+      eventPoster: 'https.//poster.jpg',
+      eventName: 'Art Exhibition',
+      eventDescription: 'Explore beautiful artworks from local artists.',
+    },
   ];
 
   const body = {
     success: true,
-    message: "Registered events fetched successfully",
-    data: eventData
+    message: 'Registered events fetched successfully',
+    data: eventData,
   };
 
   return buildResponse(200, body);
@@ -83,11 +113,11 @@ async function fetchRegisteredEvents() {
 
 async function getUsers() {
   const params = {
-    TableName: dynamoDBTableName
+    TableName: 'Users',
   };
   const allUsers = await dynamodb.scan(params).promise();
   const body = {
-    users: allUsers
+    users: allUsers,
   };
   return buildResponse(200, body);
 }
@@ -98,8 +128,8 @@ function buildResponse(statusCode, body) {
   return {
     statusCode: statusCode,
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
-    body: JSON.stringify(body)
+    body: JSON.stringify(body),
   };
 }
