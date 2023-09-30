@@ -104,13 +104,36 @@ const RegisterAndSignup = ({ navigation }) => {
       } else {
         // Handle successful registration
         console.log('Registration successful', signUpResponse);
-        navigation.navigate('BasicDetail');
+
+        // Now, make a POST request to the login API
+        const loginResponse = await fetch('https://hk1630uulc.execute-api.us-east-1.amazonaws.com/Dev/user-login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+        });
+
+        if (loginResponse.ok) {
+          // If login is successful, navigate to the desired screen
+          navigation.navigate('Home'); // Replace 'Home' with the screen you want to navigate to
+        } else {
+          // Handle non-successful login
+          const errorData = await loginResponse.json();
+          setError(`Login failed: ${errorData.message}`);
+        }
       }
     } catch (error) {
       console.error('Error:', error);
       setRegistrationResponse('An error occurred during registration');
+    } finally {
+      setIsLoading(false);
     }
   };
+
 
   return (
     <ImageBackground
