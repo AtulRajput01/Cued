@@ -1,30 +1,26 @@
 const AWS = require('aws-sdk');
-const { v4: uuidv4 } = require('uuid'); // Import the uuidv4 function
+const { v4: uuidv4 } = require('uuid');
 
 AWS.config.update({
-  region: 'us-east-1', // Replace with your desired AWS region
+  region: 'us-east-1',
 });
 
-const dynamoDBTableName = process.env.DYNAMODB_TABLE_NAME; // Use environment variable for DynamoDB table name
+const dynamoDBTableName = process.env.Users;
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 exports.handler = async (event) => {
   try {
-    const { httpMethod, path } = event;
+    const { httpMethod, path, requestContext } = event;
 
     if (httpMethod === 'POST' && path === '/api/submit-basic-details') {
-      // Extract request parameters from the request body
       const { collegeName, collegeId, passingYear, aadharCard } = JSON.parse(event.body);
 
-      // Validate request parameters
       if (!collegeName || !collegeId || !passingYear || !aadharCard) {
         return buildResponse(400, { success: false, message: 'Submission failed. Please check your input.' });
       }
 
-      // Generate a unique user ID using UUID
-      const userId = uuidv4();
+      const userId = requestContext.authorizer.claims.sub; // Retrieve Cognito user ID
 
-      // Save user's basic details to your database
       const savedUserId = await saveBasicDetails(userId, collegeName, collegeId, passingYear, aadharCard);
 
       if (!savedUserId) {
@@ -33,7 +29,6 @@ exports.handler = async (event) => {
 
       return buildResponse(200, { success: true, message: 'Basic details submitted successfully', userId });
     } else {
-      // Handle unknown or unsupported API endpoints
       return buildResponse(404, { message: 'Not Found' });
     }
   } catch (error) {
@@ -42,19 +37,15 @@ exports.handler = async (event) => {
   }
 };
 
-// Function to save user's basic details to the database
 const saveBasicDetails = async (userId, collegeName, collegeId, passingYear, aadharCard) => {
-  // Implement the logic to save user's basic details to your database
-  // For DynamoDB, you can use the DocumentClient to put an item
   const params = {
-    TableName: dynamoDBTableName,
+    TableName: 'Users',
     Item: {
       userId,
       collegeName,
       collegeId,
       passingYear,
       aadharCard,
-      // Add more user details as needed
     },
   };
 
@@ -67,7 +58,6 @@ const saveBasicDetails = async (userId, collegeName, collegeId, passingYear, aad
   }
 };
 
-// Function to build API response
 const buildResponse = (statusCode, body) => {
   return {
     statusCode: statusCode,
