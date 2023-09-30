@@ -1,78 +1,80 @@
 const AWS = require('aws-sdk');
-const { v4: uuidv4 } = require('uuid');
-const bcrypt = require('bcrypt'); 
+const bcrypt = require('bcrypt');
 
 AWS.config.update({
   region: 'us-east-1',
 });
 
-const dynamoDBTableName = 'users';
+const dynamoDBTableName = 'Users';
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
-exports.handler = async (event) => {
+exports.handler = async (event, context) => {
   try {
-    const { httpMethod, path } = event;
+    const { triggerSource, request, response } = event;
 
-    if (httpMethod === 'POST' && path === '/api/register') {
-      // Extract email and password from the request body
-      const { email, password } = JSON.parse(event.body);
+    // Check if this is a Pre Sign-up trigger
+    if (triggerSource === 'PreSignUp_SignUp') {
+      const { username, userAttributes } = request;
+      const { email, name } = userAttributes;
 
       // Check if the email is already in use
       const emailExists = await checkIfEmailExists(email);
 
       if (emailExists) {
+        // Reject the registration if email already in use
         return {
           statusCode: 400,
-          body: JSON.stringify({ success: false, message: 'Registration failed. Email already in use.' }),
+          response: 'Registration failed. Email already in use.',
         };
       }
 
-      // Generate a unique user ID using uuid
+      // Generate a unique user ID using uuid 
       const userId = generateUniqueId();
 
       // Hash the password securely
-      const hashedPassword = await hashPassword(password);
+      const hashedPassword = await hashPassword(userAttributes.password);
 
       // Save user data to your database
-      await saveUserData(userId, email, hashedPassword);
+      await saveUserData(userId, email, hashedPassword, name);
 
+      // Return the user attributes including the generated user ID
       return {
         statusCode: 200,
-        body: JSON.stringify({ success: true, message: 'Registration successful', data: { userId } }),
+        response: {
+          userAttributes: {
+            ...userAttributes,
+            sub: userId, // Include the generated user ID in user attributes
+          },
+        },
       };
     } else {
-      // Handle unknown or unsupported API endpoints
-      return {
-        statusCode: 404,
-        body: JSON.stringify({ message: 'Not Found' }),
-      };
+      // Handle other triggers if needed
+      return {};
     }
   } catch (error) {
     console.error(error);
     return {
       statusCode: 500,
-      body: JSON.stringify({
-        success: false,
-        message: 'Internal server error.',
-      }),
+      response: 'Internal server error.',
     };
   }
 };
 
 // Implement the logic to check if email already exists in your database
 const checkIfEmailExists = async (email) => {
-  // Simulated database query (replace with your actual database query)
   const params = {
-    TableName: dynamoDBTableName,
-    Key: {
-      email,
+    TableName: Users,
+    IndexName: 'EmailIndex', // Assuming you have an index on the 'email' attribute
+    KeyConditionExpression: 'email = :email',
+    ExpressionAttributeValues: {
+      ':email': email,
     },
   };
 
   try {
-    const result = await dynamodb.get(params).promise();
+    const result = await dynamodb.query(params).promise();
 
-    return !!result.Item; // If an item with the email exists, return true.
+    return result.Items.length > 0; // If items with the email exist, return true.
   } catch (error) {
     console.error('Error checking email existence:', error);
     throw error;
@@ -81,25 +83,24 @@ const checkIfEmailExists = async (email) => {
 
 // Function to generate a unique user ID
 const generateUniqueId = () => {
-  return uuidv4();
+  return 'u-' + Date.now(); // A simple example, you may use uuid or other methods
 };
 
 // Function to securely hash the password
 const hashPassword = async (password) => {
-  // Use bcrypt to hash the password
   const saltRounds = 10; // Number of salt rounds, adjust as needed
   return bcrypt.hash(password, saltRounds);
 };
 
 // Function to save user data to the database
-const saveUserData = async (userId, email, password) => {
-  // Simulated database save (replace with  actual database save logic)
+const saveUserData = async (userId, email, password, name) => {
   const params = {
-    TableName: 'users',
+    TableName: Users,
     Item: {
       userId,
       email,
       password,
+      name,
     },
   };
 
