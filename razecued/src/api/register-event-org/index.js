@@ -6,11 +6,12 @@ AWS.config.update({
 
 const dynamoDBTableName = 'Events';
 const dynamodb = new AWS.DynamoDB.DocumentClient();
-const userPath = 'Events';
+const userPath = '/register-event-org';
 
 exports.handler = async (event) => {
   let response;
   console.log(event);
+  
   switch (event.httpMethod) {
     case 'POST':
       response = await saveUser(JSON.parse(event.body));
@@ -46,13 +47,12 @@ async function deleteUser(id) {
         Operation: 'DELETE',
         Message: 'SUCCESS',
         Item: response
-      };
+      }
       return buildResponse(200, body);
     })
     .catch((error) => {
       console.error(error);
-      return buildResponse(500, 'Internal Server Error');
-    });
+    })
 }
 
 async function updateUser(id, updateKey, updateValue) {
@@ -98,8 +98,7 @@ async function saveUser(requestBody) {
     TableName: dynamoDBTableName,
     Item: requestBody
   };
-  return await dynamodb.put(params).promise()
-    .then(() => {
+  return await dynamodb.put(params).promise().then(() => {
       const body = {
         Operation: 'SAVE',
         Message: 'SUCCESS',
