@@ -52,7 +52,7 @@ const RegisteredEvents = () => {
           </Pressable>
           <Text style={styles.eventDesc}>{event.eventDescription}</Text>
         </View>
-        {/*Add your other components here based on the event data */}
+        {/* Add your other components here based on the event data */}
       </View>
     ));
   };
