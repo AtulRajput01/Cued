@@ -40,7 +40,12 @@ const Discover = () => {
   // Simulate fetching data from your Recommended API
   useEffect(() => {
     fetch('https://hk1630uulc.execute-api.us-east-1.amazonaws.com/Dev/fetch-events')
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network error');
+        }
+        return response.json();
+      })
       .then((data) => {
         // Sort recommended events by registrations in descending order
         const sortedEvents = data.events.sort((a, b) => b.registrations - a.registrations);
@@ -54,7 +59,12 @@ const Discover = () => {
 
           // Fetch Displayed Events
         fetch('../API/DisplayEvents.json')
-        .then((response) => response.json())
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network error');
+          }
+          return response.json();
+        })
         .then((data) => {
           setDisplayedEvents(data.displayEvents);
         })
@@ -63,13 +73,30 @@ const Discover = () => {
         });
   }, []);
 
-  
+  // Handle navigation to event description with error handling
+  const navigateToEventDesc = (item) => {
+    try {
+      navigation.navigate('EventDesc', { events: item });
+    } catch (error) {
+      console.error('Error navigating to EventDesc:', error);
+      
+    }
+  };
+
+  const navigateToDisplayEventDesc = (item) => {
+    try {
+      navigation.navigate('EventDesc', { event: item });
+    } catch (error) {
+      console.error('Error navigating to DisplayEventDesc:', error);
+      
+    }
+  };
 
 // Render a single recommended event item
 const renderRecommendedEventItem = ({ item }) => (
   <Pressable
     style={styles.bottomContainer}
-    onPress={() => navigation.navigate('EventDesc', { events: item })}
+    onPress={() => navigateToEventDesc(item)}
   >
     <View style={styles.bottomContentContainer}>
       <View style={styles.greyBox}>
@@ -148,7 +175,7 @@ const renderDisplayedEventItem = ({ item , index}) => {
                     <Text style={styles.divider}>II</Text>
                     <Text style={styles.topText3}>{item.date}</Text>
                     </View>
-                    <Pressable onPress={() => navigation.navigate('DisplayEventDesc', { event: item })} style={styles.topbutton}>
+                    <Pressable onPress={() => navigateToDisplayEventDesc(item)} style={styles.topbutton}>
                       <Text style={styles.topbuttonText}>Register before {item.lastdate}</Text>
                     </Pressable>
                   </View> 

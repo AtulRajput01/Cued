@@ -25,7 +25,9 @@ const BasicDetail = ({navigation}) => {
         // You can also navigate to the next screen upon successful data save
          navigation.navigate('BasicDetails2');
       } else {
-        setBasicDetailResponse(data.message);
+        const errorData = await response.json();
+        setBasicDetailResponse(`Data not saved: ${errorData.message}`);
+        return;
       }
     } catch (error) {
       console.error('Error:', error);
@@ -82,29 +84,20 @@ const BasicDetail = ({navigation}) => {
         placeholderTextColor="#A9A9A9"
       />
       
-           <TextInput
-        style={styles.input}
-        placeholder="College Id"
-        placeholderTextColor="#A9A9A9"
-      />
-      <TouchableOpacity style={styles.uploadButton} onPress={() => handleFilePicker('collegeId')}>
-        <Text style={styles.uploadButtonText}>
-          {collegeIdFile ? 'Uploaded' : 'Upload file'}
-        </Text>
-      </TouchableOpacity>
-
+          
 
       <TextInput
         style={styles.input}
         placeholder="Passing Year"
         placeholderTextColor="#A9A9A9"
+        keyboardType='numeric'
       />
       <TextInput
         style={styles.input}
-        placeholder="Aadhar Card"
+        placeholder="College Id"
         placeholderTextColor="#A9A9A9"
       />
-      <TouchableOpacity style={styles.uploadButton} onPress={() => handleFilePicker('aadharCard')}>
+      <TouchableOpacity style={styles.uploadButton} onPress={() => handleFilePicker('college id')}>
         <Text style={styles.uploadButtonText}>
           {aadharCardFile ? 'Uploaded' : 'Upload file'}
         </Text>

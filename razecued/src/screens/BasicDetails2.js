@@ -20,9 +20,11 @@ const BasicDetail2 = ({navigation}) => {
       if (data.success) {
         setBasicDetailResponse(data.message);
         // You can also navigate to the next screen upon successful data save
-         navigation.navigate('BasicDetails2');
+         navigation.navigate('Discover');
       } else {
-        setBasicDetailResponse(data.message);
+        const errorData = await response.json();
+        setBasicDetailResponse(`Data not saved: ${errorData.message}`);
+        return;
       }
     } catch (error) {
       console.error('Error:', error);
