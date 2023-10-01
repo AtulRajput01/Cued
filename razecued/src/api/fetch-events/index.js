@@ -1,12 +1,11 @@
 const AWS = require('aws-sdk');
-
 AWS.config.update({
-  region: 'us-east-1'
+  region: 'us-east-1',
 });
 
-const dynamoDBTableName = 'users';
+const dynamoDBTableName = 'Events';
 const dynamodb = new AWS.DynamoDB.DocumentClient();
-const userPath = '/users';
+const discoverPath = '/api/Discover';
 
 exports.handler = async (event) => {
   let response;
@@ -14,8 +13,15 @@ exports.handler = async (event) => {
   try {
     const { httpMethod, path } = event;
 
-    if (httpMethod === 'GET' && path === '/api/fetch-events') {
-      const eventData = fetchEventData();
+    if (httpMethod === 'GET' && path === discoverPath) {
+      const eventType =
+        event.queryStringParameters && event.queryStringParameters.type;
+
+      if (!eventType || (eventType !== 'vertical' && eventType !== 'horizontal')) {
+        return buildResponse(400, 'Invalid event type specified');
+      }
+
+      const eventData = await fetchEventData(eventType);
 
       response = {
         statusCode: 200,
@@ -25,21 +31,6 @@ exports.handler = async (event) => {
           data: eventData,
         }),
       };
-    } else if (httpMethod === 'POST') {
-      const requestBody = JSON.parse(event.body);
-      if (requestBody.action === 'saveUser') {
-        response = await saveUser(requestBody.user);
-      } else {
-        response = buildResponse(400, 'Invalid action');
-      }
-    } else if (httpMethod === 'GET') {
-      response = await getUsers();
-    } else if (httpMethod === 'PUT') {
-      const requestBody = JSON.parse(event.body);
-      response = await updateUser(requestBody.id, requestBody.updateKey, requestBody.updateValue);
-    } else if (httpMethod === 'DELETE') {
-      const requestBody = JSON.parse(event.body);
-      response = await deleteUser(requestBody.id);
     } else {
       response = buildResponse(404, 'Endpoint not found');
     }
@@ -51,35 +42,34 @@ exports.handler = async (event) => {
   return response;
 };
 
-// Function to fetch event data
-const fetchEventData = () => {
-  // logic to fetch event data
-  // Return an array of objects representing events
-  return [
-    {
-      eventId: "1",
-      eventName: "Music Festival",
-      eventLocation: "City Park",
-      eventDate: "2023-12-15",
-      eventDescription: "Club Event",
-      registrationStatus: true,
-      eventPoster: "https://example.com/poster.jpg",
-    },
-    {
-      eventId: "2",
-      eventName: "Tech Conference",
-      eventLocation: "Convention Center",
-      eventDate: "2024-01-20",
-      eventDescription: "Coding Event",
-      registrationStatus: false,
-      eventPoster: "https://example.com/poster.jpg",
-    },
-    // ...other events
-  ];
-};
+async function fetchEventData(eventType) {
+  const params = {
+    TableName: 'Events',
+  };
 
-// Helper function to build consistent responses
-const buildResponse = (statusCode, message) => {
+  const result = await dynamodb.scan(params).promise();
+
+  // Shuffle the events randomly
+  const shuffledEvents = shuffleArray(result.Items);
+
+  // Split the shuffled events into vertical and horizontal based on index
+  const verticalEvents = shuffledEvents.filter((_, index) => index % 2 === 0);
+  const horizontalEvents = shuffledEvents.filter((_, index) => index % 2 === 1);
+
+  // Return events based on the specified event type
+  return eventType === 'vertical' ? verticalEvents : horizontalEvents;
+}
+
+// Function to shuffle an array randomly
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+function buildResponse(statusCode, message) {
   return {
     statusCode,
     body: JSON.stringify({
@@ -87,4 +77,4 @@ const buildResponse = (statusCode, message) => {
       message,
     }),
   };
-};
+}
