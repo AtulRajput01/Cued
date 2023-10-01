@@ -6,14 +6,56 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { ImageBackground } from 'react-native';
 
 
+
 const windowWidth = Dimensions.get('window').width;
 
-
-
-//Code
 const RegisteredEvents = () => {
-
   const navigation = useNavigation();
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
+  const fetchEvents = async () => {
+    try {
+      const response = await fetch(
+        'https://hk1630uulc.execute-api.us-east-1.amazonaws.com/Dev/fetch-registered-events'
+      );
+      const data = await response.json();
+      setEvents(data.data || []);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching events:', error);
+      setLoading(false);
+    }
+  };
+
+  const renderEvents = () => {
+    if (loading) {
+      return <ActivityIndicator size="large" color="#0000ff" />;
+    }
+
+    if (events.length === 0) {
+      return <Text>No registered events</Text>;
+    }
+
+    return events.map((event) => (
+      <View key={event.eventId} style={styles.outerContainer}>
+        <View style={styles.grayContainer}>
+          <Image source={{ uri: event.eventPoster }} style={styles.image} />
+        </View>
+        <View>
+          <Pressable onPress={() => navigation.navigate('EventDesc')}>
+            <Text style={styles.eventName}>{event.eventName}</Text>
+          </Pressable>
+          <Text style={styles.eventDesc}>{event.eventDescription}</Text>
+        </View>
+        {/*Add your other components here based on the event data */}
+      </View>
+    ));
+  };
 
   return (
 
