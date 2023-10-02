@@ -14,14 +14,19 @@ exports.handler = async (event) => {
   
   switch (event.httpMethod) {
     case 'POST':
-      response = await saveUser(JSON.parse(event.body));
+      // Generate a timestamp-based unique ID
+      const timestampId = new Date().getTime().toString();
+      // Add the unique ID to the request body
+      const requestBody = JSON.parse(event.body);
+      requestBody.Event_id = timestampId;
+      response = await saveUser(requestBody);
       break;
     case 'GET':
       response = await getUsers();
       break;
     case 'PUT':
-      const requestBody = JSON.parse(event.body);
-      response = await updateUser(requestBody.id, requestBody.updateKey, requestBody.updateValue);
+      const updateRequestBody = JSON.parse(event.body);
+      response = await updateUser(updateRequestBody.id, updateRequestBody.updateKey, updateRequestBody.updateValue);
       break;
     case 'DELETE':
       response = await deleteUser(JSON.parse(event.body).id);
