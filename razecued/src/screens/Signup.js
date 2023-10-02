@@ -8,26 +8,15 @@ import { Auth } from 'aws-amplify';
 import { createStackNavigator } from '@react-navigation/stack'; // Added import for createStackNavigator
 import CheckBox from 'react-native-check-box'
 
-//Navigator Configuration: Define navigator
-const Stack = createStackNavigator();
 
-function AppNavigator() {
-  return (
-    <Stack.Navigator>
-      {/* Other screens */}
-      <Stack.Screen name="Otp" component={OtpScreen} />
-    </Stack.Navigator>
-  );
-}
-
-
-const Signup = ({navigation}) => {
+const Signup = () => {
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const navigation = useNavigation();
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [registrationResponse, setRegistrationResponse] = useState(null);
+  const [registrationResponse, setRegistrationResponse] = useState('');
 
 const handleSignup = async () => {
   try {
@@ -52,7 +41,7 @@ const handleSignup = async () => {
 
     // Register the user using Amplify
     await Auth.signUp({
-      username: email, // Use email as the username
+      username,
       password,
     });
 
@@ -78,7 +67,7 @@ const handleSignup = async () => {
 
     
     // If registration is successful, navigate to the OTP screen
-    navigation.navigate('Otp', { email });
+    navigation.navigate('Otp', { username });
 
   } catch (error) {
     console.error('Error:', error);
