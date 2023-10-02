@@ -1,11 +1,11 @@
 const AWS = require('aws-sdk');
-const bcrypt = require('bcrypt'); // Use a secure password hashing library like bcrypt
+const crypto = require('crypto');
 
 AWS.config.update({
   region: 'us-east-1'
 });
 
-const dynamoDBTableName = 'users';
+const dynamoDBTableName = 'Users';
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 exports.handler = async (event) => {
@@ -35,7 +35,7 @@ exports.handler = async (event) => {
       }
 
       // Verify the password
-      if (!await verifyPassword(password, user.password)) {
+      if (!verifyPassword(password, user.password)) {
         return {
           statusCode: 401,
           body: JSON.stringify({ success: false, message: 'Login failed. Incorrect email or password.' }),
@@ -69,7 +69,7 @@ exports.handler = async (event) => {
 // Function to retrieve the user by email
 const getUserByEmail = async (email) => {
   const params = {
-    TableName: 'users',
+    TableName: 'Users',
     IndexName: 'EmailIndex', // Replace with your index name if applicable
     KeyConditionExpression: 'email = :email',
     ExpressionAttributeValues: {
@@ -81,7 +81,10 @@ const getUserByEmail = async (email) => {
   return result.Items[0] || null;
 };
 
-// Function to verify the password
-const verifyPassword = async (inputPassword, hashedPassword) => {
-  return await bcrypt.compare(inputPassword, hashedPassword);
+// Function to verify the password using a simple SHA-256 hash
+const verifyPassword = (inputPassword, hashedPassword) => {
+  const hash = crypto.createHash('sha256');
+  hash.update(inputPassword);
+  const hashedInputPassword = hash.digest('hex');
+  return hashedInputPassword === hashedPassword;
 };
