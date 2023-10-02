@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { View, Text,StyleSheet, TextInput, Button } from 'react-native';
 import { Auth } from 'aws-amplify';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
-const Otp = ({ navigation, route }) => {
-  const { email } = route.params;
-  const [otp, setOTP] = useState('');
-  const [verificationResponse, setVerificationResponse] = useState(null);
+const Otp = () => {
+  const [otp, setOtp] = useState('');
+  const navigation = useNavigation();
+  const route = useRoute();
+  const { username } = route.params || {};
 
   const handleVerifyOTP = async () => {
     try {
@@ -20,17 +22,16 @@ const Otp = ({ navigation, route }) => {
 
   return (
     <View>
-      <Text>Enter the OTP sent to your email:</Text>
       <TextInput
         placeholder="OTP"
+        onChangeText={(text) => setOtp(text)}
         value={otp}
-        onChangeText={setOTP}
       />
       <Button title="Verify OTP" onPress={handleVerifyOTP} />
-      {error ? <Text style={{ color: 'red' }}>{error}</Text> : null} {/* Display error message */}
     </View>
   );
 };
+
 
 
 const styles = StyleSheet.create({
