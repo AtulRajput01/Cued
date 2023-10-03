@@ -1,43 +1,69 @@
-import { createStackNavigator } from "react-navigation-stack";
-import { createAppContainer } from "react-navigation";
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from 'react-navigation-stack';
+import { createAppContainer } from 'react-navigation';
 
 import Splash from './Splash';
 import BasicDetail from './BasicDetail';
-import Discover from "./Discover";
-import RegisteredEvents from "./RegisteredEvents";
-import Login from "./Login";
-import Signup from "./Signup";
-import EventDesc from "./EventDesc";
-import Token from "./Token"
-import BasicDetails2 from "./BasicDetails2";
-import Otp from "./Otp";
-import DisplayEventDesc from "./DisplayEventDesc";
+import Discover from './Discover';
+import RegisteredEvents from './RegisteredEvents';
+import Login from './Login';
+import Signup from './Signup';
+import EventDesc from './EventDesc';
+import Token from './Token';
+import BasicDetails2 from './BasicDetails2';
+import Otp from './Otp';
+import DisplayEventDesc from './DisplayEventDesc';
 
+const Stack = createStackNavigator();
 
-
-
-const MainNavigator = createStackNavigator({
+const MainNavigator = createStackNavigator(
+  {
     Splash: { screen: Splash },
     BasicDetail: { screen: BasicDetail },
-    Discover: {screen: Discover},
-    RegisteredEvents: {screen: RegisteredEvents},
-    Login: {screen: Login},
-    Signup: {screen: Signup},
-    EventDesc: {screen: EventDesc},
+    Discover: { screen: Discover },
+    RegisteredEvents: { screen: RegisteredEvents },
+    Login: { screen: Login },
+    Signup: { screen: Signup },
+    EventDesc: { screen: EventDesc },
     Token: { screen: Token },
-    BasicDetails2: {screen: BasicDetails2},
-    Otp: {screen: Otp},
-    DisplayEventDesc: {screen: DisplayEventDesc}
-    
-    
-}, {
+    BasicDetails2: { screen: BasicDetails2 },
+    Otp: { screen: Otp },
+    DisplayEventDesc: { screen: DisplayEventDesc },
+  },
+  {
     headerMode: 'none',
     navigationOptions: {
-        headerVisible: false,
-    }
-});
-
-export default createAppContainer(
-    MainNavigator
+      headerVisible: false,
+    },
+  }
 );
 
+const SignupStack = createStackNavigator(
+  {
+    Signup: { screen: Signup },
+    Otp: { screen: Otp },
+  },
+  {
+    headerMode: 'none',
+    navigationOptions: {
+      headerVisible: false,
+    },
+  }
+);
+
+const AppNavigator = createStackNavigator(
+  {
+    MainNavigator: { screen: MainNavigator },
+    SignupStack: { screen: SignupStack },
+  },
+  {
+    mode: 'modal',
+    headerMode: 'none',
+    navigationOptions: {
+      headerVisible: false,
+    },
+  }
+);
+
+export default createAppContainer(AppNavigator);
