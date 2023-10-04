@@ -18,6 +18,10 @@ const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [registrationResponse, setRegistrationResponse] = useState('');
 
+const onSignupPress = () => {
+    navigation.navigate('Otp');
+};
+
 const handleSignup = async () => {
   try {
     // Validate email format
@@ -66,9 +70,6 @@ const handleSignup = async () => {
     }
 
     
-    // If registration is successful, navigate to the OTP screen
-    navigation.navigate('Otp');
-
   } catch (error) {
     console.error('Error:', error);
 
