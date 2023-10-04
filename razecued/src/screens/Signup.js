@@ -93,7 +93,7 @@ const handleSignup = async () => {
 
 </TouchableOpacity>
 <Pressable onPress={() => navigation.navigate('BasicDetail')}>
-<Text style={styles.backButton}>skip</Text>
+<Text style={styles.backButton}>skipy</Text>
 </Pressable>
 </View>
     <View style={styles.row}>
@@ -149,7 +149,7 @@ const handleSignup = async () => {
         onChangeText={(text) => setConfirmPassword(text)}
       />
       
-      <TouchableOpacity style={styles.loginButton} onPress={handleSignup}>
+      <TouchableOpacity style={styles.loginButton} onPress={onSignupPress}>
         <View style={styles.row}>
         <Image source={require('../../assets/images/next.png')}/>
         <Text style={styles.loginButtonText}>Signup</Text>

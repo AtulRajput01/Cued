@@ -13,6 +13,7 @@ import Token from './Token';
 import BasicDetails2 from './BasicDetails2';
 import Otp from './Otp';
 import DisplayEventDesc from './DisplayEventDesc';
+import Register from './Register';
 
 const Stack = createStackNavigator();
 
@@ -30,6 +31,7 @@ const MainNavigator = () => {
       <Stack.Screen name="BasicDetails2" component={BasicDetails2} />
       <Stack.Screen name="Otp" component={Otp} />
       <Stack.Screen name="DisplayEventDesc" component={DisplayEventDesc} />
+      <Stack.Screen name = "Register" component={Register}/>
     </Stack.Navigator>
   );
 };
@@ -37,7 +39,7 @@ const MainNavigator = () => {
 const SignupStack = () => {
   return (
     <Stack.Navigator headerMode="none">
-      <Stack.Screen name="Signup" component={Signup} />
+      <Stack.Screen name="Register" component={Register} />
       <Stack.Screen name="Otp" component={Otp} />
     </Stack.Navigator>
   );

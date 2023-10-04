@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
-import { View, Text,StyleSheet, TextInput, Button } from 'react-native';
+import { View, Text,StyleSheet,ImageBackground,Pressable, TextInput, Button } from 'react-native';
 import { Auth } from 'aws-amplify';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 const Otp = () => {
-  const [otp, setOtp] = useState('');
+  const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const navigation = useNavigation();
   const route = useRoute();
   const { email } = route.params || {};
+
+  const handleChangeText = (text, index) => {
+    const newOtp = [...otp];
+    newOtp[index] = text;
+    setOtp(newOtp);
+  };
 
   const handleVerifyOTP = async () => {
     try {
@@ -21,14 +27,44 @@ const Otp = () => {
   };
 
   return (
-    <View>
-      <TextInput
-        placeholder="OTP"
-        onChangeText={(text) => setOtp(text)}
-        value={otp}
-      />
-      <Button title="Verify OTP" onPress={handleVerifyOTP} />
+    <ImageBackground
+    source={require('../../assets/images/Loginbg.jpg')} 
+      style={styles.backgroundImage}>
+    <View style={styles.container}>
+
+      <View style={styles.header1}>
+        <Text style={styles.Account}>Account</Text>
+      </View>
+      <View style={styles.header}>
+        <Text style={styles.verify}>Verification.</Text>
+      </View>
+      <View style={styles.header}>
+        <Text style={styles.alert}>For your security, we want to make sure it is really you.</Text>
+      </View>
+      <View style={styles.header}>
+        <Text style={styles.title}>Enter code</Text>
+        <Text style={styles.resend}>Resend code</Text>
+      </View>
+      <View style={styles.otpContainer}>
+        {otp.map((digit, index) => (
+          <TextInput
+            key={index}
+            style={styles.otpInput}
+            onChangeText={(text) => handleChangeText(text, index)}
+            value={digit}
+            keyboardType="numeric"
+            maxLength={1}
+          />
+        ))}
+      </View>
+      <View style={styles.header}>
+        <Text style={styles.confirm}>We have sent the OPT to your registered number, Please do not share the OTP with anyone</Text>
+      </View>
+      <Pressable style={styles.button} onPress={handleVerifyOTP}>
+                <Text style={styles.buttonText}>Next</Text>
+              </Pressable>
     </View>
+    </ImageBackground>
   );
 };
 

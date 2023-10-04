@@ -6,7 +6,7 @@ import CheckBox from 'react-native-check-box';
 import {Amplify} from 'aws-amplify';
 import  {Auth}  from 'aws-amplify';
 
-const RegisterAndSignup = ({ navigation }) => {
+const Login = ({ navigation }) => {
   const transY = useRef(new Animated.Value(0));
   const transYN = useRef(new Animated.Value(0));
   const transYE = useRef(new Animated.Value(0));
@@ -32,10 +32,10 @@ const RegisterAndSignup = ({ navigation }) => {
     }
   };
 
-  const [name, setName] = useState('');
+  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [confirmationSent, setConfirmationSent] = useState(false);
@@ -161,28 +161,14 @@ const RegisterAndSignup = ({ navigation }) => {
             <Text style={styles.optionText}>Login</Text>
           </TouchableOpacity>
           <View style={styles.separator} />
-          <TouchableOpacity onPress={() => console.log(' ')}>
+          <TouchableOpacity onPress={() => navigation.navigate('Register')}>
             <Text style={styles.optionText2}>Signup</Text>
           </TouchableOpacity>
         </View>
         <Text style={styles.welcomeText}>Hey there,</Text>
-        <Text style={styles.welcomeText2}>Register Yourself!</Text>
+        <Text style={styles.welcomeText2}>welcome Back</Text>
 
-        {/* Name */}
-        <View style={styles.container2}>
-          <Animated.View
-            style={[styles.label, { transform: [{ translateY: transYN.current }, { translateX: transXN }] }]}>
-            <Text style={styles.holder}>Name</Text>
-          </Animated.View>
-          <TextInput
-            style={styles.input}
-            onFocus={() => handleFocus(transYN.current)}
-            onBlur={() => handleBlur(transYN.current, name)}
-            placeholderTextColor="#000000"
-            value={name}
-            onChangeText={(text) => setName(text)}
-          />
-        </View>
+       
 
         {/* Email */}
         <View style={styles.container3}>
@@ -197,6 +183,7 @@ const RegisterAndSignup = ({ navigation }) => {
             placeholderTextColor="#000000"
             value={email}
             onChangeText={(text) => setEmail(text)}
+            keyboardType='email-address'
           />
         </View>
 
@@ -216,28 +203,19 @@ const RegisterAndSignup = ({ navigation }) => {
             onChangeText={(text) => setPassword(text)}
           />
         </View>
-
-        {/* Confirm Password */}
-        <View style={styles.container3}>
-          <Animated.View
-            style={[styles.label, { transform: [{ translateY: transYC.current }, { translateX: transXC }] }]}>
-            <Text style={styles.holder}>Confirm Password</Text>
-          </Animated.View>
-          <TextInput
-            style={styles.input}
-            onFocus={() => handleFocus(transYC.current)}
-            onBlur={() => handleBlur(transYC.current, confirmPassword)}
-            placeholderTextColor="#000000"
-            value={confirmPassword}
-            secureTextEntry={passwordInputType === 'password'}
-            onChangeText={(text) => setConfirmPassword(text)}
-          />
-        </View>
+        <View style={styles.checkboxContainer}>
+        <CheckBox />
+        <Text style={styles.remember}>Remember me</Text>
+        <TouchableOpacity onPress={() => console.log('Forgot password pressed')}>
+          <Text style={styles.forgotPassword}>Forgot password?</Text>
+        </TouchableOpacity>
+      </View>
+        
 
         <TouchableOpacity style={styles.loginButton} onPress={handleRegister}>
           <View style={styles.row}>
             <Image source={require('../../assets/images/next.png')} />
-            <Text style={styles.loginButtonText}>Signup</Text>
+            <Text style={styles.loginButtonText}>Login</Text>
           </View>
         </TouchableOpacity>
 
@@ -245,8 +223,8 @@ const RegisterAndSignup = ({ navigation }) => {
           <Text style={styles.registrationResponse}>{registrationResponse}</Text>
         )}
 
-        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-          <Text style={styles.createAccount}>Already have an account? Login</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+          <Text style={styles.createAccount}>Don't have an account? Create one</Text>
         </TouchableOpacity>
       </View>
     </ImageBackground>
@@ -255,7 +233,7 @@ const RegisterAndSignup = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 70,
+    paddingTop: 90,
     padding: 20,
     justifyContent: 'center',
     alignItems: 'center',
@@ -299,8 +277,25 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginVertical: 50,
   },
+  remember: {
+    color: '#000000',
+    paddingRight: 80
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'left',
+  },
+  rememberText: {
+    marginLeft: 10,
+    color: '#000000',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    marginBottom: 10,
+  },
   optionText: {
-    color: '#505050',
+   
+    color: '#B51E71',
     fontSize: 16,
     fontFamily: 'Poppins',
     fontWeight: '400',
@@ -308,7 +303,7 @@ const styles = StyleSheet.create({
     marginLeft: 58,
   },
   optionText2: {
-    color: '#B51E71',
+    color: '#505050',
     fontSize: 16,
     fontFamily: 'Poppins',
     fontWeight: '400',
@@ -390,4 +385,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RegisterAndSignup;
+export default Login;
