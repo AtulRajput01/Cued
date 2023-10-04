@@ -1,7 +1,6 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from 'react-navigation-stack';
-import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import Splash from './Splash';
 import BasicDetail from './BasicDetail';
@@ -17,53 +16,42 @@ import DisplayEventDesc from './DisplayEventDesc';
 
 const Stack = createStackNavigator();
 
-const MainNavigator = createStackNavigator(
-  {
-    Splash: { screen: Splash },
-    BasicDetail: { screen: BasicDetail },
-    Discover: { screen: Discover },
-    RegisteredEvents: { screen: RegisteredEvents },
-    Login: { screen: Login },
-    Signup: { screen: Signup },
-    EventDesc: { screen: EventDesc },
-    Token: { screen: Token },
-    BasicDetails2: { screen: BasicDetails2 },
-    Otp: { screen: Otp },
-    DisplayEventDesc: { screen: DisplayEventDesc },
-  },
-  {
-    headerMode: 'none',
-    navigationOptions: {
-      headerVisible: false,
-    },
-  }
-);
+const MainNavigator = () => {
+  return (
+    <Stack.Navigator headerMode="none">
+      <Stack.Screen name="Splash" component={Splash} />
+      <Stack.Screen name="BasicDetail" component={BasicDetail} />
+      <Stack.Screen name="Discover" component={Discover} />
+      <Stack.Screen name="RegisteredEvents" component={RegisteredEvents} />
+      <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="Signup" component={Signup} />
+      <Stack.Screen name="EventDesc" component={EventDesc} />
+      <Stack.Screen name="Token" component={Token} />
+      <Stack.Screen name="BasicDetails2" component={BasicDetails2} />
+      <Stack.Screen name="Otp" component={Otp} />
+      <Stack.Screen name="DisplayEventDesc" component={DisplayEventDesc} />
+    </Stack.Navigator>
+  );
+};
 
-const SignupStack = createStackNavigator(
-  {
-    Signup: { screen: Signup },
-    Otp: { screen: Otp },
-  },
-  {
-    headerMode: 'none',
-    navigationOptions: {
-      headerVisible: false,
-    },
-  }
-);
+const SignupStack = () => {
+  return (
+    <Stack.Navigator headerMode="none">
+      <Stack.Screen name="Signup" component={Signup} />
+      <Stack.Screen name="Otp" component={Otp} />
+    </Stack.Navigator>
+  );
+};
 
-const AppNavigator = createStackNavigator(
-  {
-    MainNavigator: { screen: MainNavigator },
-    SignupStack: { screen: SignupStack },
-  },
-  {
-    mode: 'modal',
-    headerMode: 'none',
-    navigationOptions: {
-      headerVisible: false,
-    },
-  }
-);
+const AppNavigator = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator headerMode="none">
+        <Stack.Screen name="MainNavigator" component={MainNavigator} />
+        <Stack.Screen name="SignupStack" component={SignupStack} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
 
 export default createAppContainer(AppNavigator);
