@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React, {useState,useRef} from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { View, Text, TouchableOpacity, Image, StyleSheet, Pressable, TextInput, Button } from 'react-native';
+import { View, Text, Animated, TouchableOpacity, Image, StyleSheet, Pressable, TextInput, Easing, Button } from 'react-native';
 import { NavigationStackScreenProps } from 'react-navigation-stack';
 import { ImageBackground } from 'react-native';
 import Amplify from 'aws-amplify';
@@ -9,7 +9,7 @@ import { createStackNavigator } from '@react-navigation/stack'; // Added import 
 import CheckBox from 'react-native-check-box'
 
 
-const Signup = () => {
+const Register = () => {
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -17,7 +17,67 @@ const Signup = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [registrationResponse, setRegistrationResponse] = useState('');
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
+  const transY = useRef(new Animated.Value(0));
+  const transYN = useRef(new Animated.Value(0));
+  const transYE = useRef(new Animated.Value(0));
+  const transYP = useRef(new Animated.Value(0));
+  const transYC = useRef(new Animated.Value(0));
+  const handleFocus = (animatedValue) => {
+    Animated.timing(animatedValue, {
+      toValue: -35,
+      duration: 300,
+      useNativeDriver: true,
+      easing: Easing.ease,
+    }).start();
+  };
+
+  const handleBlur = (animatedValue, text) => {
+    if (!text) {
+      Animated.timing(animatedValue, {
+        toValue: 0,
+        useNativeDriver: true,
+        easing: Easing.ease,
+      }).start();
+    }
+  };
+
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
+
+  const passwordInputType = isPasswordVisible ? 'text' : 'password';
+
+  const transX = transY.current.interpolate({
+    inputRange: [-35, 0],
+    outputRange: [-20, 0],
+    extrapolate: 'clamp',
+  });
+
+  const transXN = transYN.current.interpolate({
+    inputRange: [-35, 0],
+    outputRange: [-20, 0],
+    extrapolate: 'clamp',
+  });
+
+  const transXE = transYE.current.interpolate({
+    inputRange: [-35, 0],
+    outputRange: [-20, 0],
+    extrapolate: 'clamp',
+  });
+
+  const transXP = transYP.current.interpolate({
+    inputRange: [-35, 0],
+    outputRange: [-20, 0],
+    extrapolate: 'clamp',
+  });
+
+  const transXC = transYC.current.interpolate({
+    inputRange: [-35, 0],
+    outputRange: [-20, 0],
+    extrapolate: 'clamp',
+  });
 const onSignupPress = () => {
     navigation.navigate('Otp');
 };
@@ -118,39 +178,71 @@ const handleSignup = async () => {
 </View>
       <Text style={styles.welcomeText}>Hey there,</Text>
       <Text style={styles.welcomeText2}>Register Yourself!</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Name"
-        placeholderTextColor="#000000"
-        value={name}
-        onChangeText={(text) => setName(text)}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        placeholderTextColor="#000000"
-        value={email}
-        onChangeText={(text) => setEmail(text)}
-
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        placeholderTextColor="#000000"
-        secureTextEntry
-        value={password}
-        onChangeText={(text) => setPassword(text)}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Confirm Password"
-        placeholderTextColor="#000000"
-        secureTextEntry
-        value={confirmPassword}
-        onChangeText={(text) => setConfirmPassword(text)}
-      />
+     {/* Name */}
+     <View style={styles.container3}>
+          <Animated.View
+            style={[styles.label, { transform: [{ translateY: transYN.current }, { translateX: transXN }] }]}>
+            <Text style={styles.holder}>Name</Text>
+          </Animated.View>
+          <TextInput
+            style={styles.input}
+            onFocus={() => handleFocus(transYN.current)}
+            onBlur={() => handleBlur(transYN.current, name)}
+            placeholderTextColor="#000000"
+            value={name}
+            onChangeText={(text) => setName(text)} 
+          />
+        </View>
+      {/* Email */}
+      <View style={styles.container4}>
+          <Animated.View
+            style={[styles.label, { transform: [{ translateY: transYE.current }, { translateX: transXE }] }]}>
+            <Text style={styles.holder}>Email</Text>
+          </Animated.View>
+          <TextInput
+            style={styles.input}
+            onFocus={() => handleFocus(transYE.current)}
+            onBlur={() => handleBlur(transYE.current, email)}
+            placeholderTextColor="#000000"
+            value={email}
+            onChangeText={(text) => setEmail(text)}
+            keyboardType='email-address'
+          />
+        </View>
+      {/* Password */}
+      <View style={styles.container4}>
+          <Animated.View
+            style={[styles.label, { transform: [{ translateY: transYP.current }, { translateX: transXP }] }]}>
+            <Text style={styles.holder}>Password</Text>
+          </Animated.View>
+          <TextInput
+            style={styles.input}
+            onFocus={() => handleFocus(transYP.current)}
+            onBlur={() => handleBlur(transYP.current, password)}
+            placeholderTextColor="#000000"
+            value={password}
+            secureTextEntry={passwordInputType === 'password'}
+            onChangeText={(text) => setPassword(text)}
+          />
+        </View>
+     {/* Confirm Password */}
+     <View style={styles.container4}>
+          <Animated.View
+            style={[styles.label, { transform: [{ translateY: transYC.current }, { translateX: transXC }] }]}>
+            <Text style={styles.holder}>Confrim Password</Text>
+          </Animated.View>
+          <TextInput
+            style={styles.input}
+            onFocus={() => handleFocus(transYC.current)}
+            onBlur={() => handleBlur(transYC.current, password)}
+            placeholderTextColor="#000000"
+            value={confirmPassword}
+            secureTextEntry={passwordInputType === 'password'}
+            onChangeText={(text) => setConfirmPassword(text)}
+          />
+        </View>
       
-      <TouchableOpacity style={styles.loginButton} onPress={onSignupPress}>
+      <TouchableOpacity style={styles.loginButton} onPress={handleSignup}>
         <View style={styles.row}>
         <Image source={require('../../assets/images/next.png')}/>
         <Text style={styles.loginButtonText}>Signup</Text>
@@ -170,7 +262,7 @@ const handleSignup = async () => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 100,
+    paddingTop: 90,
     padding: 20,
     justifyContent: 'center',
     alignItems: 'center',
@@ -260,6 +352,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingLeft: 10,
     marginBottom: 10,
+    color: '#000000',
+  },
+  label: {
+    position: 'absolute',
+    padding: 10,
   },
   checkboxContainer: {
     flexDirection: 'row',
@@ -268,8 +365,21 @@ const styles = StyleSheet.create({
     width: '100%',
     marginBottom: 10,
   },
+  container3: {
+    borderRadius: 10,
+    width: '100%',
+    marginTop: 8,
+  },
+  container4: {
+    borderRadius: 10,
+    width: '100%',
+    marginTop: 10,
+  },
   forgotPassword: {
     color: 'blue',
+  },
+  holder: {
+    color: '#000000',
   },
   loginButton: {
     backgroundColor: '#B51E71',
@@ -292,4 +402,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Signup;
+export default Register;
