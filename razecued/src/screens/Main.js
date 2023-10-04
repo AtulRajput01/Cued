@@ -15,7 +15,7 @@ import BasicDetails2 from './BasicDetails2';
 import Otp from './Otp';
 import DisplayEventDesc from './DisplayEventDesc';
 
-
+const Stack = createStackNavigator();
 
 const MainNavigator = createStackNavigator(
   {
