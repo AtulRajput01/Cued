@@ -41,7 +41,7 @@ const handleSignup = async () => {
 
     // Register the user using Amplify
     await Auth.signUp({
-      username,
+      username: email,
       password,
     });
 
@@ -67,7 +67,7 @@ const handleSignup = async () => {
 
     
     // If registration is successful, navigate to the OTP screen
-    navigation.navigate('Otp', { username });
+    navigation.navigate('Otp', { email });
 
   } catch (error) {
     console.error('Error:', error);

@@ -7,7 +7,7 @@ const Otp = () => {
   const [otp, setOtp] = useState('');
   const navigation = useNavigation();
   const route = useRoute();
-  const { username } = route.params || {};
+  const { email } = route.params || {};
 
   const handleVerifyOTP = async () => {
     try {
