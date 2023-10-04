@@ -67,7 +67,7 @@ const handleSignup = async () => {
 
     
     // If registration is successful, navigate to the OTP screen
-    navigation.navigate('Otp', { email });
+    navigation.navigate('Otp');
 
   } catch (error) {
     console.error('Error:', error);
