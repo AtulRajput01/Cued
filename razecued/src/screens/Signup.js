@@ -69,6 +69,9 @@ const handleSignup = async () => {
       return;
     }
 
+
+    onSignupPress();
+
     
   } catch (error) {
     console.error('Error:', error);
