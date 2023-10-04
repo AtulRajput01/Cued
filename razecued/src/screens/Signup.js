@@ -68,8 +68,7 @@ const handleSignup = async () => {
       setRegistrationResponse(`Registration failed: ${errorData.message}`);
       return;
     }
-    onSignupPress();
-    
+
   } catch (error) {
     console.error('Error:', error);
 
