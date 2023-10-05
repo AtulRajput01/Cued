@@ -14,4 +14,4 @@ LogBox.ignoreLogs(['Animated: `useNativeDriver`']);
 Amplify.configure(config);
 AppRegistry.registerComponent(appName, () => Main);
 
-export default withAuthenticator(App);
+export default withAuthenticator();
