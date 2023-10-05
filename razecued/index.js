@@ -8,7 +8,10 @@ import {name as appName} from './app.json';
 import { LogBox } from 'react-native';
 import {Amplify} from 'aws-amplify';
 import config from './aws-export.js';
+import {withAuthenticator} from 'aws-amplify-react-native';
 
 LogBox.ignoreLogs(['Animated: `useNativeDriver`']);
 Amplify.configure(config);
 AppRegistry.registerComponent(appName, () => Main);
+
+export default withAuthenticator();
