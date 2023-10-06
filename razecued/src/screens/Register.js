@@ -207,7 +207,7 @@ const handleSignup = async data => {
           />
         </View> */}
       
-      <TouchableOpacity style={styles.loginButton} onPress={handleSubmit(handleSignup)}>
+      <TouchableOpacity style={styles.loginButton} onPress={handleSignup}>
         <View style={styles.row}>
         <Image source={require('../../assets/images/next.png')}/>
         <Text style={styles.loginButtonText}>Signup</Text>
