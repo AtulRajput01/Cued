@@ -1,12 +1,20 @@
 import React, { useState, useRef } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { View, Text, Animated, TouchableOpacity, Image, StyleSheet, Pressable, TextInput, Easing, Keyboard } from 'react-native';
+import { View,Alert, Text, Animated, TouchableOpacity, Image, StyleSheet, Pressable, TextInput, Easing, Keyboard } from 'react-native';
 import { ImageBackground } from 'react-native';
 import CheckBox from 'react-native-check-box';
 import {Amplify} from 'aws-amplify';
 import  {Auth}  from 'aws-amplify';
+import {useForm, Controller} from 'react-hook-form';
 
 const Login = ({ navigation }) => {
+
+  const{
+    control,
+    handleSubmit,
+    formState: {errors},
+  } = useForm();
+
   const transY = useRef(new Animated.Value(0));
   const transYN = useRef(new Animated.Value(0));
   const transYE = useRef(new Animated.Value(0));
@@ -31,7 +39,7 @@ const Login = ({ navigation }) => {
       }).start();
     }
   };
-
+  
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -78,60 +86,21 @@ const Login = ({ navigation }) => {
     extrapolate: 'clamp',
   });
 
-  const handleRegister = async () => {
-    setIsLoading(true);
-    setError('');
-    setConfirmationSent(false);
+  const handleRegister = async data => {
 
-    try {
-      // Check for password complexity (e.g., at least 8 characters, 1 uppercase, 1 digit)
-      if (!/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/.test(password)) {
-        throw new Error('Password must be at least 8 characters long and include at least one uppercase letter and one digit.');
-      }
-      const signUpResponse = await Auth.signUp({
-        username: email,
-        password,
-        attributes: {
-          name,
-        },
-      });
-
-      if (signUpResponse.userConfirmed === false) {
-        // Handle the case where email confirmation is required
-        setRegistrationResponse(
-          'A confirmation code has been sent to your email. Please check your inbox.'
-        );
-      } else {
-        // Handle successful registration
-        console.log('Registration successful', signUpResponse);
-
-        // Now, make a POST request to the login API
-        const loginResponse = await fetch('https://hk1630uulc.execute-api.us-east-1.amazonaws.com/Dev/user-login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email,
-            password,
-          }),
-        });
-
-        if (loginResponse.ok) {
-          // If login is successful, navigate to the desired screen
-          navigation.navigate('Home'); // Replace 'Home' with the screen you want to navigate to
-        } else {
-          // Handle non-successful login
-          const errorData = await loginResponse.json();
-          setError(`Login failed: ${errorData.message}`);
-        }
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      setRegistrationResponse('An error occurred during registration');
-    } finally {
-      setIsLoading(false);
+    if (isLoading){
+      return;
     }
+
+    setIsLoading(true);
+
+    try{
+      const response = await Auth.signIn(data.email,data.password);
+      navigation.navigate('Discover');
+    } catch(e){
+      Alert.alert('Oops' , e.message)
+    }
+    setIsLoading(false);
   };
 
 
@@ -212,7 +181,7 @@ const Login = ({ navigation }) => {
       </View>
         
 
-        <TouchableOpacity style={styles.loginButton} onPress={handleRegister}>
+        <TouchableOpacity style={styles.loginButton} onPress={handleSubmit(handleRegister)}>
           <View style={styles.row}>
             <Image source={require('../../assets/images/next.png')} />
             <Text style={styles.loginButtonText}>Login</Text>
