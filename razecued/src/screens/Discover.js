@@ -15,6 +15,7 @@ import Token from './Token';
 import { ImageBackground } from 'react-native';
 import { sortBy } from 'lodash';
 import DisplayEventDesc from './DisplayEventDesc';
+import Register from './Register';
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -527,6 +528,9 @@ const AppStackNavigator = () => {
       {/* EventDesc screen */}
       <Stack.Screen name="EventDesc" component={EventDesc} options={{ headerShown: false }} />
       <Stack.Screen name="DisplayEventDesc" component={DisplayEventDesc} options={{ headerShown: false }} />
+      <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
+
+      
     </Stack.Navigator>
   );
 };
@@ -586,9 +590,9 @@ const AppNavigator = () => {
 // Main navigation container using AppStackNavigator
 const App = () => {
   return (
-    <NavigationContainer>
+    
       <AppStackNavigator />
-    </NavigationContainer>
+   
   );
 };
 

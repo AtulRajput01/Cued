@@ -1,28 +1,35 @@
 import React, { useState } from 'react';
-import { View, Text,StyleSheet,ImageBackground,Pressable, TextInput, Button } from 'react-native';
+import { View,Alert, Text,StyleSheet,ImageBackground,Pressable, TextInput, Button } from 'react-native';
 import { Auth } from 'aws-amplify';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { useForm } from 'react-hook-form';
 
 const Otp = () => {
+
+  const {control, handleSubmit,watch} = useForm();
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const navigation = useNavigation();
   const route = useRoute();
-  const { email } = route.params || {};
+  const email = watch('email');
+    
 
-  const handleChangeText = (text, index) => {
-    const newOtp = [...otp];
-    newOtp[index] = text;
-    setOtp(newOtp);
+  const handleVerifyOTP = async data => {
+    try{
+     await Auth.confirmSignUp(data.email,data.code);
+     navigation.navigate('Login')
+
+    } catch (e) {
+      Alert.alert("Oops" , e.message);
+    }
   };
 
-  const handleVerifyOTP = async () => {
-    try {
-      await Auth.confirmSignUp(email, otp);
-      // OTP verification successful, navigate to the next screen
-      navigation.navigate('BasicDetail');
-    } catch (error) {
-      console.error('Error:', error);
-      setError('Invalid OTP. Please try again.'); // Set an error message for invalid OTP
+  const resendPress = async () => {
+    try{
+     await Auth.resendSignUp(email);
+     Alert.alert('Success', 'code has been resend on your mail');
+
+    } catch (e) {
+      Alert.alert("Oops" , e.message);
     }
   };
 
@@ -43,24 +50,20 @@ const Otp = () => {
       </View>
       <View style={styles.header}>
         <Text style={styles.title}>Enter code</Text>
-        <Text style={styles.resend}>Resend code</Text>
+        <Text style={styles.resend} onPress={handleSubmit(resendPress)}>Resend code</Text>
       </View>
       <View style={styles.otpContainer}>
-        {otp.map((digit, index) => (
-          <TextInput
-            key={index}
-            style={styles.otpInput}
-            onChangeText={(text) => handleChangeText(text, index)}
-            value={digit}
-            keyboardType="numeric"
-            maxLength={1}
-          />
-        ))}
+        <TextInput
+        style={styles.input}
+        value='code'
+        placeholder='Enter the confirmation code'
+        keyboardType='nueric'/>
+        
       </View>
       <View style={styles.header}>
         <Text style={styles.confirm}>We have sent the OPT to your registered number, Please do not share the OTP with anyone</Text>
       </View>
-      <Pressable style={styles.button} onPress={handleVerifyOTP}>
+      <Pressable style={styles.button} onPress={handleSubmit(handleVerifyOTP)}>
                 <Text style={styles.buttonText}>Next</Text>
               </Pressable>
     </View>
@@ -98,6 +101,15 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontFamily: 'Poppins',
     paddingBottom: 6
+  },
+  input: {
+    width: '100%',
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    paddingLeft: 10,
+    marginBottom: 10,
+    color: '#000000',
   },
   header: {
     flexDirection: 'row',

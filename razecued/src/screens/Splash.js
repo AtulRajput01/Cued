@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Image, Text} from 'react-native';
 import { ImageBackground } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+  
 export default class Splash extends Component {
   constructor(props) {
     super(props);

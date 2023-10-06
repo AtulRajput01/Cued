@@ -1,16 +1,17 @@
 import React, {useState,useRef} from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { View, Text, Animated, TouchableOpacity, Image, StyleSheet, Pressable, TextInput, Easing, Button } from 'react-native';
+import { View, Text,Alert, Animated, TouchableOpacity, Image, StyleSheet, Pressable, TextInput, Easing, Button } from 'react-native';
 import { NavigationStackScreenProps } from 'react-navigation-stack';
 import { ImageBackground } from 'react-native';
 import Amplify from 'aws-amplify';
 import { Auth } from 'aws-amplify';
 import { createStackNavigator } from '@react-navigation/stack'; // Added import for createStackNavigator
 import CheckBox from 'react-native-check-box'
+import { useForm, Controller } from 'react-hook-form';
 
 
 const Register = () => {
-
+  const {control, handleSubmit,watch}  = useForm();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const navigation = useNavigation();
@@ -82,64 +83,20 @@ const onSignupPress = () => {
     navigation.navigate('Otp');
 };
 
-const handleSignup = async () => {
-  try {
-    // Validate email format
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(email)) {
-      setRegistrationResponse('Invalid email address');
-      return;
-    }
-
-    // Check if passwords match
-    if (password !== confirmPassword) {
-      setRegistrationResponse('Passwords do not match');
-      return;
-    }
-
-    // Ensure password meets strength requirements
-    if (!/^(?=.*[A-Za-z])(?=.*\d).{8,}$/.test(password)) {
-      setRegistrationResponse('Password must be at least 8 characters and include at least one letter and one number.');
-      return;
-    }
-
-    // Register the user using Amplify
+const handleSignup = async data => {
+  const { email, password, name} = data;
+  try{
     await Auth.signUp({
-      username: email,
+      email,
       password,
-    });
-
-    // Make a POST request to the registration endpoint
-    const response = await fetch('https://hk1630uulc.execute-api.us-east-1.amazonaws.com/Dev/user-registration', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name,
-        email,
-        password,
-      }),
-    });
-
-    if (!response.ok) {
-      // Handle non-successful responses
-      const errorData = await response.json();
-      setRegistrationResponse(`Registration failed: ${errorData.message}`);
-      return;
-    }
+      attributes: {name},
+    })
     onSignupPress();
-    
-  } catch (error) {
-    console.error('Error:', error);
 
-    // Handle the specific error message for invalid OTP
-    if (error.code === 'UsernameExistsException') {
-      setRegistrationResponse('User with this email already exists. Please log in.');
-    } else {
-      setRegistrationResponse('An error occurred during registration');
-    }
+  } catch (e) {
+    Alert.alert('Oops' , e.message);
   }
+  
 };
 
   
@@ -221,11 +178,19 @@ const handleSignup = async () => {
             onBlur={() => handleBlur(transYP.current, password)}
             placeholderTextColor="#000000"
             value={password}
+            control = {control}
             secureTextEntry={passwordInputType === 'password'}
             onChangeText={(text) => setPassword(text)}
+            rules={{
+              required: 'Password is required',
+              minLenth: {
+                value: 8,
+                message: 'Password must be atleast 8 characters',
+              }
+            }}
           />
         </View>
-     {/* Confirm Password */}
+     {/* Confirm Password
      <View style={styles.container4}>
           <Animated.View
             style={[styles.label, { transform: [{ translateY: transYC.current }, { translateX: transXC }] }]}>
@@ -240,9 +205,9 @@ const handleSignup = async () => {
             secureTextEntry={passwordInputType === 'password'}
             onChangeText={(text) => setConfirmPassword(text)}
           />
-        </View>
+        </View> */}
       
-      <TouchableOpacity style={styles.loginButton} onPress={handleSignup}>
+      <TouchableOpacity style={styles.loginButton} onPress={handleSubmit(handleSignup)}>
         <View style={styles.row}>
         <Image source={require('../../assets/images/next.png')}/>
         <Text style={styles.loginButtonText}>Signup</Text>
