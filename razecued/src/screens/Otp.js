@@ -3,19 +3,23 @@ import { View,Alert, Text,StyleSheet,ImageBackground,Pressable, TextInput, Butto
 import { Auth } from 'aws-amplify';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
+import CustomButton from '../components/CustomButton';
+import CustomInput from './../components/CustomInput';
 
 const Otp = () => {
-
-  const {control, handleSubmit,watch} = useForm();
+  const route = useRoute();
+  const { control, handleSubmit, watch } = useForm({
+    defaultValues: { username: route?.params?.username },
+  });
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const navigation = useNavigation();
-  const route = useRoute();
+  
   const email = watch('email');
     
 
-  const handleVerifyOTP = async data => {
+  const handleVerifyOTP = async (data) => {
     try{
-     await Auth.confirmSignUp(data.email,data.code);
+     await Auth.confirmSignUp(data.username, data.code);
      navigation.navigate('Login')
 
     } catch (e) {
@@ -52,20 +56,27 @@ const Otp = () => {
         <Text style={styles.title}>Enter code</Text>
         <Text style={styles.resend} onPress={handleSubmit(resendPress)}>Resend code</Text>
       </View>
-      <View style={styles.otpContainer}>
-        <TextInput
-        style={styles.input}
-        value='code'
+      
+      <CustomInput
+        name= "username"
+        control={control}
+        rules={{required: 'username is required'}}
+        placeholder='username'
+        />
+        
+
+        <CustomInput
+        name= "code"
+        control={control}
+        rules={{required: 'Code is required'}}
         placeholder='Enter the confirmation code'
         keyboardType='nueric'/>
         
-      </View>
+  
       <View style={styles.header}>
         <Text style={styles.confirm}>We have sent the OPT to your registered number, Please do not share the OTP with anyone</Text>
       </View>
-      <Pressable style={styles.button} onPress={handleSubmit(handleVerifyOTP)}>
-                <Text style={styles.buttonText}>Next</Text>
-              </Pressable>
+      <CustomButton text = "Confirm" onPress={handleSubmit(handleVerifyOTP)}/>
     </View>
     </ImageBackground>
   );

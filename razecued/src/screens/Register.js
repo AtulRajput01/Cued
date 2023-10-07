@@ -5,6 +5,8 @@ import { NavigationStackScreenProps } from 'react-navigation-stack';
 import { ImageBackground } from 'react-native';
 import Amplify from 'aws-amplify';
 import { Auth } from 'aws-amplify';
+import CustomInput from './../components/CustomInput';
+import CustomButton from './../components/CustomButton';
 import { createStackNavigator } from '@react-navigation/stack'; // Added import for createStackNavigator
 import CheckBox from 'react-native-check-box'
 import { useForm, Controller } from 'react-hook-form';
@@ -12,11 +14,12 @@ import { useForm, Controller } from 'react-hook-form';
 
 const Register = () => {
   const {control, handleSubmit,watch}  = useForm();
-  const [name, setName] = useState('');
+  const [username, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const navigation = useNavigation();
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordRepeat, setPasswordRepeat] = useState('');
+
   const [registrationResponse, setRegistrationResponse] = useState('');
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
@@ -80,16 +83,16 @@ const Register = () => {
     extrapolate: 'clamp',
   });
 const onSignupPress = () => {
-    navigation.navigate('Otp');
+    navigation.navigate('Otp', {username});
 };
 
 const handleSignup = async data => {
-  const { email, password, name} = data;
+  const {username, email, password, name} = data;
   try{
     await Auth.signUp({
-      email,
+      username,
       password,
-      attributes: {name},
+      attributes: {email, name, preferred_username: username},
     })
     onSignupPress();
 
@@ -135,84 +138,40 @@ const handleSignup = async data => {
 </View>
       <Text style={styles.welcomeText}>Hey there,</Text>
       <Text style={styles.welcomeText2}>Register Yourself!</Text>
-     {/* Name */}
-     <View style={styles.container3}>
-          <Animated.View
-            style={[styles.label, { transform: [{ translateY: transYN.current }, { translateX: transXN }] }]}>
-            <Text style={styles.holder}>Name</Text>
-          </Animated.View>
-          <TextInput
-            style={styles.input}
-            onFocus={() => handleFocus(transYN.current)}
-            onBlur={() => handleBlur(transYN.current, name)}
-            placeholderTextColor="#000000"
-            value={name}
-            onChangeText={(text) => setName(text)} 
-          />
-        </View>
+    
+      <CustomInput
+          placeholder="Name"
+         name= "name"
+         control= {control}
+         rules={{required: "Username is required"}}
+        />
+     {/* UserName */}
+     <CustomInput
+          placeholder="Username"
+         name= "username"
+         control= {control}
+         rules={{required: "Username is required"}}
+        />
       {/* Email */}
-      <View style={styles.container4}>
-          <Animated.View
-            style={[styles.label, { transform: [{ translateY: transYE.current }, { translateX: transXE }] }]}>
-            <Text style={styles.holder}>Email</Text>
-          </Animated.View>
-          <TextInput
-            style={styles.input}
-            onFocus={() => handleFocus(transYE.current)}
-            onBlur={() => handleBlur(transYE.current, email)}
-            placeholderTextColor="#000000"
-            value={email}
-            onChangeText={(text) => setEmail(text)}
-            keyboardType='email-address'
-          />
-        </View>
+      <CustomInput
+       placeholder="Email" 
+       name= "email"
+       control={control}
+       rules = {{required: 'Email is required'}}
+        />
+
       {/* Password */}
-      <View style={styles.container4}>
-          <Animated.View
-            style={[styles.label, { transform: [{ translateY: transYP.current }, { translateX: transXP }] }]}>
-            <Text style={styles.holder}>Password</Text>
-          </Animated.View>
-          <TextInput
-            style={styles.input}
-            onFocus={() => handleFocus(transYP.current)}
-            onBlur={() => handleBlur(transYP.current, password)}
-            placeholderTextColor="#000000"
-            value={password}
-            control = {control}
-            secureTextEntry={passwordInputType === 'password'}
-            onChangeText={(text) => setPassword(text)}
-            rules={{
-              required: 'Password is required',
-              minLenth: {
-                value: 8,
-                message: 'Password must be atleast 8 characters',
-              }
-            }}
-          />
-        </View>
-     {/* Confirm Password
-     <View style={styles.container4}>
-          <Animated.View
-            style={[styles.label, { transform: [{ translateY: transYC.current }, { translateX: transXC }] }]}>
-            <Text style={styles.holder}>Confrim Password</Text>
-          </Animated.View>
-          <TextInput
-            style={styles.input}
-            onFocus={() => handleFocus(transYC.current)}
-            onBlur={() => handleBlur(transYC.current, password)}
-            placeholderTextColor="#000000"
-            value={confirmPassword}
-            secureTextEntry={passwordInputType === 'password'}
-            onChangeText={(text) => setConfirmPassword(text)}
-          />
-        </View> */}
+      <CustomInput
+          placeholder="Password"
+          name="password"
+          control={control}
+          secureTextEntry
+          rules = {{required: 'Password is required'}}
+        />
+     
+     
       
-      <TouchableOpacity style={styles.loginButton} onPress={handleSignup}>
-        <View style={styles.row}>
-        <Image source={require('../../assets/images/next.png')}/>
-        <Text style={styles.loginButtonText}>Signup</Text>
-        </View>
-      </TouchableOpacity>
+<CustomButton text="Register" onPress={handleSubmit(handleSignup)} />
        {/* Display registration response */}
        {registrationResponse && (
           <Text style={styles.registrationResponse}>{registrationResponse}</Text>

@@ -5,10 +5,13 @@ import { ImageBackground } from 'react-native';
 import CheckBox from 'react-native-check-box';
 import {Amplify} from 'aws-amplify';
 import  {Auth}  from 'aws-amplify';
+import CustomInput from './../components/CustomInput';
+import CustomButton from './../components/CustomButton';
 import {useForm, Controller} from 'react-hook-form';
+import Discover from './Discover';
 
-const Login = ({ navigation }) => {
-
+const Login = () => {
+ const navigation = useNavigation();
   const{
     control,
     handleSubmit,
@@ -41,7 +44,7 @@ const Login = ({ navigation }) => {
   };
   
   
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const [isLoading, setIsLoading] = useState(false);
@@ -95,7 +98,7 @@ const Login = ({ navigation }) => {
     setIsLoading(true);
 
     try{
-      const response = await Auth.signIn(data.email,data.password);
+      const response = await Auth.signIn(data.username, data.password);
       navigation.navigate('Discover');
     } catch(e){
       Alert.alert('Oops' , e.message)
@@ -140,38 +143,23 @@ const Login = ({ navigation }) => {
        
 
         {/* Email */}
-        <View style={styles.container3}>
-          <Animated.View
-            style={[styles.label, { transform: [{ translateY: transYE.current }, { translateX: transXE }] }]}>
-            <Text style={styles.holder}>Email</Text>
-          </Animated.View>
-          <TextInput
-            style={styles.input}
-            onFocus={() => handleFocus(transYE.current)}
-            onBlur={() => handleBlur(transYE.current, email)}
-            placeholderTextColor="#000000"
-            value={email}
-            onChangeText={(text) => setEmail(text)}
-            keyboardType='email-address'
-          />
-        </View>
+        <CustomInput
+        name = "username"
+          placeholder="Username"
+          value={username}
+          control = {control}
+          rules = {{required : 'Username is required'}}
+        />
 
         {/* Password */}
-        <View style={styles.container3}>
-          <Animated.View
-            style={[styles.label, { transform: [{ translateY: transYP.current }, { translateX: transXP }] }]}>
-            <Text style={styles.holder}>Password</Text>
-          </Animated.View>
-          <TextInput
-            style={styles.input}
-            onFocus={() => handleFocus(transYP.current)}
-            onBlur={() => handleBlur(transYP.current, password)}
-            placeholderTextColor="#000000"
-            value={password}
-            secureTextEntry={passwordInputType === 'password'}
-            onChangeText={(text) => setPassword(text)}
-          />
-        </View>
+        <CustomInput
+        name = "password"
+          placeholder="Password"
+          value={password}
+          control={control}
+          secureTextEntry
+          rules={{required: 'Password is must'}}
+        />
         <View style={styles.checkboxContainer}>
         <CheckBox />
         <Text style={styles.remember}>Remember me</Text>
@@ -181,16 +169,10 @@ const Login = ({ navigation }) => {
       </View>
         
 
-        <TouchableOpacity style={styles.loginButton} onPress={handleSubmit(handleRegister)}>
-          <View style={styles.row}>
-            <Image source={require('../../assets/images/next.png')} />
-            <Text style={styles.loginButtonText}>Login</Text>
-          </View>
-        </TouchableOpacity>
+      <CustomButton text={isLoading ? "Loading.." : "Sign In"} onPress={handleSubmit(handleRegister)} />
 
-        {registrationResponse && (
-          <Text style={styles.registrationResponse}>{registrationResponse}</Text>
-        )}
+
+        
 
         <TouchableOpacity onPress={() => navigation.navigate('Register')}>
           <Text style={styles.createAccount}>Don't have an account? Create one</Text>
