@@ -37,7 +37,7 @@ const Discover = () => {
   const [displayedEvents, setDisplayedEvents] = useState(displayEventData.displayEvents);
 
   
-  // Simulate fetching data from your Recommended API
+  // Simulate fetching data from your Recommended API/Vertical events
   useEffect(() => {
     fetch('../API/Recommended.json')
       .then((response) => response.json())
@@ -52,7 +52,7 @@ const Discover = () => {
         setLoading(false);
       });
 
-          // Fetch Displayed Events
+          // Fetch horizontal Events
         fetch('../API/DisplayEvents.json')
         .then((response) => response.json())
         .then((data) => {
