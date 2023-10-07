@@ -29,18 +29,18 @@ const CustomInput = ({control, name, rules, placeholder, secureTextEntry }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    
     width: '100%',
 
-    borderColor: '#e8e8e8',
+    borderColor: '#000000',
     borderWidth: 1,
     borderRadius: 5,
 
-    paddingHorizontal: 10,
+    paddingHorizontal: 8,
     marginVertical: 5,
   },
   input: {
-    fontSize: 16,
+    fontSize: 15,
     color: '#000000', 
   },
 });

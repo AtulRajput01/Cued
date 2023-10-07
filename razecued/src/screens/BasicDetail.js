@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet, TextInput, Button, Pressable } from 'react-native';
+import React, { useState,useEffect } from 'react';
+import { View, Text, Alert, TouchableOpacity, BackHandler, Image, StyleSheet, TextInput, Button, Pressable } from 'react-native';
 import { NavigationStackScreenProps } from 'react-navigation-stack';
 import ImagePicker from 'react-native-image-crop-picker';
 import { ImageBackground } from 'react-native';
 
 
 const BasicDetail = ({navigation}) => {
-  const [collegeIdFile, setCollegeIdFile] = useState(null);
+  const [collegeIdFile, setCollegeIdFile] = useState('');
   const [aadharCardFile, setAadharCardFile] = useState(null);
+  const [collegeName, setCollegeName] = useState('');
+  const [passingYear, setPassingYear] = useState('');
+
   const [basicDetailResponse, setBasicDetailResponse] = useState(null);
 
   const handleSaveBasicDetails = async () => {
@@ -33,6 +36,34 @@ const BasicDetail = ({navigation}) => {
     }
   };
 
+  useEffect(() => {
+    const backAction = () => {
+      Alert.alert(
+        'Confirm Exit',
+        'Do you really want to Exit',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => null,
+            style: 'cancel',
+          },
+          { text: 'OK', onPress: () => BackHandler.exitApp() },
+        ],
+        { cancelable: false }
+      );
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
+
+  
+
   const handleFilePicker = (type) => {
     ImagePicker.openPicker({
       mediaType: 'photo',
@@ -54,6 +85,13 @@ const BasicDetail = ({navigation}) => {
       });
   };
 
+  const navigateToNextScreen = () => {
+  
+      // All fields are filled, navigate to the next screen
+      navigation.navigate('BasicDetails2');
+    
+  };
+  
   
   
   return (
@@ -63,12 +101,12 @@ const BasicDetail = ({navigation}) => {
       style={styles.backgroundImage}>
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => console.log('Back button pressed')}>
+        {/* <TouchableOpacity onPress={() => console.log('Back button pressed')}>
         <Image source={require('../../assets/images/backarrow.png')} />
-        </TouchableOpacity>
-        <Pressable onPress={() => navigation.navigate('Discover')}>
+        </TouchableOpacity> */}
+        {/* <Pressable onPress={() => navigation.navigate('Discover')}>
           <Text style={styles.skipButton}>Skip</Text>
-        </Pressable>
+        </Pressable> */}
       </View>
       <Text style={styles.alert}>Complete Profile!</Text>
       
@@ -81,10 +119,16 @@ const BasicDetail = ({navigation}) => {
         placeholder="College Name"
         placeholderTextColor="#A9A9A9"
       />
-      
-           <TextInput
+    
+      <TextInput
         style={styles.input}
-        placeholder="College Id"
+        placeholder="Passing Year"
+        placeholderTextColor="#A9A9A9"
+        keyboardType='numeric'
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="College ID"
         placeholderTextColor="#A9A9A9"
       />
       <TouchableOpacity style={styles.uploadButton} onPress={() => handleFilePicker('collegeId')}>
@@ -93,27 +137,10 @@ const BasicDetail = ({navigation}) => {
         </Text>
       </TouchableOpacity>
 
-
-      <TextInput
-        style={styles.input}
-        placeholder="Passing Year"
-        placeholderTextColor="#A9A9A9"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Aadhar Card"
-        placeholderTextColor="#A9A9A9"
-      />
-      <TouchableOpacity style={styles.uploadButton} onPress={() => handleFilePicker('aadharCard')}>
-        <Text style={styles.uploadButtonText}>
-          {aadharCardFile ? 'Uploaded' : 'Upload file'}
-        </Text>
-      </TouchableOpacity>
-
       
      
       <View style={styles.gap} />
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('BasicDetails2')}>
+      <TouchableOpacity style={styles.button} onPress={navigateToNextScreen}>
         <View style={styles.row}>
         <Image source={require('../../assets/images/arrow.png')}/>
                 <Text style={styles.buttonText}>Next</Text>

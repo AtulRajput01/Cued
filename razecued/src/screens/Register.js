@@ -113,9 +113,9 @@ const handleSignup = async data => {
 <TouchableOpacity onPress={() => console.log('')}>
 
 </TouchableOpacity>
-<Pressable onPress={() => navigation.navigate('BasicDetail')}>
+{/* <Pressable onPress={() => navigation.navigate('BasicDetail')}>
 <Text style={styles.backButton}>skipy</Text>
-</Pressable>
+</Pressable> */}
 </View>
     <View style={styles.row}>
       <Image
@@ -137,13 +137,13 @@ const handleSignup = async data => {
 </TouchableOpacity>
 </View>
       <Text style={styles.welcomeText}>Hey there,</Text>
-      <Text style={styles.welcomeText2}>Register Yourself!</Text>
+      <Text style={styles.welcomeText2}>Signup Yourself!</Text>
     
       <CustomInput
           placeholder="Name"
          name= "name"
          control= {control}
-         rules={{required: "Username is required"}}
+         rules={{required: "name is required"}}
         />
      {/* UserName */}
      <CustomInput
@@ -171,7 +171,7 @@ const handleSignup = async data => {
      
      
       
-<CustomButton text="Register" onPress={handleSubmit(handleSignup)} />
+<CustomButton text="SignUp" bgColor="#B51E71" onPress={handleSubmit(handleSignup)} />
        {/* Display registration response */}
        {registrationResponse && (
           <Text style={styles.registrationResponse}>{registrationResponse}</Text>

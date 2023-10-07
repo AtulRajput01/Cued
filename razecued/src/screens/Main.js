@@ -61,25 +61,25 @@ export default function App() {
   // }
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Splash" headerMode="none">
+      <Stack.Navigator initialRouteName="Splash" >
         
-          <Stack.Screen name="Discover" component={Discover} />
+          <Stack.Screen name="Discover" component={Discover} options={{ headerShown: false }} />
         
          
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="Register" component={Register} />
-          <Stack.Screen name="Otp" component={Otp} />
+          <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+          <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
+          <Stack.Screen name="Otp" component={Otp} options={{ headerShown: false }}/>
           
-        <Stack.Screen name="Splash" component={Splash} />
-        <Stack.Screen name="BasicDetail" component={BasicDetail} />
+        <Stack.Screen name="Splash" component={Splash} options={{ headerShown: false }} />
+        <Stack.Screen name="BasicDetail" component={BasicDetail} options={{ headerShown: false }} />
         
-        <Stack.Screen name="RegisteredEvents" component={RegisteredEvents} />
+        <Stack.Screen name="RegisteredEvents" component={RegisteredEvents} options={{ headerShown: false }} />
         
-        <Stack.Screen name="EventDesc" component={EventDesc} />
-        <Stack.Screen name="Token" component={Token} />
-        <Stack.Screen name="BasicDetails2" component={BasicDetails2} />
+        <Stack.Screen name="EventDesc" component={EventDesc} options={{ headerShown: false }} />
+        <Stack.Screen name="Token" component={Token} options={{ headerShown: false }} />
+        <Stack.Screen name="BasicDetails2" component={BasicDetails2} options={{ headerShown: false }} />
        
-        <Stack.Screen name="DisplayEventDesc" component={DisplayEventDesc} />
+        <Stack.Screen name="DisplayEventDesc" component={DisplayEventDesc} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
