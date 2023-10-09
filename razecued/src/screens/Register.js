@@ -137,13 +137,21 @@ const handleSignup = async data => {
 </TouchableOpacity>
 </View>
       <Text style={styles.welcomeText}>Hey there,</Text>
+<<<<<<< HEAD
       <Text style={styles.welcomeText2}>Signup Yourself!</Text>
+=======
+      <Text style={styles.welcomeText2}>Register Yourself!</Text>
+>>>>>>> main
     
       <CustomInput
           placeholder="Name"
          name= "name"
          control= {control}
+<<<<<<< HEAD
          rules={{required: "name is required"}}
+=======
+         rules={{required: "Username is required"}}
+>>>>>>> main
         />
      {/* UserName */}
      <CustomInput
@@ -171,7 +179,11 @@ const handleSignup = async data => {
      
      
       
+<<<<<<< HEAD
 <CustomButton text="SignUp" bgColor="#B51E71" onPress={handleSubmit(handleSignup)} />
+=======
+<CustomButton text="Register" onPress={handleSubmit(handleSignup)} />
+>>>>>>> main
        {/* Display registration response */}
        {registrationResponse && (
           <Text style={styles.registrationResponse}>{registrationResponse}</Text>

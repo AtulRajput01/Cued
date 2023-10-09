@@ -61,6 +61,7 @@ export default function App() {
   // }
   return (
     <NavigationContainer>
+<<<<<<< HEAD
       <Stack.Navigator initialRouteName="Splash" >
         
           <Stack.Screen name="Discover" component={Discover} options={{ headerShown: false }} />
@@ -80,6 +81,27 @@ export default function App() {
         <Stack.Screen name="BasicDetails2" component={BasicDetails2} options={{ headerShown: false }} />
        
         <Stack.Screen name="DisplayEventDesc" component={DisplayEventDesc} options={{ headerShown: false }} />
+=======
+      <Stack.Navigator initialRouteName="Splash" headerMode="none">
+        
+          <Stack.Screen name="Discover" component={Discover} />
+        
+         
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Register" component={Register} />
+          <Stack.Screen name="Otp" component={Otp} />
+          
+        <Stack.Screen name="Splash" component={Splash} />
+        <Stack.Screen name="BasicDetail" component={BasicDetail} />
+        
+        <Stack.Screen name="RegisteredEvents" component={RegisteredEvents} />
+        
+        <Stack.Screen name="EventDesc" component={EventDesc} />
+        <Stack.Screen name="Token" component={Token} />
+        <Stack.Screen name="BasicDetails2" component={BasicDetails2} />
+       
+        <Stack.Screen name="DisplayEventDesc" component={DisplayEventDesc} />
+>>>>>>> main
       </Stack.Navigator>
     </NavigationContainer>
   );

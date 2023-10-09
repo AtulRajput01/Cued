@@ -20,7 +20,11 @@ const Otp = () => {
   const handleVerifyOTP = async (data) => {
     try{
      await Auth.confirmSignUp(data.username, data.code);
+<<<<<<< HEAD
      navigation.navigate('BasicDetail')
+=======
+     navigation.navigate('Login')
+>>>>>>> main
 
     } catch (e) {
       Alert.alert("Oops" , e.message);
@@ -56,30 +60,47 @@ const Otp = () => {
         <Text style={styles.title}>Enter code</Text>
         <Text style={styles.resend} onPress={handleSubmit(resendPress)}>Resend code</Text>
       </View>
+<<<<<<< HEAD
       <View style={styles.button2}>
+=======
+      
+>>>>>>> main
       <CustomInput
         name= "username"
         control={control}
         rules={{required: 'username is required'}}
         placeholder='username'
         />
+<<<<<<< HEAD
         </View>
 
         <View style= {styles.button3}>
+=======
+        
+
+>>>>>>> main
         <CustomInput
         name= "code"
         control={control}
         rules={{required: 'Code is required'}}
         placeholder='Enter the confirmation code'
         keyboardType='nueric'/>
+<<<<<<< HEAD
         </View>
+=======
+        
+>>>>>>> main
   
       <View style={styles.header}>
         <Text style={styles.confirm}>We have sent the OPT to your registered number, Please do not share the OTP with anyone</Text>
       </View>
+<<<<<<< HEAD
       <View style={styles.button2}>
       <CustomButton text = "Confirm" bgColor="#B51E71" onPress={handleSubmit(handleVerifyOTP)}/>
       </View>
+=======
+      <CustomButton text = "Confirm" onPress={handleSubmit(handleVerifyOTP)}/>
+>>>>>>> main
     </View>
     </ImageBackground>
   );

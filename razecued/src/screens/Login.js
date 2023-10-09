@@ -169,7 +169,11 @@ const Login = () => {
       </View>
         
 
+<<<<<<< HEAD
       <CustomButton text={isLoading ? "Loading.." : "Sign In"} bgColor="#B51E71" onPress={handleSubmit(handleRegister)} />
+=======
+      <CustomButton text={isLoading ? "Loading.." : "Sign In"} onPress={handleSubmit(handleRegister)} />
+>>>>>>> main
 
 
         
