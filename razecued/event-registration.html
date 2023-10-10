@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Registration Form</title>
+</head>
+<body>
+
+  <h2>Event Registration Form</h2>
+
+  <form id="eventForm">
+    <label for="eventName">Event Name:</label>
+    <input type="text" id="eventName" name="eventName" required>
+
+    <label for="eventOrganizer">Event Organizer:</label>
+    <input type="text" id="eventOrganizer" name="eventOrganizer" required>
+
+    <label for="eventDescription">Event Description:</label>
+    <textarea id="eventDescription" name="eventDescription" required></textarea>
+
+    <label for="eventPoster">Event Poster URL:</label>
+    <input type="text" id="eventPoster" name="eventPoster" required>
+
+    <label for="city">City:</label>
+    <input type="text" id="city" name="city" required>
+
+    <label for="state">State:</label>
+    <input type="text" id="state" name="state" required>
+
+    <label for="pincode">Pincode:</label>
+    <input type="text" id="pincode" name="pincode" required>
+
+    <label for="eventDate">Event Date:</label>
+    <input type="date" id="eventDate" name="eventDate" required>
+
+    <label for="registrationStatus">Registration Status:</label>
+    <input type="checkbox" id="registrationStatus" name="registrationStatus">
+
+    <label for="collegeName">College Name:</label>
+    <input type="text" id="collegeName" name="collegeName">
+
+    <button type="button" onclick="submitEventForm()">Submit</button>
+  </form>
+
+  <script>
+    async function submitEventForm() {
+      const eventForm = document.getElementById('eventForm');
+      const formData = new FormData(eventForm);
+
+      // Convert FormData to JSON
+      const eventData = {};
+      formData.forEach((value, key) => {
+        eventData[key] = value;
+      });
+
+      // You can now send the eventData to your backend (e.g., using an API)
+      console.log('Event Data:', eventData);
+
+      // Perform API call to save event data to the database
+      try {
+        const response = await fetch('https://hk1630uulc.execute-api.us-east-1.amazonaws.com/Dev/register-event-org', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(eventData),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Success:', data);
+          // Provide confirmation to the organizer
+        } else {
+          const errorData = await response.json();
+          console.error('Error:', errorData);
+          // Handle error and inform the organizer
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        // Handle network error
+      }
+    }
+  </script>
+
+</body>
+</html>
