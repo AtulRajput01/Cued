@@ -1,4 +1,4 @@
-import { Stack } from 'expo-router;
+import { Stack } from 'expo-router';
 import { Amplify, DataStore, Hub } from 'aws-amplify';
 import awsconfig from '../aws-exports';
 import { Authenticator } from '@aws-amplify/ui-react-native';
