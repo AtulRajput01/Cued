@@ -15,6 +15,7 @@ import BasicDetails2 from "./BasicDetails2";
 import Otp from "./Otp";
 import DisplayEventDesc from "./DisplayEventDesc";
 import Register from "./Register";
+import layout from "./layout";
 import { Auth,Hub } from "aws-amplify";
 
 const Stack = createStackNavigator();
