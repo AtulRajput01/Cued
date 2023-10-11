@@ -112,12 +112,12 @@ const Login = () => {
       source={require('../../assets/images/Landingbg.jpg')}
       style={styles.backgroundImage}>
       <View style={styles.container}>
-        <View style={styles.header}>
+        {/* <View style={styles.header}>
           <TouchableOpacity onPress={() => console.log('')}></TouchableOpacity>
           <Pressable onPress={() => navigation.navigate('BasicDetail')}>
             <Text style={styles.backButton}>skip</Text>
           </Pressable>
-        </View>
+        </View> */}
         <View style={styles.row}>
           <Image
             source={require('../../assets/images/C.png')}
@@ -161,15 +161,15 @@ const Login = () => {
           rules={{required: 'Password is must'}}
         />
         <View style={styles.checkboxContainer}>
-        <CheckBox />
-        <Text style={styles.remember}>Remember me</Text>
+        {/* <CheckBox /> */}
+        <Text style={styles.remember}></Text>
         <TouchableOpacity onPress={() => console.log('Forgot password pressed')}>
           <Text style={styles.forgotPassword}>Forgot password?</Text>
         </TouchableOpacity>
       </View>
         
 
-      <CustomButton text={isLoading ? "Loading.." : "Sign In"} onPress={handleSubmit(handleRegister)} />
+      <CustomButton text={isLoading ? "Loading.." : "Sign In"} bgColor="#B51E71" onPress={handleSubmit(handleRegister)} />
 
 
         
@@ -184,7 +184,7 @@ const Login = () => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 90,
+    paddingTop: 100,
     padding: 20,
     justifyContent: 'center',
     alignItems: 'center',

@@ -20,7 +20,7 @@ const Otp = () => {
   const handleVerifyOTP = async (data) => {
     try{
      await Auth.confirmSignUp(data.username, data.code);
-     navigation.navigate('Login')
+     navigation.navigate('BasicDetail')
 
     } catch (e) {
       Alert.alert("Oops" , e.message);
@@ -56,27 +56,30 @@ const Otp = () => {
         <Text style={styles.title}>Enter code</Text>
         <Text style={styles.resend} onPress={handleSubmit(resendPress)}>Resend code</Text>
       </View>
-      
+      <View style={styles.button2}>
       <CustomInput
         name= "username"
         control={control}
         rules={{required: 'username is required'}}
         placeholder='username'
         />
-        
+        </View>
 
+        <View style= {styles.button3}>
         <CustomInput
         name= "code"
         control={control}
         rules={{required: 'Code is required'}}
         placeholder='Enter the confirmation code'
         keyboardType='nueric'/>
-        
+        </View>
   
       <View style={styles.header}>
         <Text style={styles.confirm}>We have sent the OPT to your registered number, Please do not share the OTP with anyone</Text>
       </View>
-      <CustomButton text = "Confirm" onPress={handleSubmit(handleVerifyOTP)}/>
+      <View style={styles.button2}>
+      <CustomButton text = "Confirm" bgColor="#B51E71" onPress={handleSubmit(handleVerifyOTP)}/>
+      </View>
     </View>
     </ImageBackground>
   );
@@ -88,6 +91,13 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: 150,
     
+  },
+  button2: {
+    margin: 12
+  },
+  button3: {
+    marginLeft: 12,
+    marginRight: 12
   },
   button: {
     
@@ -102,6 +112,7 @@ const styles = StyleSheet.create({
    
     
   },
+  
   backgroundImage: {
     flex: 1,
     resizeMode: 'cover'

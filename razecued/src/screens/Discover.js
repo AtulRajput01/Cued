@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View,FlatList, Animated, Text, StyleSheet, TouchableOpacity,  Pressable, Dimensions, Image, TextInput,ScrollView } from 'react-native';
+import { View,FlatList, Animated, Text, StyleSheet, BackHandler, Alert, TouchableOpacity,  Pressable, Dimensions, Image, TextInput,ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
@@ -35,9 +35,35 @@ const Discover = () => {
 
   const displayEventData = require('../API/displayEvents.json');
   const [displayedEvents, setDisplayedEvents] = useState(displayEventData.displayEvents);
+  
+  useEffect(() => {
+    const backAction = () => {
+      Alert.alert(
+        'Confirm Exit',
+        'Do you really want to close the app?',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => null,
+            style: 'cancel',
+          },
+          { text: 'OK', onPress: () => BackHandler.exitApp() },
+        ],
+        { cancelable: false }
+      );
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
 
   
-  // Simulate fetching data from your Recommended API
+  // Simulate fetching data from your Recommended API/Vertical events
   useEffect(() => {
     fetch('../API/Recommended.json')
       .then((response) => response.json())
@@ -52,7 +78,7 @@ const Discover = () => {
         setLoading(false);
       });
 
-          // Fetch Displayed Events
+          // Fetch horizontal Events
         fetch('../API/DisplayEvents.json')
         .then((response) => response.json())
         .then((data) => {

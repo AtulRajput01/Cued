@@ -1,11 +1,23 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet, TextInput, Button, Pressable } from 'react-native';
+import { View, Text, Alert, TouchableOpacity, Image, StyleSheet, TextInput, Button, Pressable } from 'react-native';
 import { NavigationStackScreenProps } from 'react-navigation-stack';
 import ImagePicker from 'react-native-image-crop-picker';
 import { ImageBackground } from 'react-native';
 
 
 const BasicDetail2 = ({navigation}) => {
+  
+  const [Age, setAge] = useState('');
+  const [passingYear, setPassingYear] = useState('');
+  const [phone, setPhone] = useState('');
+  const [altPhone, setAltPhone] = useState('');
+
+  const navigateToNextScreen = () => {
+   
+      // All fields are filled, navigate to the next screen
+      navigation.navigate('Login');
+    
+  };
   
   return (
 
@@ -14,12 +26,12 @@ const BasicDetail2 = ({navigation}) => {
       style={styles.backgroundImage}>
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => console.log('Back button pressed')}>
+        <TouchableOpacity onPress={() => navigation.navigate('BasicDetail')}>
         <Image source={require('../../assets/images/backarrow.png')} />
         </TouchableOpacity>
-        <Pressable onPress={() => navigation.navigate('Discover')}>
+        {/* <Pressable onPress={() => navigation.navigate('Discover')}>
           <Text style={styles.skipButton}>Skip</Text>
-        </Pressable>
+        </Pressable> */}
       </View>
       <Text style={styles.title}>You are</Text>
       <Text style={styles.title2}>almost there!</Text>
@@ -65,7 +77,7 @@ const BasicDetail2 = ({navigation}) => {
       
      
       <View style={styles.gap} />
-      <TouchableOpacity  style={styles.button}>
+      <TouchableOpacity  style={styles.button} onPress={navigateToNextScreen}>
         <View style={styles.row}>
         <Image source={require('../../assets/images/check.png')}/>
                 <Text style={styles.buttonText}>Complete Profile</Text>
