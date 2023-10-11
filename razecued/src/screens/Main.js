@@ -15,11 +15,18 @@ import BasicDetails2 from "./BasicDetails2";
 import Otp from "./Otp";
 import DisplayEventDesc from "./DisplayEventDesc";
 import Register from "./Register";
+import Layout from "./layout";
 import { Auth,Hub } from "aws-amplify";
 
 const Stack = createStackNavigator();
 
 export default function App() {
+  const [users, setUsers] = useState([]);
+  const { signOut } = useAuthenticator();
+
+  useEffect(() => {
+    DataStore.query(user).then(setUsers);
+  }, []);
   // const [user, setUser] = useState(undefined);
   // const [loading, setLoading] = useState(true);
   // const checkUser = async () =>{
