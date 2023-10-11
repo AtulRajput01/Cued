@@ -1,0 +1,26 @@
+type Events @model @auth(rules: [{allow: public}, {allow: owner}]) {
+  id: ID!
+  eventName: String!
+  eventOrganizer: String!
+  eventDescription: String
+  eventPoster: String!
+  eventDate: AWSDate!
+  registrationStatus: Boolean!
+  popularity: Int
+  collegeName: String!
+  Users: [Users] @manyToMany(relationName: "EventsUsers")
+  eventLocation: String!
+}
+
+type Users @model @auth(rules: [{allow: public, operations: [read]}, {allow: private}, {allow: owner}]) {
+  id: ID!
+  user_collId: String!
+  user_collName: String!
+  user_passYear: AWSDate!
+  user_age: Int!
+  user_gender: String!
+  user_phone: AWSPhone!
+  user_altPhone: AWSPhone
+  Events: [Events] @manyToMany(relationName: "EventsUsers")
+}
+ 
