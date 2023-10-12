@@ -155,21 +155,21 @@ const renderDisplayedEventItem = ({ item , index}) => {
           </View>
         </View>
       
-<View style={styles.row}>
-  <Text style={styles.text}>Discover</Text>
-  { 
-    data ? (
-      <View style={styles.dataContainer}>
-        {Object.keys(data).map((key) => (
-          <View key={key} style={styles.dataRow}>
-            <Text style={styles.dataKey}>{key}:</Text>
-            <Text style={styles.dataValue}>{JSON.stringify(data[key])}</Text>
+    <View style={styles.row}>
+      <Text style={styles.text}>Discover</Text>
+      { 
+        data ? (
+          <View style={styles.dataContainer}>
+            {Object.keys(data).map((key) => (
+              <View key={key} style={styles.dataRow}>
+                <Text style={styles.dataKey}>{key}:</Text>
+                <Text style={styles.dataValue}>{JSON.stringify(data[key])}</Text>
+              </View>
+            ))}
           </View>
-        ))}
-      </View>
-    ) : null 
-  } 
-</View>
+        ) : null 
+      } 
+    </View>
         <View style={styles.searchBox}>
         <Image source={require('../../assets/images/search.png')} style={styles.searchIcon} />
         <TextInput
