@@ -16,25 +16,20 @@ import { ImageBackground } from 'react-native';
 import { sortBy } from 'lodash';
 import DisplayEventDesc from './DisplayEventDesc';
 import Register from './Register';
+import axios from 'axios';
 
 
 const windowWidth = Dimensions.get('window').width;
 const containerWidth = windowWidth * 0.72; // Width of the container item
-const containerSpacing = (windowWidth - containerWidth) / 2; // Spacing between containers
 
 const Discover = () => {
   
   const scrollX = useRef(new Animated.Value(0)).current;
-
   const navigation = useNavigation();
   const [searchText, setSearchText] = React.useState('');
-
-  const recommendedData = require('../API/Recommended.json');
-  const [recommendedEvents, setRecommendedEvents] = useState((recommendedData.events));
+  const [recommendedEvents, setRecommendedEvents] = useState([]);
   const [loading, setLoading] = useState(false);
-
-  const displayEventData = require('../API/displayEvents.json');
-  const [displayedEvents, setDisplayedEvents] = useState(displayEventData.displayEvents);
+  const [displayedEvents, setDisplayedEvents] = useState([]);
   
   useEffect(() => {
     const backAction = () => {
@@ -65,28 +60,24 @@ const Discover = () => {
   
   // Simulate fetching data from your Recommended API/Vertical events
   useEffect(() => {
-    fetch('../API/Recommended.json')
-      .then((response) => response.json())
-      .then((data) => {
-        // Sort recommended events by registrations in descending order
-        const sortedEvents = recommendedData.events.sort((a, b) => b.registrations - a.registrations);
-        setRecommendedEvents(sortedEvents);
-        setLoading(false);
+    axios
+    .get('https://cuedapi.razespace.com/displayed-events')
+    .then((response) => {
+      setDisplayedEvents(response.data.recommendedEvents);
+    })
+    .catch((error) => {
+      console.error('Error fetching recommeded data:', error);
+    });
+
+    // Fetch data from the real API endpoint for Displayed Events
+    axios
+      .get('https://cuedapi.razespace.com/displayed-events')
+      .then((response) => {
+        setDisplayedEvents(response.data.displayEvents);
       })
       .catch((error) => {
-        console.error('Error fetching data:', error);
-        setLoading(false);
+        console.error('Error fetching displayed data:', error);
       });
-
-          // Fetch horizontal Events
-        fetch('../API/DisplayEvents.json')
-        .then((response) => response.json())
-        .then((data) => {
-          setDisplayedEvents(data.displayEvents);
-        })
-        .catch((error) => {
-          console.error('Error fetching displayed data:', error);
-        });
   }, []);
 
   

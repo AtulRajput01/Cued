@@ -7,10 +7,9 @@ import { ImageBackground } from 'react-native';
 
 const BasicDetail = ({navigation}) => {
   const [collegeIdFile, setCollegeIdFile] = useState('');
-  const [aadharCardFile, setAadharCardFile] = useState(null);
+ 
   const [collegeName, setCollegeName] = useState('');
   const [passingYear, setPassingYear] = useState('');
-
   const [basicDetailResponse, setBasicDetailResponse] = useState(null);
 
   const handleSaveBasicDetails = async () => {
@@ -128,7 +127,7 @@ const BasicDetail = ({navigation}) => {
       />
       <TextInput
         style={styles.input}
-        placeholder="College ID"
+        placeholder="collegeId"
         placeholderTextColor="#A9A9A9"
       />
       <TouchableOpacity style={styles.uploadButton} onPress={() => handleFilePicker('collegeId')}>
