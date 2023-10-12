@@ -28,42 +28,19 @@ const Discover = () => {
 
   const navigation = useNavigation();
   const [searchText, setSearchText] = React.useState('');
-
-  const recommendedData = require('../API/Recommended.json');
-  const [recommendedEvents, setRecommendedEvents] = useState((recommendedData.events));
-  const [loading, setLoading] = useState(false);
-
-  const displayEventData = require('../API/displayEvents.json');
-  const [displayedEvents, setDisplayedEvents] = useState(displayEventData.displayEvents);
-
+  const [data,setData ]=useState(undefined);
   
-  // Simulate fetching data from your Recommended API
-  useEffect(() => {
-    fetch('../API/Recommended.json')
-      .then((response) => response.json())
-      .then((data) => {
-        // Sort recommended events by registrations in descending order
-        const sortedEvents = recommendedData.events.sort((a, b) => b.registrations - a.registrations);
-        setRecommendedEvents(sortedEvents);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
-        setLoading(false);
-      });
-
-          // Fetch Displayed Events
-        fetch('../API/DisplayEvents.json')
-        .then((response) => response.json())
-        .then((data) => {
-          setDisplayedEvents(data.displayEvents);
-        })
-        .catch((error) => {
-          console.error('Error fetching displayed data:', error);
-        });
-  }, []);
-
-  
+  const getAPIData =async ()=>{
+    //call api
+    const url = "https://cuedapi.razespace.com/fetch-events";
+    let result = await fetch(url);
+    result = await result.json();
+    setData(result)
+  }
+  useEffect(()=>{
+    getAPIData();
+  },[])
+      
 
 // Render a single recommended event item
 const renderRecommendedEventItem = ({ item }) => (
@@ -178,9 +155,21 @@ const renderDisplayedEventItem = ({ item , index}) => {
           </View>
         </View>
       
-        <View style={styles.row}>
-          <Text style={styles.text}>Discover</Text>
-        </View>
+<View style={styles.row}>
+  <Text style={styles.text}>Discover</Text>
+  { 
+    data ? (
+      <View style={styles.dataContainer}>
+        {Object.keys(data).map((key) => (
+          <View key={key} style={styles.dataRow}>
+            <Text style={styles.dataKey}>{key}:</Text>
+            <Text style={styles.dataValue}>{JSON.stringify(data[key])}</Text>
+          </View>
+        ))}
+      </View>
+    ) : null 
+  } 
+</View>
         <View style={styles.searchBox}>
         <Image source={require('../../assets/images/search.png')} style={styles.searchIcon} />
         <TextInput
