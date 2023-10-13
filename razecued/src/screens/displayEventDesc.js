@@ -42,18 +42,18 @@ const DisplayEventDesc = () => {
 
         <ScrollView>
         <View style={styles.whiteContainer}>
-          <Text style={[styles.eventName, styles.firstText]}>{event.name}</Text>
+          <Text style={[styles.eventName, styles.firstText]}>{event.eventName}</Text>
           <View style={styles.row}>
-          <Text style={styles.eventDetail}>Organised by {event.organization}</Text>
+          <Text style={styles.eventDetail}>Organised by {event.eventOrganizer}</Text>
           <Text style={styles.eventDetail}>I</Text>
-          <Text style={styles.eventDetail}>{event.date}</Text>
+          <Text style={styles.eventDetail}>{event.eventDate}</Text>
           <Text style={styles.eventDetail}>I</Text>
           
 
           </View>
-          <Text style={styles.eventDetail}>Location: {event.location}</Text>
-          <Text style={styles.attendee}>{event.registrations} attending</Text>
-          <Text style={styles.eventDesc}>{event.description}</Text>
+          <Text style={styles.eventDetail}>Location: {event.eventLocation}</Text>
+          <Text style={styles.attendee}>{event.popularity} attending</Text>
+          <Text style={styles.eventDesc}>{event.eventDescription}</Text>
 
           <View style={styles.row1}>
               <Pressable style={styles.button1}>
@@ -67,7 +67,7 @@ const DisplayEventDesc = () => {
             
             <View style={styles.tileTextContainer}>
               <Text style={styles.tileText}>{event.video_title}</Text>
-              <Text style={styles.shortText}>Short video of {event.name}</Text>
+              <Text style={styles.shortText}>Short video of {event.eventName}</Text>
               <Pressable onPress={() => openVideoUrl(event.video_url)}>
               <Image source={require('../../assets/images/utube.png')} />
               </Pressable>

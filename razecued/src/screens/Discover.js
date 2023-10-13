@@ -16,11 +16,11 @@ import { ImageBackground } from 'react-native';
 import { sortBy } from 'lodash';
 import DisplayEventDesc from './DisplayEventDesc';
 import Register from './Register';
-import axios from 'axios';
 
 
 const windowWidth = Dimensions.get('window').width;
 const containerWidth = windowWidth * 0.72; // Width of the container item
+const containerSpacing = (windowWidth - containerWidth) / 2; // Spacing between containers
 
 const Discover = () => {
   
@@ -28,8 +28,8 @@ const Discover = () => {
   const navigation = useNavigation();
   const [searchText, setSearchText] = React.useState('');
   const [recommendedEvents, setRecommendedEvents] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [displayedEvents, setDisplayedEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
   
   useEffect(() => {
     const backAction = () => {
@@ -60,24 +60,26 @@ const Discover = () => {
   
   // Simulate fetching data from your Recommended API/Vertical events
   useEffect(() => {
-    axios
-    .get('https://cuedapi.razespace.com/displayed-events')
-    .then((response) => {
-      setDisplayedEvents(response.data.recommendedEvents);
+    fetch('https://hk1630uulc.execute-api.us-east-1.amazonaws.com/Dev/fetch-events')
+    .then((response) => response.json())
+    .then((data) => {
+      setRecommendedEvents(data.data.verticalEvents);
+      setLoading(false);
     })
     .catch((error) => {
-      console.error('Error fetching recommeded data:', error);
+      console.error('Error fetching recommended events:', error);
+      setLoading(false);
     });
 
-    // Fetch data from the real API endpoint for Displayed Events
-    axios
-      .get('https://cuedapi.razespace.com/displayed-events')
-      .then((response) => {
-        setDisplayedEvents(response.data.displayEvents);
-      })
-      .catch((error) => {
-        console.error('Error fetching displayed data:', error);
-      });
+  // Fetch horizontal events
+  fetch('https://hk1630uulc.execute-api.us-east-1.amazonaws.com/Dev/fetch-events')
+    .then((response) => response.json())
+    .then((data) => {
+      setDisplayedEvents(data.data.horizontalEvents);
+    })
+    .catch((error) => {
+      console.error('Error fetching displayed events:', error);
+    });
   }, []);
 
   
@@ -97,18 +99,18 @@ const renderRecommendedEventItem = ({ item }) => (
         />
       </View>
       <View style={styles.textContainer}>
-        <Text style={styles.bottomText1}>{item.name}</Text>
-        <Text style={styles.bottomText2}>{item.event_type}</Text>
-        <Text style={styles.bottomText3}>{item.time}</Text>
+        <Text style={styles.bottomText1}>{item.eventName}</Text>
+        <Text style={styles.bottomText2}>{item.__typename}</Text>
+        <Text style={styles.bottomText3}>5pm</Text>
         <View style={styles.row}>
           <View style={styles.button}>
-            <Text style={styles.buttonText}>{item.registrations} registrations</Text>
+            <Text style={styles.buttonText}>{item.popularity} registrations</Text>
           </View>
           <View style={styles.button1}>
-            <Text style={styles.buttonText}>{item.date}</Text>
+            <Text style={styles.buttonText}>{item.eventDate}</Text>
           </View>
           <View style={styles.button2}>
-            <Text style={styles.buttonText}>{item.entryFee}</Text>
+            <Text style={styles.buttonText}>Free</Text>
           </View>
         </View>
       </View>
@@ -159,14 +161,14 @@ const renderDisplayedEventItem = ({ item , index}) => {
             resizeMode="cover">
               
                   <View style={styles.innerContainer}>
-                    <Text style={styles.topText1}>{item.name}</Text>
+                    <Text style={styles.topText1}>{item.eventName}</Text>
                     <View style={styles.row1}>
-                    <Text style={styles.topText2}>{item.organization}</Text>
+                    <Text style={styles.topText2}>{item.eventOrganizer}</Text>
                     <Text style={styles.divider}>II</Text>
-                    <Text style={styles.topText3}>{item.date}</Text>
+                    <Text style={styles.topText3}>{item.eventDate}</Text>
                     </View>
                     <Pressable onPress={() => navigation.navigate('DisplayEventDesc', { event: item })} style={styles.topbutton}>
-                      <Text style={styles.topbuttonText}>Register before {item.lastdate}</Text>
+                      <Text style={styles.topbuttonText}>Register before {item.eventDate}</Text>
                     </Pressable>
                   </View> 
              
