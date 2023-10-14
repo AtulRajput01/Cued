@@ -6,35 +6,12 @@ import { ImageBackground } from 'react-native';
 
 
 const BasicDetail = ({navigation}) => {
-  const [collegeIdFile, setCollegeIdFile] = useState('');
- 
+  const [collegeRollNo, setCollegeRollNo] = useState(''); 
   const [collegeName, setCollegeName] = useState('');
   const [passingYear, setPassingYear] = useState('');
   const [basicDetailResponse, setBasicDetailResponse] = useState(null);
 
-  const handleSaveBasicDetails = async () => {
-    try {
-      // Provide the file path to the JSON file
-      const filePath = '../API/BasicDetail.json'; // Replace with your actual file path
-
-      // Fetch the JSON data using the provided file path
-      const response = await fetch(filePath);
-      const data = await response.json();
-
-      // Handle the response as needed
-      if (data.success) {
-        setBasicDetailResponse(data.message);
-        // You can also navigate to the next screen upon successful data save
-         navigation.navigate('BasicDetails2');
-      } else {
-        setBasicDetailResponse(data.message);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      setBasicDetailResponse('An error occurred while saving basic details');
-    }
-  };
-
+ 
   useEffect(() => {
     const backAction = () => {
       Alert.alert(
@@ -63,32 +40,35 @@ const BasicDetail = ({navigation}) => {
 
   
 
-  const handleFilePicker = (type) => {
-    ImagePicker.openPicker({
-      mediaType: 'photo',
-      cropping: true,
-      cropperCircleOverlay: type === 'collegeId', // Set to true to crop as a circle
-      includeBase64: true,
-    })
-      .then((image) => {
-        const fileName = image.path.split('/').pop() || 'sample_file.jpg';
-        const base64Data = image.data;
-        if (type === 'collegeId') {
-          setCollegeIdFile({ fileName, base64Data });
-        } else if (type === 'aadharCard') {
-          setAadharCardFile({ fileName, base64Data });
-        }
-      })
-      .catch((error) => {
-        console.log('ImagePicker Error: ', error);
-      });
-  };
+  // const handleFilePicker = (type) => {
+  //   ImagePicker.openPicker({
+  //     mediaType: 'photo',
+  //     cropping: true,
+  //     cropperCircleOverlay: type === 'collegeId', // Set to true to crop as a circle
+  //     includeBase64: true,
+  //   })
+  //     .then((image) => {
+  //       const fileName = image.path.split('/').pop() || 'sample_file.jpg';
+  //       const base64Data = image.data;
+  //       if (type === 'collegeId') {
+  //         setCollegeIdFile({ fileName, base64Data });
+  //       } else if (type === 'aadharCard') {
+  //         setAadharCardFile({ fileName, base64Data });
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log('ImagePicker Error: ', error);
+  //     });
+  // };
 
   const navigateToNextScreen = () => {
   
+    if (!collegeName || !passingYear || !collegeRollNo) {
+      Alert.alert('Incomplete Fields', 'Please complete all the fields.');
+    } else {
       // All fields are filled, navigate to the next screen
       navigation.navigate('BasicDetails2');
-    
+    }
   };
   
   
@@ -117,6 +97,8 @@ const BasicDetail = ({navigation}) => {
         style={styles.input}
         placeholder="College Name"
         placeholderTextColor="#A9A9A9"
+        value={collegeName}
+        onChangeText={(text) => setCollegeName(text)}
       />
     
       <TextInput
@@ -124,18 +106,17 @@ const BasicDetail = ({navigation}) => {
         placeholder="Passing Year"
         placeholderTextColor="#A9A9A9"
         keyboardType='numeric'
+        value={passingYear}
+        onChangeText={(text) => setPassingYear(text)}
       />
       <TextInput
         style={styles.input}
-        placeholder="collegeId"
+        placeholder="College Roll no"
         placeholderTextColor="#A9A9A9"
+        value={collegeRollNo}
+        onChangeText={(text) => setCollegeRollNo(text)}
       />
-      <TouchableOpacity style={styles.uploadButton} onPress={() => handleFilePicker('collegeId')}>
-        <Text style={styles.uploadButtonText}>
-          {collegeIdFile ? 'Uploaded' : 'Upload file'}
-        </Text>
-      </TouchableOpacity>
-
+      
       
      
       <View style={styles.gap} />
@@ -284,6 +265,7 @@ const styles = StyleSheet.create({ // Use StyleSheet.create() to create the Styl
     borderColor: '#000000',
     borderRadius: 5,
     paddingLeft: 10,
+    color: '#000000'
   },
   createAccount: {
     marginTop: 20,

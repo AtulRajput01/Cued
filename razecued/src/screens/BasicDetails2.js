@@ -7,15 +7,20 @@ import { ImageBackground } from 'react-native';
 
 const BasicDetail2 = ({navigation}) => {
   
-  const [Age, setAge] = useState('');
-  const [passingYear, setPassingYear] = useState('');
+  const [age, setAge] = useState('');
+  const [gender, setGender] = useState('');
+  const [dateOfBirth, setDateOfBirth] = useState('');
   const [phone, setPhone] = useState('');
   const [altPhone, setAltPhone] = useState('');
 
   const navigateToNextScreen = () => {
    
+    if (!age || !gender || !dateOfBirth || !phone || !altPhone) {
+      Alert.alert('Incomplete Fields', 'Please complete all the fields.');
+    } else {
       // All fields are filled, navigate to the next screen
       navigation.navigate('Login');
+    }
     
   };
   
@@ -43,6 +48,8 @@ const BasicDetail2 = ({navigation}) => {
         placeholder="Age"
         placeholderTextColor="#A9A9A9"
         keyboardType='numeric'
+        value={age}
+        onChangeText={(text) => setAge(text)}
       />
            
 
@@ -50,6 +57,8 @@ const BasicDetail2 = ({navigation}) => {
         style={styles.input}
         placeholder="Gender"
         placeholderTextColor="#A9A9A9"
+        value={gender}
+        onChangeText={(text) => setGender(text)}
       />
 
         <TextInput
@@ -57,6 +66,8 @@ const BasicDetail2 = ({navigation}) => {
                 placeholder="Date of birth"
                 placeholderTextColor="#A9A9A9"
                 keyboardType='numeric'
+                value={dateOfBirth}
+                onChangeText={(text) => setDateOfBirth(text)}
             />
 
         <TextInput
@@ -64,6 +75,9 @@ const BasicDetail2 = ({navigation}) => {
                 placeholder="Phone Number"
                 placeholderTextColor="#A9A9A9"
                 keyboardType='numeric'
+                value={phone}
+                onChangeText={(text) => setPhone(text)}
+          
             />
 
         <TextInput
@@ -71,6 +85,8 @@ const BasicDetail2 = ({navigation}) => {
                 placeholder="Alternate Phone"
                 placeholderTextColor="#A9A9A9"
                 keyboardType='numeric'
+                value={altPhone}
+                onChangeText={(text) => setAltPhone(text)}
             />
       
 
@@ -228,6 +244,7 @@ const styles = StyleSheet.create({ // Use StyleSheet.create() to create the Styl
     borderColor: '#000000',
     borderRadius: 5,
     paddingLeft: 10,
+    color: '#000000'
   },
   createAccount: {
     marginTop: 20,
