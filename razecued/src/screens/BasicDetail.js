@@ -61,15 +61,40 @@ const BasicDetail = ({navigation}) => {
   //     });
   // };
 
-  const navigateToNextScreen = () => {
-  
-    if (!collegeName || !passingYear || !collegeRollNo) {
-      Alert.alert('Incomplete Fields', 'Please complete all the fields.');
-    } else {
-      // All fields are filled, navigate to the next screen
-      navigation.navigate('BasicDetails2');
+const navigateToNextScreen = async () => {
+  if (!collegeName || !passingYear || !collegeRollNo) {
+    Alert.alert('Incomplete Fields', 'Please complete all the fields.');
+  } else {
+    try {
+      // Make an API call to submit the data
+      const response = await fetch('https://hk1630uulc.execute-api.us-east-1.amazonaws.com/Dev/basic-details1', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          collegeName,
+          passingYear,
+          collegeRollNo,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('API Response:', data);
+
+        // If the API call is successful, navigate to the next screen
+        navigation.navigate('BasicDetails2');
+      } else {
+        console.error('API Error:', response.statusText);
+        Alert.alert('API Error', 'There was an error while submitting your data. Please try again.');
+      }
+    } catch (error) {
+      console.error('API Error:', error);
+      Alert.alert('API Error', 'There was an error while submitting your data. Please try again.');
     }
-  };
+  }
+};
   
   
   
