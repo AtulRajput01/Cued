@@ -13,16 +13,42 @@ const BasicDetail2 = ({navigation}) => {
   const [phone, setPhone] = useState('');
   const [altPhone, setAltPhone] = useState('');
 
-  const navigateToNextScreen = () => {
-   
-    if (!age || !gender || !dateOfBirth || !phone || !altPhone) {
-      Alert.alert('Incomplete Fields', 'Please complete all the fields.');
-    } else {
-      // All fields are filled, navigate to the next screen
-      navigation.navigate('Login');
+const navigateToNextScreen = async () => {
+  if (!age || !gender || !dateOfBirth || !phone || !altPhone) {
+    Alert.alert('Incomplete Fields', 'Please complete all the fields.');
+  } else {
+    try {
+      // Make an API call to submit the data
+      const response = await fetch('https://hk1630uulc.execute-api.us-east-1.amazonaws.com/Dev/user-registration', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          age,
+          gender,
+          dateOfBirth,
+          phone,
+          altPhone,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('API Response:', data);
+
+        // If the API call is successful, navigate to the next screen
+        navigation.navigate('Login');
+      } else {
+        console.error('API Error:', response.statusText);
+        Alert.alert('API Error', 'There was an error while submitting your data. Please try again.');
+      }
+    } catch (error) {
+      console.error('API Error:', error);
+      Alert.alert('API Error', 'There was an error while submitting your data. Please try again.');
     }
-    
-  };
+  }
+};
   
   return (
 
