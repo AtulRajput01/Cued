@@ -3,12 +3,18 @@ import { View, Text, Alert, TouchableOpacity, BackHandler, Image, StyleSheet, Te
 import { NavigationStackScreenProps } from 'react-navigation-stack';
 import ImagePicker from 'react-native-image-crop-picker';
 import { ImageBackground } from 'react-native';
+import CustomButton from './../components/CustomButton';
 
 
 const BasicDetail = ({navigation}) => {
   const [collegeRollNo, setCollegeRollNo] = useState(''); 
   const [collegeName, setCollegeName] = useState('');
   const [passingYear, setPassingYear] = useState('');
+  const [age, setAge] = useState('');
+  const [gender, setGender] = useState('');
+  const [dateOfBirth, setDateOfBirth] = useState('');
+  const [phone, setPhone] = useState('');
+  const [altPhone, setAltPhone] = useState('');
   const [basicDetailResponse, setBasicDetailResponse] = useState(null);
 
  
@@ -23,7 +29,7 @@ const BasicDetail = ({navigation}) => {
             onPress: () => null,
             style: 'cancel',
           },
-          { text: 'OK', onPress: () => BackHandler.exitApp() },
+          { text: 'OK', onPress: () =>  navigation.navigate('Discover')},
         ],
         { cancelable: false }
       );
@@ -61,40 +67,40 @@ const BasicDetail = ({navigation}) => {
   //     });
   // };
 
-const navigateToNextScreen = async () => {
-  if (!collegeName || !passingYear || !collegeRollNo) {
-    Alert.alert('Incomplete Fields', 'Please complete all the fields.');
-  } else {
-    try {
-      // Make an API call to submit the data
-      const response = await fetch('https://hk1630uulc.execute-api.us-east-1.amazonaws.com/Dev/basic-details1', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          collegeName,
-          passingYear,
-          collegeRollNo,
-        }),
-      });
+// const navigateToNextScreen = async () => {
+//   if (!collegeName || !passingYear || !collegeRollNo) {
+//     Alert.alert('Incomplete Fields', 'Please complete all the fields.');
+//   } else {
+//     try {
+//       // Make an API call to submit the data
+//       const response = await fetch('https://hk1630uulc.execute-api.us-east-1.amazonaws.com/Dev/basic-details1', {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({
+//           collegeName,
+//           passingYear,
+//           collegeRollNo,
+//         }),
+//       });
 
-      if (response.ok) {
-        const data = await response.json();
-        console.log('API Response:', data);
+//       if (response.ok) {
+//         const data = await response.json();
+//         console.log('API Response:', data);
 
-        // If the API call is successful, navigate to the next screen
-        navigation.navigate('BasicDetails2');
-      } else {
-        console.error('API Error:', response.statusText);
-        Alert.alert('API Error', 'There was an error while submitting your data. Please try again.');
-      }
-    } catch (error) {
-      console.error('API Error:', error);
-      Alert.alert('API Error', 'There was an error while submitting your data. Please try again.');
-    }
-  }
-};
+//         // If the API call is successful, navigate to the next screen
+//         navigation.navigate('BasicDetails2');
+//       } else {
+//         console.error('API Error:', response.statusText);
+//         Alert.alert('API Error', 'There was an error while submitting your data. Please try again.');
+//       }
+//     } catch (error) {
+//       console.error('API Error:', error);
+//       Alert.alert('API Error', 'There was an error while submitting your data. Please try again.');
+//     }
+//   }
+// };
   
   
   
@@ -115,7 +121,7 @@ const navigateToNextScreen = async () => {
       <Text style={styles.alert}>Complete Profile!</Text>
       
       
-      <Text style={styles.greetings}>Hey there, Please complete your profile for a better experience</Text>
+      <Text style={styles.greetings}>Hey there, Please complete your profile, these data will be used and check during your entry.</Text>
       
       
       <TextInput
@@ -141,16 +147,56 @@ const navigateToNextScreen = async () => {
         value={collegeRollNo}
         onChangeText={(text) => setCollegeRollNo(text)}
       />
+      <TextInput
+        style={styles.input}
+        placeholder="Age"
+        placeholderTextColor="#A9A9A9"
+        keyboardType='numeric'
+        value={age}
+        onChangeText={(text) => setAge(text)}
+      />
+           
+
+      <TextInput
+        style={styles.input}
+        placeholder="Gender"
+        placeholderTextColor="#A9A9A9"
+        value={gender}
+        onChangeText={(text) => setGender(text)}
+      />
+
+        <TextInput
+                style={styles.input}
+                placeholder="Date of birth"
+                placeholderTextColor="#A9A9A9"
+                keyboardType='numeric'
+                value={dateOfBirth}
+                onChangeText={(text) => setDateOfBirth(text)}
+            />
+
+        <TextInput
+                style={styles.input}
+                placeholder="Phone Number"
+                placeholderTextColor="#A9A9A9"
+                keyboardType='numeric'
+                value={phone}
+                onChangeText={(text) => setPhone(text)}
+          
+            />
+
+        <TextInput
+                style={styles.input}
+                placeholder="Alternate Phone"
+                placeholderTextColor="#A9A9A9"
+                keyboardType='numeric'
+                value={altPhone}
+                onChangeText={(text) => setAltPhone(text)}
+            />
       
       
      
       <View style={styles.gap} />
-      <TouchableOpacity style={styles.button} onPress={navigateToNextScreen}>
-        <View style={styles.row}>
-        <Image source={require('../../assets/images/arrow.png')}/>
-                <Text style={styles.buttonText}>Next</Text>
-                </View>
-              </TouchableOpacity>
+      <CustomButton text="Complete Registration" bgColor="#B51E71"  />
       
     </View>
     </ImageBackground>

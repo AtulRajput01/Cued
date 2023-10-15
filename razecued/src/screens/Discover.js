@@ -226,7 +226,7 @@ const renderDisplayedEventItem = ({ item , index}) => {
               { useNativeDriver: false }
             )}
           />
-        <View style={styles.gap} />
+
         <View style={styles.row}>
           <Text style={styles.text2}>Recommended</Text>
         </View>
@@ -253,6 +253,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: 'Poppins',
     fontWeight: '500',
+    marginBottom: 5
   },
   imageContainer: { 
     marginTop: 15, 
@@ -347,11 +348,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     width: containerWidth,  
     borderRadius: 5,
-    height: 300,
-    
-    alignItems: 'start',
+   alignItems: 'start',
     borderRadius: 5,
-    height: 300
+    height: 170
   },
   innerContainer: {
     backgroundColor: 'rgba(255, 255, 255, 0.4)', 
@@ -359,7 +358,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginLeft: 18,
     marginRight: 18 ,
-    marginTop: 22,
+    marginTop: 30,
     
   },
   containerText: {

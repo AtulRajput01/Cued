@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity, Linking, Image, Pressable,  ImageBackground } from 'react-native';
+import React,{useEffect} from 'react';
+import { View, Alert, BackHandler,Text, StyleSheet, Dimensions, TouchableOpacity, Linking, Image, Pressable,  ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -15,6 +15,58 @@ const DisplayEventDesc = () => {
     Linking.openURL(video_url).catch((error) => {
       console.error('Error opening video URL:', error);
     });
+  };
+
+  useEffect(() => {
+    const backAction = () => {
+      Alert.alert(
+        'Confirm Exit',
+        'Do you really want to get back to home screen',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => null,
+            style: 'cancel',
+          },
+          { text: 'Yes', onPress: () =>  navigation.navigate('Home')},
+        ],
+        { cancelable: false }
+      );
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
+
+  const requestWriteExternalStoragePermission = async () => {
+    if (Platform.OS === 'android') {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+          {
+            title: 'Storage Permission Required',
+            message: 'This app needs access to your device storage to download PDFs.',
+            buttonPositive: 'OK',
+          }
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          return true; // Permission granted
+        } else {
+          return false; // Permission denied
+        }
+      } catch (err) {
+        console.warn(err);
+        return false;
+      }
+    } else {
+      // For iOS, permission is not required
+      return true;
+    }
   };
 
   return (
@@ -79,7 +131,7 @@ const DisplayEventDesc = () => {
         </ScrollView>
         <View style={styles.gap} />
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('BasicDetail')}>
           <Text style={styles.buttonText}>Register</Text>
         </TouchableOpacity>
        
