@@ -25,7 +25,7 @@ export default function App() {
   const { signOut } = useAuthenticator();
 
   useEffect(() => {
-    DataStore.query(user).then(setUsers);
+    DataStore.query(users).then(setUsers);
   }, []);
   // const [user, setUser] = useState(undefined);
   // const [loading, setLoading] = useState(true);
