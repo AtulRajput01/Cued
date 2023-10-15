@@ -1,4 +1,4 @@
-import React from 'react';
+import React ,{useState,useEffect}from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image, Pressable,Dimensions, ScrollView } from 'react-native';
 import EventDesc from './EventDesc';
 import { useNavigation } from '@react-navigation/native';
