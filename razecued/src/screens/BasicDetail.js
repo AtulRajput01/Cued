@@ -3,12 +3,20 @@ import { View, Text, Alert, TouchableOpacity, BackHandler, Image, StyleSheet, Te
 import { NavigationStackScreenProps } from 'react-navigation-stack';
 import ImagePicker from 'react-native-image-crop-picker';
 import { ImageBackground } from 'react-native';
+import CustomButton from './../components/CustomButton';
 
 
 const BasicDetail = ({navigation}) => {
   const [collegeRollNo, setCollegeRollNo] = useState(''); 
   const [collegeName, setCollegeName] = useState('');
   const [passingYear, setPassingYear] = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [age, setAge] = useState('');
+  const [gender, setGender] = useState('');
+  const [dateOfBirth, setDateOfBirth] = useState('');
+  const [phone, setPhone] = useState('');
+  const [altPhone, setAltPhone] = useState('');
   const [basicDetailResponse, setBasicDetailResponse] = useState(null);
 
  
@@ -23,7 +31,7 @@ const BasicDetail = ({navigation}) => {
             onPress: () => null,
             style: 'cancel',
           },
-          { text: 'OK', onPress: () => BackHandler.exitApp() },
+          { text: 'OK', onPress: () =>  navigation.navigate('Discover')},
         ],
         { cancelable: false }
       );
@@ -61,40 +69,40 @@ const BasicDetail = ({navigation}) => {
   //     });
   // };
 
-const navigateToNextScreen = async () => {
-  if (!collegeName || !passingYear || !collegeRollNo) {
-    Alert.alert('Incomplete Fields', 'Please complete all the fields.');
-  } else {
-    try {
-      // Make an API call to submit the data
-      const response = await fetch('https://hk1630uulc.execute-api.us-east-1.amazonaws.com/Dev/basic-details1', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          collegeName,
-          passingYear,
-          collegeRollNo,
-        }),
-      });
+// const navigateToNextScreen = async () => {
+//   if (!collegeName || !passingYear || !collegeRollNo) {
+//     Alert.alert('Incomplete Fields', 'Please complete all the fields.');
+//   } else {
+//     try {
+//       // Make an API call to submit the data
+//       const response = await fetch('https://hk1630uulc.execute-api.us-east-1.amazonaws.com/Dev/basic-details1', {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({
+//           collegeName,
+//           passingYear,
+//           collegeRollNo,
+//         }),
+//       });
 
-      if (response.ok) {
-        const data = await response.json();
-        console.log('API Response:', data);
+//       if (response.ok) {
+//         const data = await response.json();
+//         console.log('API Response:', data);
 
-        // If the API call is successful, navigate to the next screen
-        navigation.navigate('BasicDetails2');
-      } else {
-        console.error('API Error:', response.statusText);
-        Alert.alert('API Error', 'There was an error while submitting your data. Please try again.');
-      }
-    } catch (error) {
-      console.error('API Error:', error);
-      Alert.alert('API Error', 'There was an error while submitting your data. Please try again.');
-    }
-  }
-};
+//         // If the API call is successful, navigate to the next screen
+//         navigation.navigate('BasicDetails2');
+//       } else {
+//         console.error('API Error:', response.statusText);
+//         Alert.alert('API Error', 'There was an error while submitting your data. Please try again.');
+//       }
+//     } catch (error) {
+//       console.error('API Error:', error);
+//       Alert.alert('API Error', 'There was an error while submitting your data. Please try again.');
+//     }
+//   }
+// };
   
   
   
@@ -104,19 +112,26 @@ const navigateToNextScreen = async () => {
     source={require('../../assets/images/Landingbg.jpg')} 
       style={styles.backgroundImage}>
     <View style={styles.container}>
-      <View style={styles.header}>
-        {/* <TouchableOpacity onPress={() => console.log('Back button pressed')}>
-        <Image source={require('../../assets/images/backarrow.png')} />
-        </TouchableOpacity> */}
-        {/* <Pressable onPress={() => navigation.navigate('Discover')}>
-          <Text style={styles.skipButton}>Skip</Text>
-        </Pressable> */}
-      </View>
+      
       <Text style={styles.alert}>Complete Profile!</Text>
       
       
-      <Text style={styles.greetings}>Hey there, Please complete your profile for a better experience</Text>
-      
+      <Text style={styles.greetings}>Hey there, Please complete your profile, these data will be used and check during your entry.</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Name"
+        placeholderTextColor="#A9A9A9"
+        value={name}
+        onChangeText={(text) => setName(text)}
+      />
+    <TextInput
+        style={styles.input}
+        placeholder="Email"
+        placeholderTextColor="#A9A9A9"
+        value={email}
+        onChangeText={(text) => setEmail(text)}
+      />
+    
       
       <TextInput
         style={styles.input}
@@ -141,16 +156,56 @@ const navigateToNextScreen = async () => {
         value={collegeRollNo}
         onChangeText={(text) => setCollegeRollNo(text)}
       />
+      <TextInput
+        style={styles.input}
+        placeholder="Age"
+        placeholderTextColor="#A9A9A9"
+        keyboardType='numeric'
+        value={age}
+        onChangeText={(text) => setAge(text)}
+      />
+           
+
+      <TextInput
+        style={styles.input}
+        placeholder="Gender"
+        placeholderTextColor="#A9A9A9"
+        value={gender}
+        onChangeText={(text) => setGender(text)}
+      />
+
+        <TextInput
+                style={styles.input}
+                placeholder="Date of birth"
+                placeholderTextColor="#A9A9A9"
+                keyboardType='numeric'
+                value={dateOfBirth}
+                onChangeText={(text) => setDateOfBirth(text)}
+            />
+
+        <TextInput
+                style={styles.input}
+                placeholder="Phone Number"
+                placeholderTextColor="#A9A9A9"
+                keyboardType='numeric'
+                value={phone}
+                onChangeText={(text) => setPhone(text)}
+          
+            />
+
+        <TextInput
+                style={styles.input}
+                placeholder="Alternate Phone"
+                placeholderTextColor="#A9A9A9"
+                keyboardType='numeric'
+                value={altPhone}
+                onChangeText={(text) => setAltPhone(text)}
+            />
       
       
      
-      <View style={styles.gap} />
-      <TouchableOpacity style={styles.button} onPress={navigateToNextScreen}>
-        <View style={styles.row}>
-        <Image source={require('../../assets/images/arrow.png')}/>
-                <Text style={styles.buttonText}>Next</Text>
-                </View>
-              </TouchableOpacity>
+      <View style={styles.gap2} />
+      <CustomButton text="Complete Registration" bgColor="#B51E71" />
       
     </View>
     </ImageBackground>
@@ -163,7 +218,7 @@ const styles = StyleSheet.create({ // Use StyleSheet.create() to create the Styl
     padding: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 30,
+    
   },
   row: {
     flexDirection: 'row',
@@ -198,6 +253,9 @@ const styles = StyleSheet.create({ // Use StyleSheet.create() to create the Styl
     borderRadius: 3,
     marginLeft: 8
     
+  },
+  gap2: {
+     height: 8
   },
   buttonText: {
     color: '#FFFFFF',
@@ -268,9 +326,12 @@ const styles = StyleSheet.create({ // Use StyleSheet.create() to create the Styl
     fontSize: 18,
     fontFamily: 'Poppins',
     fontWeight: '400',
-    marginBottom: 30,
+    marginBottom: 10,
     paddingRight: 55,
-    paddingTop: 18
+   
+  },
+  inputContainer2: {
+    paddingBottom:20
   },
   welcomeMessage: {
     fontSize: 27,
