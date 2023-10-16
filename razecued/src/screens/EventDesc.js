@@ -1,17 +1,5 @@
 import React, { useEffect } from 'react';
-import {
-  View,
-  Text,
-  Alert,
-  StyleSheet,
-  BackHandler,
-  Dimensions,
-  TouchableOpacity,
-  Linking,
-  Image,
-  Pressable,
-  ImageBackground,
-} from 'react-native';
+import { View, Text, Alert, StyleSheet, BackHandler, Dimensions, TouchableOpacity, Linking, Image, Pressable, ImageBackground, } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { ScrollView } from 'react-native-gesture-handler';
