@@ -208,7 +208,7 @@ const EventDesc = () => {
             navigation.navigate('BasicDetail', {
               eventId: events.Id, // Pass event ID
               eventName: events.eventName, // Pass event name
-              collegeName: events.college, // Pass college name
+              eventOrganizer: events.eventOrganizer, // Pass college name
             })
           }
         >
