@@ -84,14 +84,14 @@ const BasicDetail = ({ navigation, route }) => {
   };
 
   // Extracting parameters from the navigation route
-  const { eventId, eventName, collegeName: passedCollegeName } = route.params;
+  const { eventId, eventName, eventOrganizer: passedEventOrganizer } = route.params;
 
-  // Setting the passed collegeName to the state
+  // Setting the passed eventOrganizer to the state
   useEffect(() => {
-    if (passedCollegeName) {
-      setCollegeName(passedCollegeName);
+    if (passedEventOrganizer) {
+      setEventOrganizer(passedEventOrganizer);
     }
-  }, [passedCollegeName]);
+  }, [passedEventOrganizer]);
 
   return (
     <ImageBackground source={require('../../assets/images/Landingbg.jpg')} style={styles.backgroundImage}>
