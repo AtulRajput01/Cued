@@ -3,7 +3,7 @@ import { View, Text, Alert, BackHandler, Image, StyleSheet, TextInput } from 're
 import { ImageBackground } from 'react-native';
 import CustomButton from './../components/CustomButton';
 
-const BasicDetail = ({ navigation }) => {
+const BasicDetail = ({ navigation, route }) => {
   const [collegeRollNo, setCollegeRollNo] = useState('');
   const [collegeName, setCollegeName] = useState('');
   const [passingYear, setPassingYear] = useState('');
@@ -40,7 +40,7 @@ const BasicDetail = ({ navigation }) => {
   }, []);
 
   const saveUserProfile = async () => {
-    if (!collegeName || !passingYear || !collegeRollNo || !age || !name || !email || !dateOfBirth ||! phone) {
+    if (!collegeName || !passingYear || !collegeRollNo || !age || !name || !email || !dateOfBirth || !phone) {
       Alert.alert('Incomplete Fields', 'Please complete all the fields.');
     } else {
       try {
@@ -82,6 +82,16 @@ const BasicDetail = ({ navigation }) => {
       }
     }
   };
+
+  // Extracting parameters from the navigation route
+  const { eventId, eventName, collegeName: passedCollegeName } = route.params;
+
+  // Setting the passed collegeName to the state
+  useEffect(() => {
+    if (passedCollegeName) {
+      setCollegeName(passedCollegeName);
+    }
+  }, [passedCollegeName]);
 
   return (
     <ImageBackground source={require('../../assets/images/Landingbg.jpg')} style={styles.backgroundImage}>
@@ -164,7 +174,6 @@ const BasicDetail = ({ navigation }) => {
           onChangeText={(text) => setPhone(text)}
         />
 
-        
         <View style={styles.gap2} />
         <CustomButton text="Complete Registration" bgColor="#B51E71" onPress={saveUserProfile} />
       </View>
