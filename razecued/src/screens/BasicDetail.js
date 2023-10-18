@@ -3,7 +3,7 @@ import { View, Text, Alert, BackHandler, Image, StyleSheet, TextInput } from 're
 import { ImageBackground } from 'react-native';
 import CustomButton from './../components/CustomButton';
 
-const BasicDetail = ({ navigation }) => {
+const BasicDetail = ({ navigation, route }) => {
   const [collegeRollNo, setCollegeRollNo] = useState('');
   const [collegeName, setCollegeName] = useState('');
   const [passingYear, setPassingYear] = useState('');
@@ -40,7 +40,7 @@ const BasicDetail = ({ navigation }) => {
   }, []);
 
   const saveUserProfile = async () => {
-    if (!collegeName || !passingYear || !collegeRollNo || !age || !name || !email || !dateOfBirth ||! phone) {
+    if (!collegeName || !passingYear || !collegeRollNo || !age || !name || !email || !dateOfBirth || !phone) {
       Alert.alert('Incomplete Fields', 'Please complete all the fields.');
     } else {
       try {
@@ -66,12 +66,13 @@ const BasicDetail = ({ navigation }) => {
         if (response.ok) {
           const data = await response.json();
           console.log('API Response:', data);
-          Alert.alert('Success', 'User profile data saved successfully!', [
-            {
-              text: 'OK',
-              onPress: () => navigation.navigate('Home'), // Navigate to the 'Discover' screen
-            },
-          ]);
+          // Alert.alert('Success', 'User profile data saved successfully!', [
+          //   {
+          //     text: 'OK',
+          //     onPress: () => navigation.navigate('Home'), // Navigate to the 'Discover' screen
+          //   },
+          // ]);
+          navigation.navigate('Login');
         } else {
           console.error('API Error:', response.statusText);
           Alert.alert('API Error', 'There was an error while submitting your data. Please try again.');
@@ -82,6 +83,16 @@ const BasicDetail = ({ navigation }) => {
       }
     }
   };
+
+  // Extracting parameters from the navigation route
+  // const { eventId, eventName, eventOrganizer: passedEventOrganizer } = route.params;
+
+  // Setting the passed eventOrganizer to the state
+  // useEffect(() => {
+  //   if (passedEventOrganizer) {
+  //     setEventOrganizer(passedEventOrganizer);
+  //   }
+  // }, [passedEventOrganizer]);
 
   return (
     <ImageBackground source={require('../../assets/images/Landingbg.jpg')} style={styles.backgroundImage}>
@@ -164,7 +175,6 @@ const BasicDetail = ({ navigation }) => {
           onChangeText={(text) => setPhone(text)}
         />
 
-        
         <View style={styles.gap2} />
         <CustomButton text="Complete Registration" bgColor="#B51E71" onPress={saveUserProfile} />
       </View>
