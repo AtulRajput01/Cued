@@ -4,86 +4,143 @@ AWS.config.update({
   region: 'us-east-1'
 });
 
-const dynamoDBTableName = 'users';
+const dynamoDBTableName = 'Users-uvz42cvcjncbnoq7sctsiqiqxy-dev';
 const dynamodb = new AWS.DynamoDB.DocumentClient();
-const userPath = '/users';
 
 exports.handler = async (event) => {
   let response;
   console.log(event);
-  try {
-    const { httpMethod, path, queryStringParameters } = event;
 
-    if (httpMethod === 'GET' && path === '/api/fetch-user-details') {
-      const userId = queryStringParameters.userId;
+  switch (event.httpMethod) {
+    case 'POST':
+      response = await saveUser(JSON.parse(event.body));
+      break;
+    case 'GET':
+      response = await getUsers();
+      break;
+    case 'PUT':
+      const requestBody = JSON.parse(event.body);
+      response = await updateUser(requestBody.id, requestBody.updateKey, requestBody.updateValue);
+      break;
+    case 'DELETE':
+      response = await deleteUser(JSON.parse(event.body).id);
+      break;
+    default:
+      response = buildResponse(404, '404 not found');
+  }
 
-      if (!userId) {
-        return {
-          statusCode: 400,
-          body: JSON.stringify({ success: false, message: 'Missing userId parameter' }),
-        };
-      }
+  const { request } = event;
 
-      // Implement the logic to fetch user details from your database based on userId
-      const userDetails = await fetchUserInfo(userId);
+  if (request && request.userAttributes) {
+    const { sub: id, email } = request.userAttributes;
 
-      if (!userDetails) {
-        return {
-          statusCode: 404,
-          body: JSON.stringify({ success: false, message: 'User not found' }),
-        };
-      }
-
-      response = {
-        statusCode: 200,
-        body: JSON.stringify({
-          success: true,
-          message: 'User details fetched successfully',
-          data: userDetails,
-        }),
-      };
-    } else {
-      // Handle unknown or unsupported API endpoints
-      response = {
-        statusCode: 404,
-        body: JSON.stringify({ message: 'Not Found' }),
-      };
-    }
-  } catch (error) {
-    console.error(error);
-    response = {
-      statusCode: 500,
-      body: JSON.stringify({
-        success: false,
-        message: 'Internal server error.',
-      }),
+    // Save user data to DynamoDB
+    const params = {
+      TableName: 'Users-uvz42cvcjncbnoq7sctsiqiqxy-dev',
+      Item: {
+        'id': { S: id },
+        'email': { S: email },
+        // Add other attributes as needed
+      },
     };
+
+    try {
+      await dynamodb.put(params).promise();
+      console.log('User data saved successfully to DynamoDB');
+    } catch (error) {
+      console.error('Error saving user data to DynamoDB:', error);
+      return buildResponse(500, 'Internal Server Error');
+    }
   }
 
   return response;
 };
 
-// Function to fetch user details from the database based on userId
-const fetchUserInfo = async (userId) => {
+async function deleteUser(id) {
   const params = {
-    TableName: users, //table name here
+    TableName: dynamoDBTableName,
     Key: {
-      userId: userId,
+      'id': id
     },
+    ReturnValues: 'ALL_OLD'
   };
+  return await dynamodb.delete(params).promise()
+    .then(response => {
+      const body = {
+        Operation: 'DELETE',
+        Message: 'SUCCESS',
+        Item: response
+      }
+      return buildResponse(200, body);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
 
-  try {
-    const result = await dynamodb.get(params).promise();
+async function updateUser(id, updateKey, updateValue) {
+  const params = {
+    TableName: dynamoDBTableName,
+    Key: {
+      'id': id
+    },
+    UpdateExpression: `set ${updateKey} = :value`,
+    ExpressionAttributeValues: {
+      ':value': updateValue
+    },
+    ReturnValues: 'UPDATED_NEW'
+  };
+  return await dynamodb.update(params).promise()
+    .then(response => {
+      const body = {
+        Operation: 'UPDATE',
+        Message: 'SUCCESS',
+        Item: response
+      };
+      return buildResponse(200, body);
+    })
+    .catch((error) => {
+      console.error(error);
+      return buildResponse(500, 'Internal Server Error');
+    });
+}
 
-    if (!result.Item) {
-      // If the user is not found, return null or an appropriate response
-      return null;
-    }
+async function getUsers() {
+  const params = {
+    TableName: dynamoDBTableName
+  };
+  const allUsers = await dynamodb.scan(params).promise();
+  const body = {
+    users: allUsers
+  };
+  return buildResponse(200, body);
+}
 
-    // Return the user data found in DynamoDB
-    return result.Item;
-  } catch (error) {
-    console.error('Error fetching user info:', error);
-    throw error;
-  }
-};
+async function saveUser(requestBody) {
+  const params = {
+    TableName: dynamoDBTableName,
+    Item: requestBody
+  };
+  return await dynamodb.put(params).promise().then(() => {
+      const body = {
+        Operation: 'SAVE',
+        Message: 'SUCCESS',
+        Item: requestBody
+      };
+      return buildResponse(200, body);
+    })
+    .catch((error) => {
+      console.error(error);
+      return buildResponse(500, 'Internal Server Error');
+    });
+}
+
+function buildResponse(statusCode, body) {
+  return {
+    statusCode: statusCode,
+    headers: {
+      'Content-Type': 'application/json' 
+    },
+    body: JSON.stringify(body)
+  };
+}
