@@ -20,7 +20,7 @@ const Otp = () => {
   const handleVerifyOTP = async (data) => {
     try{
      await Auth.confirmSignUp(data.username, data.code);
-     navigation.navigate('Login')
+     navigation.navigate('BasicDetail')
 
     } catch (e) {
       Alert.alert("Oops" , e.message);
