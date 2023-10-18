@@ -1,73 +1,136 @@
 const AWS = require('aws-sdk');
 
 AWS.config.update({
-  region: 'us-east-1',
+  region: 'us-east-1'
 });
 
-const dynamoDBTableName = 'Users'; // DynamoDB table name
+const dynamoDBTableName = 'Users-uvz42cvcjncbnoq7sctsiqiqxy-dev';
 const dynamodb = new AWS.DynamoDB.DocumentClient();
+const userPath = '/register-event-org';
 
 exports.handler = async (event) => {
-  try {
-    const { httpMethod, path, requestContext } = event;
+  let response;
+  console.log(event);
 
-    if (httpMethod === 'POST' && path === '/api/submit-basic-details-part-2') {
-      const { age, gender, dateOfBirth, phoneNumber, alternatePhoneNumber } = JSON.parse(event.body);
+  switch (event.httpMethod) {
+    case 'POST':
+      response = await saveUser(JSON.parse(event.body));
+      break;
+    case 'GET':
+      response = await getUsers();
+      break;
+    case 'PUT':
+      const requestBody = JSON.parse(event.body);
+      response = await updateUser(requestBody.userId, requestBody.updateKey, requestBody.updateValue);
+      break;
+    case 'DELETE':
+      response = await deleteUser(JSON.parse(event.body).userId);
+      break;
 
-      // Validate input data
-      if (!age || !gender || !dateOfBirth || !phoneNumber) {
-        return {
-          statusCode: 400,
-          body: JSON.stringify({ success: false, message: 'Invalid or missing input data' }),
-        };
-      }
-
-      // Retrieve the Cognito user ID from the request context
-      const userId = requestContext.authorizer.claims.sub;
-
-      // Implement the logic to sanitize inputs
-
-      // Implement the logic to save user basic details to your DynamoDB table
-      await saveUserToDynamoDB(userId, age, gender, dateOfBirth, phoneNumber, alternatePhoneNumber);
-
-      // Return a success response with the generated userId
-      return {
-        statusCode: 200,
-        body: JSON.stringify({ success: true, message: 'Basic details submitted successfully', userId }),
-      };
-    } else {
-      // Handle unknown or unsupported API endpoints
-      return {
-        statusCode: 404,
-        body: JSON.stringify({ message: 'Not Found' }),
-      };
-    }
-  } catch (error) {
-    console.error(error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({
-        success: false,
-        message: 'Internal server error.',
-      }),
-    };
+    default:
+      response = buildResponse(404, '404 not found');
   }
+  return response;
 };
 
-// Function to save user details to DynamoDB
-const saveUserToDynamoDB = async (userId, age, gender, dateOfBirth, phoneNumber, alternatePhoneNumber) => {
+async function deleteUser(id) {
   const params = {
-    TableName: 'Users',
-    Item: {
-      userId,
-      age,
-      gender,
-      dateOfBirth,
-      phoneNumber,
-      alternatePhoneNumber,
-      // Add more user details as needed
+    TableName: dynamoDBTableName,
+    Key: {
+      'id': id
     },
+    idurnValues: 'ALL_OLD'
+  };
+  return await dynamodb.delete(params).promise()
+    .then(response => {
+      const body = {
+        Operation: 'DELETE',
+        Message: 'SUCCESS',
+        Item: response
+      }
+      return buildResponse(200, body);
+    })
+    .catch((error) => {
+      console.error(error);
+      return buildResponse(500, 'Internal Server Error');
+    });
+}
+
+async function updateUser(id, updateKey, updateValue) {
+  const params = {
+    TableName: dynamoDBTableName,
+    Key: {
+      'id': id
+    },
+    UpdateExpression: `set ${updateKey} = :value`,
+    ExpressionAttributeValues: {
+      ':value': updateValue
+    },
+    ReturnValues: 'UPDATED_NEW'
+  };
+  return await dynamodb.update(params).promise()
+    .then(response => {
+      const body = {
+        Operation: 'UPDATE',
+        Message: 'SUCCESS',
+        Item: response
+      };
+      return buildResponse(200, body);
+    })
+    .catch((error) => {
+      console.error(error);
+      return buildResponse(500, 'Internal Server Error');
+    });
+}
+
+async function getUsers() {
+  const params = {
+    TableName: dynamoDBTableName
+  };
+  const allUsers = await dynamodb.scan(params).promise();
+  const body = {
+    users: allUsers
+  };
+  return buildResponse(200, body);
+}
+
+async function saveUser(requestBody) {
+  const params = {
+    TableName: dynamoDBTableName,
+    Item: {
+      'id': requestBody.id, // Assuming id is present in the request body
+      'email': requestBody.email,
+      'user_name': requestBody.user_name,
+      'user_phone': requestBody.user_phone,
+      'user_collegeName': requestBody.user_collegeName,
+      'user_collegeRollNo': requestBody.user_collegeRollNo,
+      'user_passingYear': requestBody.user_passingYear,
+      'user_gender': requestBody.user_gender,
+      'user_dob': requestBody.user_dob,
+      'user_age': requestBody.user_age,
+      // Add other attributes as needed
+    }
   };
 
-  await dynamodb.put(params).promise();
-};
+  try {
+    await dynamodb.put(params).promise();
+    const body = {
+      Operation: 'SAVE',
+      Message: 'SUCCESS'
+    };
+    return buildResponse(200, body);
+  } catch (error) {
+    console.error(error);
+    return buildResponse(500, 'Internal Server Error');
+  }
+}
+
+function buildResponse(statusCode, body) {
+  return {
+    statusCode: statusCode,
+    headers: {
+      'Content-Type': 'application/json' 
+    },
+    body: JSON.stringify(body)
+  };
+}
