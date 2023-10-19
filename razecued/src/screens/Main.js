@@ -19,28 +19,28 @@ const Stack = createStackNavigator();
 
 const MainNavigator = () => {
   return (
-    <Stack.Navigator headerMode="none">
-      <Stack.Screen name="Splash" component={Splash} />
-      <Stack.Screen name="BasicDetail" component={BasicDetail} />
-      <Stack.Screen name="Discover" component={Discover} />
-      <Stack.Screen name="RegisteredEvents" component={RegisteredEvents} />
-      <Stack.Screen name="Login" component={Login} />
-      <Stack.Screen name="Signup" component={Signup} />
-      <Stack.Screen name="EventDesc" component={EventDesc} />
-      <Stack.Screen name="Token" component={Token} />
-      <Stack.Screen name="BasicDetails2" component={BasicDetails2} />
-      <Stack.Screen name="Otp" component={Otp} />
-      <Stack.Screen name="DisplayEventDesc" component={DisplayEventDesc} />
-      <Stack.Screen name = "Register" component={Register}/>
+    <Stack.Navigator  >
+      <Stack.Screen name="Splash" component={Splash} options={{ headerShown: false }}/>
+      <Stack.Screen name="BasicDetail" component={BasicDetail} options={{ headerShown: false }} />
+      <Stack.Screen name="Discover" component={Discover} options={{ headerShown: false }}/>
+      <Stack.Screen name="RegisteredEvents" component={RegisteredEvents} options={{ headerShown: false }} />
+      <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+      <Stack.Screen name="Signup" component={Signup} options={{ headerShown: false }}/>
+      <Stack.Screen name="EventDesc" component={EventDesc} options={{ headerShown: false }} />
+      <Stack.Screen name="Token" component={Token} options={{ headerShown: false }} />
+      <Stack.Screen name="BasicDetails2" component={BasicDetails2} options={{ headerShown: false }} />
+      <Stack.Screen name="Otp" component={Otp} options={{ headerShown: false }}/>
+      <Stack.Screen name="DisplayEventDesc" component={DisplayEventDesc} options={{ headerShown: false }}/>
+      <Stack.Screen name = "Register" component={Register} options={{ headerShown: false }}/>
     </Stack.Navigator>
   );
 };
 
 const SignupStack = () => {
   return (
-    <Stack.Navigator headerMode="none">
-      <Stack.Screen name="Register" component={Register} />
-      <Stack.Screen name="Otp" component={Otp} />
+    <Stack.Navigator  >
+      <Stack.Screen name="Register" component={Register} options={{ headerShown: false }}/>
+      <Stack.Screen name="Otp" component={Otp} options={{ headerShown: false }}/>
     </Stack.Navigator>
   );
 };
@@ -48,9 +48,9 @@ const SignupStack = () => {
 const AppNavigator = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator headerMode="none">
-        <Stack.Screen name="MainNavigator" component={MainNavigator} />
-        <Stack.Screen name="SignupStack" component={SignupStack} />
+      <Stack.Navigator >
+        <Stack.Screen name="MainNavigator" component={MainNavigator} options={{ headerShown: false }}/>
+        <Stack.Screen name="SignupStack" component={SignupStack} options={{ headerShown: false }}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

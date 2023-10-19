@@ -56,6 +56,8 @@ const Otp = () => {
         <Text style={styles.title}>Enter code</Text>
         <Text style={styles.resend} onPress={handleSubmit(resendPress)}>Resend code</Text>
       </View>
+      <Text style={styles.confirm1}>Kindly fill the exact username that you have filled while signup</Text>
+
       <View style={styles.button2}>
       <CustomInput
         name= "username"
@@ -71,11 +73,11 @@ const Otp = () => {
         control={control}
         rules={{required: 'Code is required'}}
         placeholder='Enter the confirmation code'
-        keyboardType='nueric'/>
+        keyboardType='numeric'/>
         </View>
   
       <View style={styles.header}>
-        <Text style={styles.confirm}>We have sent the OPT to your registered number, Please do not share the OTP with anyone</Text>
+        <Text style={styles.confirm}>We have sent the OTP to your registered email address. Please do not share the OTP with anyone</Text>
       </View>
       <View style={styles.button2}>
       <CustomButton text = "Confirm" bgColor="#B51E71" onPress={handleSubmit(handleVerifyOTP)}/>
@@ -89,7 +91,7 @@ const Otp = () => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 150,
+    paddingTop: 100,
     
   },
   button2: {
@@ -185,6 +187,13 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     fontFamily: 'Poppins',
     paddingTop: 30
+  },
+  confirm1: {
+    fontSize: 14,
+    color: '#7B6F72',
+    paddingLeft: 16,
+    fontFamily: 'Poppins',
+    
   },
   resend: {
     fontSize: 14,

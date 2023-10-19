@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect,useState } from 'react';
 import { View, Text, Alert, StyleSheet, BackHandler, Dimensions, TouchableOpacity, Linking, Image, Pressable, ImageBackground, } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -13,6 +13,7 @@ const EventDesc = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const { events } = route.params;
+  const [userId, setUserId] = useState('');
 
   const openVideoUrl = (video_url) => {
     Linking.openURL(video_url).catch((error) => {
@@ -43,6 +44,33 @@ const EventDesc = () => {
     } else {
       // For iOS, permission is not required
       return true;
+    }
+  };
+
+  const handleRegister = async () => {
+    try {
+      // Assuming you have an API endpoint for event registration
+      const response = await fetch('https://hk1630uulc.execute-api.us-east-1.amazonaws.com/Dev/event-registration', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: userId,          // Assuming 'userId' is the user ID field in the user table
+          id: events.id,      // Assuming 'id' is the event ID field in the event table
+        }),
+      });
+
+      if (response.ok) {
+        // Registration successful, you can handle the response or navigate to another screen
+        console.log('User registered successfully for the event');
+      } else {
+        // Registration failed, handle the error
+        console.error('Error registering for event:', response.status);
+      }
+    } catch (error) {
+      console.error('Error registering for event:', error);
+      // Handle the error
     }
   };
 
@@ -192,7 +220,7 @@ const EventDesc = () => {
 
         <Pressable
           style={styles.button}
-          
+          onPress={handleRegister} 
         >
           <Text style={styles.buttonText}>Register</Text>
         </Pressable>

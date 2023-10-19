@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Alert, BackHandler, Image, StyleSheet, TextInput } from 'react-native';
 import { ImageBackground } from 'react-native';
 import CustomButton from './../components/CustomButton';
+import DatePicker from 'react-native-datepicker';
 
 const BasicDetail = ({ navigation, route }) => {
   const [collegeRollNo, setCollegeRollNo] = useState('');
@@ -15,32 +16,33 @@ const BasicDetail = ({ navigation, route }) => {
   const [phone, setPhone] = useState('');
   const [altPhone, setAltPhone] = useState('');
   const [basicDetailResponse, setBasicDetailResponse] = useState(null);
+  const [selectedDate, setSelectedDate] = useState('');
 
-  useEffect(() => {
-    const backAction = () => {
-      Alert.alert(
-        'Confirm Exit',
-        'Do you really want to Exit',
-        [
-          {
-            text: 'Cancel',
-            onPress: () => null,
-            style: 'cancel',
-          },
-          { text: 'OK', onPress: () => navigation.navigate('Discover') },
-        ],
-        { cancelable: false }
-      );
-      return true;
-    };
+  // useEffect(() => {
+  //   const backAction = () => {
+  //     Alert.alert(
+  //       'Confirm Exit',
+  //       'Do you really want to Exit',
+  //       [
+  //         {
+  //           text: 'Cancel',
+  //           onPress: () => null,
+  //           style: 'cancel',
+  //         },
+  //         { text: 'OK', onPress: () => navigation.navigate('Discover') },
+  //       ],
+  //       { cancelable: false }
+  //     );
+  //     return true;
+  //   };
 
-    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+  //   const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
 
-    return () => backHandler.remove();
-  }, []);
+  //   return () => backHandler.remove();
+  // }, []);
 
   const saveUserProfile = async () => {
-    if (!collegeName || !passingYear || !collegeRollNo || !age || !name || !email || !dateOfBirth || !phone) {
+    if (!collegeName || !passingYear || !collegeRollNo || !age  || !dateOfBirth ) {
       Alert.alert('Incomplete Fields', 'Please complete all the fields.');
     } else {
       try {
@@ -58,8 +60,7 @@ const BasicDetail = ({ navigation, route }) => {
             dateOfBirth,
             phone,
             altPhone,
-            name,
-            email,
+            
           }),
         });
 
@@ -102,20 +103,7 @@ const BasicDetail = ({ navigation, route }) => {
         <Text style={styles.greetings}>
           Hey there, Please complete your profile, these data will be used and check during your entry.
         </Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Name"
-          placeholderTextColor="#A9A9A9"
-          value={name}
-          onChangeText={(text) => setName(text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          placeholderTextColor="#A9A9A9"
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-        />
+        
 
         <TextInput
           style={styles.input}

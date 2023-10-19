@@ -1,15 +1,18 @@
-import React,{useEffect} from 'react';
+import React,{useEffect,useState} from 'react';
 import { View, Alert, BackHandler,Text, StyleSheet, Dimensions, TouchableOpacity, Linking, Image, Pressable,  ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useRoute } from '@react-navigation/native';
+import RNFS from 'react-native-fs';
+import { PermissionsAndroid, Platform } from 'react-native';
 const windowHeight = Dimensions.get('window').height;
 
 const DisplayEventDesc = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { event } = route.params;
+  const { events } = route.params;
+  const [userId, setUserId] = useState('');
 
   const openVideoUrl = (video_url) => {
     Linking.openURL(video_url).catch((error) => {
@@ -42,6 +45,33 @@ const DisplayEventDesc = () => {
 
     return () => backHandler.remove();
   }, []);
+
+  const handleRegister = async () => {
+    try {
+      // Assuming you have an API endpoint for event registration
+      const response = await fetch('https://hk1630uulc.execute-api.us-east-1.amazonaws.com/Dev/event-registration', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: userId,          // Assuming 'userId' is the user ID field in the user table
+          id: events.id,      // Assuming 'id' is the event ID field in the event table
+        }),
+      });
+
+      if (response.ok) {
+        // Registration successful, you can handle the response or navigate to another screen
+        console.log('User registered successfully for the event');
+      } else {
+        // Registration failed, handle the error
+        console.error('Error registering for event:', response.status);
+      }
+    } catch (error) {
+      console.error('Error registering for event:', error);
+      // Handle the error
+    }
+  };
 
   const requestWriteExternalStoragePermission = async () => {
     if (Platform.OS === 'android') {
@@ -131,7 +161,7 @@ const DisplayEventDesc = () => {
         </ScrollView>
         <View style={styles.gap} />
 
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('BasicDetail')}>
+        <TouchableOpacity style={styles.button} onPress={handleRegister} >
           <Text style={styles.buttonText}>Register</Text>
         </TouchableOpacity>
        

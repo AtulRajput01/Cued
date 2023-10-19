@@ -167,7 +167,7 @@ const renderDisplayedEventItem = ({ item , index}) => {
                     <Text style={styles.divider}>II</Text>
                     <Text style={styles.topText3}>{item.eventDate}</Text>
                     </View>
-                    <Pressable onPress={() => navigation.navigate('DisplayEventDesc', { event: item })} style={styles.topbutton}>
+                    <Pressable onPress={() => navigation.navigate('EventDesc', { events: item })} style={styles.topbutton}>
                       <Text style={styles.topbuttonText}>Register before {item.eventDate}</Text>
                     </Pressable>
                   </View> 
