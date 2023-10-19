@@ -56,8 +56,8 @@ const EventDesc = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          userId: userId,          // Assuming 'userId' is the user ID field in the user table
-          eventId: events.id,      // Assuming 'id' is the event ID field in the event table
+          id: userId,          // Assuming 'userId' is the user ID field in the user table
+          id: events.id,      // Assuming 'id' is the event ID field in the event table
         }),
       });
 
