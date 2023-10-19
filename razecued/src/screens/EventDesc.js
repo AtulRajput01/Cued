@@ -50,7 +50,7 @@ const EventDesc = () => {
   const handleRegister = async () => {
     try {
       // Assuming you have an API endpoint for event registration
-      const response = await fetch('your_backend_api/register', {
+      const response = await fetch('https://hk1630uulc.execute-api.us-east-1.amazonaws.com/Dev/event-registration', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
