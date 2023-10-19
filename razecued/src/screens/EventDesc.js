@@ -13,6 +13,7 @@ const EventDesc = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const { events } = route.params;
+  const [userId, setUserId] = useState('');
 
   const openVideoUrl = (video_url) => {
     Linking.openURL(video_url).catch((error) => {
@@ -43,6 +44,33 @@ const EventDesc = () => {
     } else {
       // For iOS, permission is not required
       return true;
+    }
+  };
+
+  const handleRegister = async () => {
+    try {
+      // Assuming you have an API endpoint for event registration
+      const response = await fetch('your_backend_api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: userId,          // Assuming 'userId' is the user ID field in the user table
+          eventId: events.id,      // Assuming 'id' is the event ID field in the event table
+        }),
+      });
+
+      if (response.ok) {
+        // Registration successful, you can handle the response or navigate to another screen
+        console.log('User registered successfully for the event');
+      } else {
+        // Registration failed, handle the error
+        console.error('Error registering for event:', response.status);
+      }
+    } catch (error) {
+      console.error('Error registering for event:', error);
+      // Handle the error
     }
   };
 
