@@ -56,7 +56,7 @@ const EventDesc = () => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            eventData: events, // Send the entire events object or specific fields you need for registration
+            eventData: events.id, // Send the entire events object or specific fields you need for registration
             // Add any other required parameters for registration
           }),
         }
