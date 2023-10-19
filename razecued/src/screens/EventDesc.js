@@ -7,20 +7,19 @@ import { useRoute } from '@react-navigation/native';
 import RNFS from 'react-native-fs';
 import { PermissionsAndroid, Platform } from 'react-native';
 
-
 const windowHeight = Dimensions.get('window').height;
 
 const EventDesc = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const { events } = route.params;
-  
+
   const openVideoUrl = (video_url) => {
     Linking.openURL(video_url).catch((error) => {
       console.error('Error opening video URL:', error);
     });
   };
-  
+
   const requestWriteExternalStoragePermission = async () => {
     if (Platform.OS === 'android') {
       try {
@@ -44,6 +43,34 @@ const EventDesc = () => {
     } else {
       // For iOS, permission is not required
       return true;
+    }
+  };
+
+  const registerForEvent = async () => {
+    try {
+      const response = await fetch(
+        'https://hk1630uulc.execute-api.us-east-1.amazonaws.com/Dev/event-registration',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            eventData: events, // Send the entire events object or specific fields you need for registration
+            // Add any other required parameters for registration
+          }),
+        }
+      );
+
+      if (response.ok) {
+        // Registration successful
+        console.log('Registration successful');
+      } else {
+        // Handle registration error
+        console.error('Registration failed');
+      }
+    } catch (error) {
+      console.error('Error during registration:', error);
     }
   };
   
