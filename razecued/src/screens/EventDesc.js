@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect,useState } from 'react';
 import { View, Text, Alert, StyleSheet, BackHandler, Dimensions, TouchableOpacity, Linking, Image, Pressable, ImageBackground, } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -220,7 +220,7 @@ const EventDesc = () => {
 
         <Pressable
           style={styles.button}
-          
+          onPress={handleRegister} 
         >
           <Text style={styles.buttonText}>Register</Text>
         </Pressable>
