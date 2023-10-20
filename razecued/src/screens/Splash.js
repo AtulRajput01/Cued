@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, Text} from 'react-native';
+import { View, StyleSheet, Image, Text } from 'react-native';
 import { ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import ViewPropTypes from 'deprecated-react-native-prop-types';   
+
 export default class Splash extends Component {
   constructor(props) {
     super(props);
@@ -17,12 +17,12 @@ export default class Splash extends Component {
 
   render() {
     return (
-
       <ImageBackground
-      source={require('../../assets/images/BasicDetailsbg.jpg')} 
-      style={styles.backgroundImage}>
-      <View style={styles.container}>
-      <View style={styles.row}>
+        source={require('../../assets/images/BasicDetailsbg.jpg')}
+        style={styles.backgroundImage}
+      >
+        <View style={styles.container}>
+          <View style={styles.row}>
             <Image
               source={require('../../assets/images/C.png')} // Replace with your first PNG image path
               style={styles.image}
@@ -32,9 +32,8 @@ export default class Splash extends Component {
               style={styles.image}
             />
           </View>
-          
-      </View>
-      <Text style={styles.bottomText}>by Razespace</Text>
+        </View>
+        <Text style={styles.bottomText}>by Razespace</Text>
       </ImageBackground>
     );
   }
@@ -43,30 +42,29 @@ export default class Splash extends Component {
 const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
-    resizeMode: 'cover'
+    resizeMode: 'cover',
   },
   container: {
     flex: 1,
-    justifyContent: 'center', 
-    alignItems: 'center', 
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   row: {
     flexDirection: 'row',
-    alignItems: 'center', 
+    alignItems: 'center',
   },
   image: {
     width: 100,
-    height: 100, 
-    resizeMode: 'contain', 
-    margin: 8, 
+    height: 100,
+    resizeMode: 'contain',
+    margin: 8,
   },
   bottomText: {
-    
     fontSize: 20,
-    fontWeight: '500', 
-    color: '#000000', 
+    fontWeight: '500',
+    color: '#000000',
     fontFamily: 'Poppins',
     alignSelf: 'center',
-    marginBottom: 40
+    marginBottom: 40,
   },
 });

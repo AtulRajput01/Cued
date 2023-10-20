@@ -93,7 +93,7 @@ const renderRecommendedEventItem = ({ item }) => (
     <View style={styles.bottomContentContainer}>
       <View style={styles.greyBox}>
         <Image
-          source={require('../../assets/images/poster.png')} // Replace 'image' with the actual image URL key in your API data
+          source={{ uri: item.eventPoster }}  // Replace 'image' with the actual image URL key in your API data
           style={{ flex: 1, width: null, height: null }}
           resizeMode="cover"
         />
@@ -156,7 +156,7 @@ const renderDisplayedEventItem = ({ item , index}) => {
       ]}
     >
           <ImageBackground 
-            source={require('../../assets/images/poster.png')}
+            source={{ uri: item.eventPoster }} 
             style={styles.containerItem}
             resizeMode="cover">
               
