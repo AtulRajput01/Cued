@@ -5,8 +5,6 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { ImageBackground } from 'react-native';
 
-
-
 const windowWidth = Dimensions.get('window').width;
 
 const RegisteredEvents = () => {
@@ -42,7 +40,7 @@ const RegisteredEvents = () => {
     }
 
     return events.map((event) => (
-      <View key={event.eventId} style={styles.outerContainer}>
+      <View key={event.id} style={styles.outerContainer}>
         <View style={styles.grayContainer}>
           <Image source={{ uri: event.eventPoster }} style={styles.image} />
         </View>
@@ -52,151 +50,43 @@ const RegisteredEvents = () => {
           </Pressable>
           <Text style={styles.eventDesc}>{event.eventDescription}</Text>
         </View>
-        {/* Add your other components here based on the event data */}
+        <View style={styles.row}>
+          {/* Adjust the button styling based on your requirements */}
+          <Pressable style={styles.button1}>
+            <Text style={styles.buttonText1}>{event.popularity} registrations</Text>
+          </Pressable>
+          <Pressable style={styles.button2}>
+            <Text style={styles.buttonText1}>{event.eventDate}</Text>
+          </Pressable>
+          {/* Add more buttons as needed for other attributes */}
+        </View>
       </View>
     ));
   };
 
   return (
-
     <ImageBackground
-    source={require('../../assets/images/registeredbg.jpg')} 
+      source={require('../../assets/images/registeredbg.jpg')}
       style={styles.backgroundImage}>
-    <View style={styles.container}>
-      <View style={styles.header}>
-      <Pressable onPress={() => navigation.navigate('Home')}>
-      <View style={styles.back}>
-      <Image source={require('../../assets/images/arrow_left.png')} style={styles.arrowImage}  />
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Pressable onPress={() => navigation.navigate('Home')}>
+            <View style={styles.back}>
+              <Image
+                source={require('../../assets/images/arrow_left.png')}
+                style={styles.arrowImage}
+              />
+            </View>
+          </Pressable>
+          <Text style={styles.text}>Registered Events</Text>
+          <View style={styles.notif}>
+            <Image source={require('../../assets/images/bell.png')} style={styles.arrowImage} />
+          </View>
         </View>
-        </Pressable>
-        <Text style={styles.text}>Registered Events</Text>
-        <View style={styles.notif}>
-        <Image source={require('../../assets/images/bell.png')} style={styles.arrowImage}  />
-        </View>
+        <ScrollView style={styles.scrollContainer}>
+          <View style={styles.contentContainer}>{renderEvents()}</View>
+        </ScrollView>
       </View>
-      <ScrollView style={styles.scrollContainer}>
-        <View style={styles.contentContainer}>
-          <View style={styles.outerContainer}>
-            <View style={styles.grayContainer}>
-            <Image source={require('../../assets/images/poster.png')} style={styles.image} />
-            </View>
-            <View>
-            <Pressable onPress={() => navigation.navigate('EventDesc')}>
-          <Text style={styles.eventName}>Event Name</Text>
-        </Pressable>
-              <Text style={styles.eventDesc}>Lorem ipsum dolor sit amet consectetur. Et ut aliquam pellentesque auctor ut commodo praesent.</Text>
-            </View>
-            <View style={styles.row}>
-              <Pressable style={styles.button1}>
-                <Text style={styles.buttonText1}>200 registrations</Text>
-              </Pressable>
-              <Pressable style={styles.button2}>
-                <Text style={styles.buttonText1}>20th-25thdec</Text>
-              </Pressable>
-              <Pressable style={styles.button2}>
-                <Text style={styles.buttonText1}>Rs.500/person</Text>
-              </Pressable>
-              <Pressable style={styles.button2}>
-                <Text style={styles.buttonText1}>club event</Text>
-              </Pressable>
-              <Pressable style={styles.button2}>
-                <Text style={styles.buttonText1}>90km</Text>
-              </Pressable>
-          </View>
-          </View>
-
-          {/* Second Container */}
-          <View style={styles.outerContainer}>
-            <View style={styles.grayContainer}>
-            <Image source={require('../../assets/images/poster.png')} style={styles.image} />
-            </View>
-            <View>
-            <Pressable onPress={() => navigation.navigate('EventDesc')}>
-          <Text style={styles.eventName}>Event Name</Text>
-        </Pressable>
-              <Text style={styles.eventDesc}>Lorem ipsum dolor sit amet consectetur. Et ut aliquam pellentesque auctor ut commodo praesent.</Text>
-            </View>
-            <View style={styles.row}>
-              <Pressable style={styles.button1}>
-                <Text style={styles.buttonText1}>200 registrations</Text>
-              </Pressable>
-              <Pressable style={styles.button2}>
-                <Text style={styles.buttonText1}>20th-25thdec</Text>
-              </Pressable>
-              <Pressable style={styles.button2}>
-                <Text style={styles.buttonText1}>Rs.500/person</Text>
-              </Pressable>
-              <Pressable style={styles.button2}>
-                <Text style={styles.buttonText1}>club event</Text>
-              </Pressable>
-              <Pressable style={styles.button2}>
-                <Text style={styles.buttonText1}>90km</Text>
-              </Pressable>
-          </View>
-          </View>
-
-          <View style={styles.outerContainer}>
-            <View style={styles.grayContainer}>
-            <Image source={require('../../assets/images/poster.png')} style={styles.image} />
-            </View>
-            <View>
-            <Pressable onPress={() => navigation.navigate('EventDesc')}>
-          <Text style={styles.eventName}>Event Name</Text>
-        </Pressable>
-              <Text style={styles.eventDesc}>Lorem ipsum dolor sit amet consectetur. Et ut aliquam pellentesque auctor ut commodo praesent.</Text>
-            </View>
-            <View style={styles.row}>
-              <Pressable style={styles.button1}>
-                <Text style={styles.buttonText1}>200 registrations</Text>
-              </Pressable>
-              <Pressable style={styles.button2}>
-                <Text style={styles.buttonText1}>20th-25thdec</Text>
-              </Pressable>
-              <Pressable style={styles.button2}>
-                <Text style={styles.buttonText1}>Rs.500/person</Text>
-              </Pressable>
-              <Pressable style={styles.button2}>
-                <Text style={styles.buttonText1}>club event</Text>
-              </Pressable>
-              <Pressable style={styles.button2}>
-                <Text style={styles.buttonText1}>90km</Text>
-              </Pressable>
-          </View>
-          </View>
-
-          <View style={styles.outerContainer}>
-            <View style={styles.grayContainer}>
-            <Image source={require('../../assets/images/poster.png')} style={styles.image} />
-            </View>
-            <View>
-            <Pressable onPress={() => navigation.navigate('EventDesc')}>
-          <Text style={styles.eventName}>Event Name</Text>
-        </Pressable>
-              <Text style={styles.eventDesc}>Lorem ipsum dolor sit amet consectetur. Et ut aliquam pellentesque auctor ut commodo praesent.</Text>
-            </View>
-            <View style={styles.row}>
-              <Pressable style={styles.button1}>
-                <Text style={styles.buttonText1}>200 registrations</Text>
-              </Pressable>
-              <Pressable style={styles.button2}>
-                <Text style={styles.buttonText1}>20th-25thdec</Text>
-              </Pressable>
-              <Pressable style={styles.button2}>
-                <Text style={styles.buttonText1}>Rs.500/person</Text>
-              </Pressable>
-              <Pressable style={styles.button2}>
-                <Text style={styles.buttonText1}>club event</Text>
-              </Pressable>
-              <Pressable style={styles.button2}>
-                <Text style={styles.buttonText1}>90km</Text>
-              </Pressable>
-          </View>
-          </View>
-
-          
-        </View>
-      </ScrollView>
-    </View>
     </ImageBackground>
   );
 };
