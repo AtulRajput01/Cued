@@ -14,7 +14,7 @@ const EventDesc = () => {
   const route = useRoute();
   const { events } = route.params;
   const [userId, setUserId] = useState('');
-
+  const [registrationStatus, setRegistrationStatus] = useState('Register');
   const openVideoUrl = (video_url) => {
     Linking.openURL(video_url).catch((error) => {
       console.error('Error opening video URL:', error);
@@ -63,6 +63,7 @@ const EventDesc = () => {
 
       if (response.ok) {
         // Registration successful, you can handle the response or navigate to another screen
+        setRegistrationStatus('Registered');
         console.log('User registered successfully for the event');
       } else {
         // Registration failed, handle the error
@@ -222,7 +223,7 @@ const EventDesc = () => {
           style={styles.button}
           onPress={handleRegister} 
         >
-          <Text style={styles.buttonText}>Register</Text>
+          <Text style={styles.buttonText}>{registrationStatus}</Text>
         </Pressable>
       </View>
     </ImageBackground>
