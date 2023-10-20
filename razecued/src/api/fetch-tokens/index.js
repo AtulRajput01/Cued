@@ -1,61 +1,49 @@
 const AWS = require('aws-sdk');
+const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
-AWS.config.update({
-  region: 'us-east-1'
-});
-
-const dynamoDBTableName = 'users'; 
-const dynamodb = new AWS.DynamoDB.DocumentClient();
-const userPath = '/users';
-
-exports.handler = async (event) => {
+exports.handler = async () => {
   try {
-    const { httpMethod, path } = event;
+    // Step 1: Retrieve the list of event IDs
+    const eventIds = await getEventIds();
 
-    if (httpMethod === 'GET' && path === '/api/fetch-tokens') {
-      // Implement the logic to fetch token data from your database
-      const tokenData = await fetchTokenData();
+    // Step 2: Fetch the details of each event
+    const eventsDetails = await Promise.all(eventIds.map(async (eventId) => {
+      return await getEventDetails(eventId);
+    }));
 
-      return {
-        statusCode: 200,
-        body: JSON.stringify({
-          success: true,
-          message: 'Tokens fetched successfully',
-          data: tokenData,
-        }),
-      };
-    } else {
-      // Handle unknown or unsupported API endpoints
-      return {
-        statusCode: 404,
-        body: JSON.stringify({ message: 'Not Found' }),
-      };
-    }
+    // Step 3: Return the list of events to the client
+    return buildResponse(200, { events: eventsDetails });
   } catch (error) {
-    console.error(error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({
-        success: false,
-        message: 'Internal server error.',
-      }),
-    };
+    console.error('Error fetching events:', error);
+    return buildResponse(500, 'Internal server error');
   }
 };
 
-// Function to fetch token data from the database
-const fetchTokenData = async () => {
-  try {
-    // Implement logic to retrieve token data from your database
-    // For example, query your DynamoDB table
-    const params = {
-      TableName: users, 
-    };
+async function getEventIds() {
+  const params = {
+    TableName: 'EventsUsers-uvz42cvcjncbnoq7sctsiqiqxy-dev',
+  };
 
-    const result = await dynamodb.scan(params).promise();
-    return result.Items; // Assuming your token data is stored as items in the table
-  } catch (error) {
-    console.error('Error fetching token data:', error);
-    throw error;
-  }
-};
+  const result = await dynamoDB.scan(params).promise();
+  return result.Items.map(item => item.eventId);
+}
+
+async function getEventDetails(eventId) {
+  const params = {
+    TableName: 'Events-uvz42cvcjncbnoq7sctsiqiqxy-dev',
+    Key: { id: eventId },
+  };
+
+  const result = await dynamoDB.get(params).promise();
+  return result.Item;
+}
+
+function buildResponse(statusCode, data) {
+  return {
+    statusCode,
+    body: JSON.stringify({
+      success: statusCode === 200,
+      data,
+    }),
+  };
+}
