@@ -20,8 +20,10 @@ import { ImageBackground } from 'react-native';
 import { sortBy } from 'lodash';
 import DisplayEventDesc from './DisplayEventDesc';
 import Register from './Register';
+import LinearGradient from 'react-native-linear-gradient';
+import {createShimmerPlaceholder} from 'react-native-shimmer-placeholder';
 
-
+const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient);
 const windowWidth = Dimensions.get('window').width;
 const containerWidth = windowWidth * 0.72; // Width of the container item
 const containerSpacing = (windowWidth - containerWidth) / 2; // Spacing between containers
@@ -34,6 +36,10 @@ const Discover = () => {
   const [recommendedEvents, setRecommendedEvents] = useState([]);
   const [displayedEvents, setDisplayedEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+
+   // Shimmer control states
+   const [recommendedShimmer, setRecommendedShimmer] = useState(false);
+   const [displayedShimmer, setDisplayedShimmer] = useState(true);
    
   useEffect(() => {
     const backAction = () => {
@@ -67,7 +73,9 @@ const Discover = () => {
     fetch('https://hk1630uulc.execute-api.us-east-1.amazonaws.com/Dev/fetch-events')
     .then((response) => response.json())
     .then((data) => {
+      
       setRecommendedEvents(data.data.verticalEvents);
+      setRecommendedShimmer(true);
       setLoading(false);
     })
     .catch((error) => {
@@ -80,6 +88,7 @@ const Discover = () => {
     .then((response) => response.json())
     .then((data) => {
       setDisplayedEvents(data.data.horizontalEvents);
+      
     })
     .catch((error) => {
       console.error('Error fetching displayed events:', error);
@@ -90,6 +99,8 @@ const Discover = () => {
 
 // Render a single recommended event item
 const renderRecommendedEventItem = ({ item }) => (
+  
+  <ShimmerPlaceHolder visible={recommendedShimmer} style={styles.bottomContainer}>
   <Pressable
     style={styles.bottomContainer}
     onPress={() => navigation.navigate('EventDesc', { events: item })}
@@ -121,9 +132,12 @@ const renderRecommendedEventItem = ({ item }) => (
       </View>
     </View>
   </Pressable>
+  </ShimmerPlaceHolder>
 );
 // Render a single display event item
 const renderDisplayedEventItem = ({ item , index}) => { 
+
+  
   const inputRange = [
     (index - 1) * containerWidth,
     index * containerWidth,
@@ -547,7 +561,7 @@ const AppStackNavigator = () => {
   return (
     <Stack.Navigator>
       {/* Home screen is the tab navigator */}
-      <Stack.Screen name="Home" component={AppNavigator} options={{ headerShown: false }} />
+      <Stack.Screen name="Discover" component={AppNavigator} options={{ headerShown: false }} />
 
       {/* EventDesc screen */}
       <Stack.Screen name="EventDesc" component={EventDesc} options={{ headerShown: false }} />

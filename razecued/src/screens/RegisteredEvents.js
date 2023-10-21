@@ -4,13 +4,18 @@ import EventDesc from './EventDesc';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { ImageBackground } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+import {createShimmerPlaceholder} from 'react-native-shimmer-placeholder';
 
+const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient);
 const windowWidth = Dimensions.get('window').width;
 
 const RegisteredEvents = () => {
   const navigation = useNavigation();
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  
 
   useEffect(() => {
     fetchEvents();
@@ -23,6 +28,7 @@ const RegisteredEvents = () => {
       );
       const data = await response.json();
       setEvents(data.data.events || []);
+      
       setLoading(false);
     } catch (error) {
       console.error('Error fetching events:', error);
@@ -40,6 +46,8 @@ const RegisteredEvents = () => {
     }
 
     return events.map((item) => (
+
+      
       <View key={item.id} style={styles.outerContainer}>
         <View style={styles.grayContainer}>
           <Image source={{ uri: item.eventPoster }} style={styles.image} />
@@ -70,6 +78,7 @@ const RegisteredEvents = () => {
           {/* Add more buttons as needed for other attributes */}
         </View>
       </View>
+      
     ));
   };
 
