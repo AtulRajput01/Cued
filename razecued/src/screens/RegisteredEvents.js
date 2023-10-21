@@ -45,7 +45,7 @@ const RegisteredEvents = () => {
           <Image source={{ uri: item.eventPoster }} style={styles.image} />
         </View>
         <View>
-          <Pressable onPress={() => navigation.navigate('EventDesc')}>
+          <Pressable onPress={() => navigation.navigate('EventDesc',{events:item})}>
             <Text style={styles.eventName}>{item.eventName}</Text>
           </Pressable>
           <Text style={styles.eventDesc}>{item.eventDescription}</Text>
@@ -57,6 +57,15 @@ const RegisteredEvents = () => {
           </Pressable>
           <Pressable style={styles.button2}>
             <Text style={styles.buttonText1}>{item.eventDate}</Text>
+          </Pressable>
+          <Pressable style={styles.button2}>
+            <Text style={styles.buttonText1}>Free</Text>
+          </Pressable>
+          <Pressable style={styles.button2}>
+            <Text style={styles.buttonText1}>{item.__typename}</Text>
+          </Pressable>
+          <Pressable style={styles.button2}>
+            <Text style={styles.buttonText1}>90 km</Text>
           </Pressable>
           {/* Add more buttons as needed for other attributes */}
         </View>
@@ -104,14 +113,21 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    paddingTop: 10
+    paddingTop: 10,
+    marginBottom: 15,
+    alignContent: 'space-around'
   },
   button1: {
     backgroundColor: '#FFF1F8',
     paddingHorizontal: 4,
     paddingVertical: 5,
     borderRadius: 3,
-    marginLeft: 14
+    marginLeft: 14,
+    elevation: 3,
+     shadowColor: '#000',
+     shadowOffset: { width: 0, height: 2 },
+     shadowOpacity: 0.3,
+     shadowRadius: 1,
 
   },
   button2: {
@@ -119,7 +135,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
     paddingVertical: 5,
     borderRadius: 3,
-    marginLeft: 4
+    marginLeft: 4,
+    elevation: 3,
+     shadowColor: '#000',
+     shadowOffset: { width: 0, height: 2 },
+     shadowOpacity: 0.3,
+     shadowRadius: 1,
 
   },
   button3: {
@@ -144,7 +165,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 20,
+   
   },
   text: {
     padding: 10,
@@ -193,9 +214,14 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginLeft: 5,
     width: windowWidth * 0.88,
-    height: 300,
+    height: 'auto',
     flexDirection: 'column',
     alignItems: 'flex-start',
+    elevation: 5,
+     shadowColor: '#000',
+     shadowOffset: { width: 0, height: 2 },
+     shadowOpacity: 0.3,
+     shadowRadius: 4,
 
   },
   grayContainer: {

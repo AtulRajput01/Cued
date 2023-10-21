@@ -15,6 +15,8 @@ const EventDesc = () => {
   const { events } = route.params;
   const [userId, setUserId] = useState('');
   const [registrationStatus, setRegistrationStatus] = useState('Register');
+  
+
   const openVideoUrl = (video_url) => {
     Linking.openURL(video_url).catch((error) => {
       console.error('Error opening video URL:', error);
@@ -63,7 +65,7 @@ const EventDesc = () => {
 
       if (response.ok) {
         // Registration successful, you can handle the response or navigate to another screen
-        setRegistrationStatus('Registered');
+        setRegistrationStatus('Wohoo!,Registered');
         console.log('User registered successfully for the event');
       } else {
         // Registration failed, handle the error
@@ -108,7 +110,7 @@ const EventDesc = () => {
     >
       <View style={styles.container}>
         <ImageBackground
-          source={require('../../assets/images/poster.png')} // Replace with your PNG image
+          source={{ uri: events.eventPoster }}  // Replace with your PNG image
           style={styles.greyBox}
           resizeMode="cover"
         >
@@ -201,7 +203,7 @@ const EventDesc = () => {
             <Text style={styles.eventName2}>After Movie 2022</Text>
             <View style={styles.tileContainer}>
               <Image
-                source={require('../../assets/images/poster.png')}
+                source={{ uri: events.eventPoster }} 
                 style={styles.tileImage}
               />
 
@@ -390,7 +392,7 @@ const styles = StyleSheet.create({
     paddingTop: 0,
   },
   button: {
-    backgroundColor: '#B51E71',
+    backgroundColor: '#B51E71' ,
     alignItems: 'center',
     paddingVertical: 6,
     width: '80%',

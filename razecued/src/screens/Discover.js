@@ -8,9 +8,13 @@ import UserDetail from './Userdetail';
 import EventDesc from './EventDesc';
 import { createStackNavigator } from '@react-navigation/stack';
 import homeIcon from '../../assets/images/home.png';
+import homeIcon1 from '../../assets/images/home1.png';
 import eventIcon from '../../assets/images/events.png';
+import eventIconjpg from '../../assets/images/events.jpg';
+import eventIcon1 from '../../assets/images/events1.png';
 import profileIcon from '../../assets/images/profile.png';
 import tokenIcon from '../../assets/images/token.png';
+import tokenIcon1 from '../../assets/images/token1.png';
 import Token from './Token';
 import { ImageBackground } from 'react-native';
 import { sortBy } from 'lodash';
@@ -30,7 +34,7 @@ const Discover = () => {
   const [recommendedEvents, setRecommendedEvents] = useState([]);
   const [displayedEvents, setDisplayedEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-  
+   
   useEffect(() => {
     const backAction = () => {
       Alert.alert(
@@ -57,7 +61,7 @@ const Discover = () => {
     return () => backHandler.remove();
   }, []);
 
-  
+
   // Simulate fetching data from your Recommended API/Vertical events
   useEffect(() => {
     fetch('https://hk1630uulc.execute-api.us-east-1.amazonaws.com/Dev/fetch-events')
@@ -102,6 +106,7 @@ const renderRecommendedEventItem = ({ item }) => (
         <Text style={styles.bottomText1}>{item.eventName}</Text>
         <Text style={styles.bottomText2}>{item.__typename}</Text>
         <Text style={styles.bottomText3}>5pm</Text>
+        <Text style={styles.bottomText3}>😂😂😂😂</Text>
         <View style={styles.row}>
           <View style={styles.button}>
             <Text style={styles.buttonText}>{item.popularity} registrations</Text>
@@ -211,7 +216,7 @@ const renderDisplayedEventItem = ({ item , index}) => {
           />
             <Image source={require('../../assets/images/filter.png')} style={styles.filterIcon} />
          </View>
-         <View style={styles.gap} />  
+         
          <FlatList
             data={displayedEvents}
             horizontal
@@ -227,9 +232,9 @@ const renderDisplayedEventItem = ({ item , index}) => {
             )}
           />
 
-        <View style={styles.row}>
+        
           <Text style={styles.text2}>Recommended</Text>
-        </View>
+        
         
         <View style={styles.gap} />
         {/* Recommended Events */}
@@ -301,6 +306,7 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'flex-start',
+    
   },
   row1: {
     flexDirection: 'row',
@@ -342,6 +348,7 @@ const styles = StyleSheet.create({
   },
   horizontalContainer: {
     flexDirection: 'row',
+    marginTop: 30
     
   },
   containerItem: {
@@ -349,7 +356,7 @@ const styles = StyleSheet.create({
     width: containerWidth,  
     borderRadius: 5,
    alignItems: 'start',
-    borderRadius: 5,
+    
     height: 170
   },
   innerContainer: {
@@ -373,14 +380,14 @@ const styles = StyleSheet.create({
     color: 'blue',
   },
   gap: {
-    height: 10,
+    height: 5,
   },
   gap1: {
     height: 20,
   },
   bottomContainer: {
     width: windowWidth * 0.9,
-    height: 130,
+    height: 150,
     borderRadius: 8,
     backgroundColor: '#FFFFFF',
      elevation: 5,
@@ -395,8 +402,7 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   horizontalFlatList: {
-    height: 300,
-    marginTop: 10
+    height: 320,
     
   },
   greyBox: {
@@ -559,7 +565,7 @@ const TabBarIcon = ({ focused, icon }) => {
   return (
     <Image
       source={icon}
-      style={[styles.tabIcon, { tintColor: focused ? 'blue' : 'gray' }]}
+      style={[styles.tabIcon]}
     />
   );
 };
@@ -573,16 +579,16 @@ const AppNavigator = () => {
             let iconSource;
             switch (route.name) {
               case 'Home':
-                iconSource = focused ? homeIcon : homeIcon;
+                iconSource = focused ? homeIcon : homeIcon1;
                 break;
               case 'Events':
-                iconSource = focused ? eventIcon : eventIcon;
+                iconSource = focused ? eventIconjpg : eventIcon1;
                 break;
               case 'Profile':
                 iconSource = focused ? profileIcon : profileIcon;
                 break;
               case 'Token':
-                iconSource = focused ? tokenIcon : tokenIcon;
+                iconSource = focused ? tokenIcon : tokenIcon1;
                 break;
               default:
                 break;
