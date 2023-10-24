@@ -18,7 +18,7 @@ import tokenIcon1 from '../../assets/images/token1.png';
 import Token from './Token';
 import { ImageBackground } from 'react-native';
 import { sortBy } from 'lodash';
-import DisplayEventDesc from './DisplayEventDesc';
+
 import Register from './Register';
 import LinearGradient from 'react-native-linear-gradient';
 import {createShimmerPlaceholder} from 'react-native-shimmer-placeholder';
@@ -565,7 +565,6 @@ const AppStackNavigator = () => {
 
       {/* EventDesc screen */}
       <Stack.Screen name="EventDesc" component={EventDesc} options={{ headerShown: false }} />
-      <Stack.Screen name="DisplayEventDesc" component={DisplayEventDesc} options={{ headerShown: false }} />
       <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
 
       

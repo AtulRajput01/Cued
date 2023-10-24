@@ -12,7 +12,7 @@ import EventDesc from './EventDesc';
 import Token from './Token';
 import BasicDetails2 from './BasicDetails2';
 import Otp from './Otp';
-import DisplayEventDesc from './DisplayEventDesc';
+
 import Register from './Register';
 
 const Stack = createStackNavigator();
@@ -30,7 +30,7 @@ const MainNavigator = () => {
       <Stack.Screen name="Token" component={Token} options={{ headerShown: false }} />
       <Stack.Screen name="BasicDetails2" component={BasicDetails2} options={{ headerShown: false }} />
       <Stack.Screen name="Otp" component={Otp} options={{ headerShown: false }}/>
-      <Stack.Screen name="DisplayEventDesc" component={DisplayEventDesc} options={{ headerShown: false }}/>
+      
       <Stack.Screen name = "Register" component={Register} options={{ headerShown: false }}/>
     </Stack.Navigator>
   );
