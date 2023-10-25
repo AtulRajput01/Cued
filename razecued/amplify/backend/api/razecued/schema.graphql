@@ -1,4 +1,8 @@
-type Events @model @auth(rules: [{allow: public}, {allow: owner}]) {
+type Events
+  @model
+  @auth(rules: [
+    { allow: private, operations: [read, create, update, delete] } # Allow only authenticated users (owners) to read, create, update, and delete events
+  ]) {
   id: ID!
   eventName: String!
   eventOrganizer: String!
@@ -8,11 +12,15 @@ type Events @model @auth(rules: [{allow: public}, {allow: owner}]) {
   registrationStatus: Boolean!
   popularity: Int
   collegeName: String!
-  Users: [Users] @manyToMany(relationName: "EventsUsers")
   eventLocation: String!
+  Users: [EventUser] @connection(name: "EventsUsers")
 }
 
-type Users @model @auth(rules: [{allow: public, operations: [read]}, {allow: private}, {allow: owner}]) {
+type Users
+  @model
+  @auth(rules: [
+    { allow: private, operations: [read, create, update, delete] } # Allow only authenticated users (owners) to read, create, update, and delete users
+  ]) {
   id: ID!
   user_collId: String!
   user_collName: String!
@@ -21,6 +29,20 @@ type Users @model @auth(rules: [{allow: public, operations: [read]}, {allow: pri
   user_gender: String!
   user_phone: AWSPhone!
   user_altPhone: AWSPhone
-  Events: [Events] @manyToMany(relationName: "EventsUsers")
+  Events: [EventUser] @connection(name: "EventsUsers")
 }
- 
+
+type EventUser
+  @model
+  @auth(rules: [
+    { allow: private, operations: [read, create, update, delete] } # Allow only authenticated users (owners) to read, create, update, and delete associations
+  ])
+  @key(fields: ["eventId", "userId"])
+  {
+  id: ID!
+  eventId: ID!
+  userId: ID!
+  eventSecurityGroup: String!
+  userSecurityGroup: String!
+}
+
