@@ -1,79 +1,67 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# RazeCued - Event Management App
 
-# Getting Started
+RazeCued is an advanced event management app designed to streamline the event experience for users. Whether you're an event organizer or an enthusiastic participant, RazeCued offers a comprehensive platform to connect, discover, and engage in a variety of events.
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+## Features
 
-## Step 1: Start the Metro Server
+### User Registration and Authentication
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+- **Secure Authentication:**
+  - Utilizes industry-standard encryption for secure user authentication.
+  - Two-factor authentication (2FA) for an extra layer of security.
 
-To start Metro, run the following command from the _root_ of your React Native project:
+- **User Profiles and Preferences:**
+  - Users can create detailed profiles with personal preferences.
+  - Smart recommendation engine suggests events based on user preferences.
 
-```bash
-# using npm
-npm start
+### Event Exploration
 
-# OR using Yarn
-yarn start
-```
+- **Comprehensive Event Details:**
+  - In-depth event information, including speakers, agenda, and sponsors.
+  - Interactive maps and venue details for seamless navigation.
 
-## Step 2: Start your Application
+- **Real-time Notifications:**
+  - Receive instant updates on event changes or announcements.
+  - Push notifications for subscribed events.
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+### User Interaction
 
-### For Android
+- **Social Integration:**
+  - Connect with other participants through in-app messaging.
+  - Share event highlights on social media directly from the app.
 
-```bash
-# using npm
-npm run android
+- **Interactive Event Calendar:**
+  - Personalized calendars to manage and organize upcoming events.
+  - Sync with device calendars for a seamless experience.
 
-# OR using Yarn
-yarn android
-```
+### Dynamic Event Feed
 
-### For iOS
+- **AI-Powered Event Recommendations:**
+  - Machine learning algorithms analyze user behavior for personalized event suggestions.
+  - Continuous learning to enhance recommendation accuracy over time.
 
-```bash
-# using npm
-npm run ios
+- **Trending Events:**
+  - Stay informed about trending events in your network.
+  - Explore popular and highly rated events.
 
-# OR using Yarn
-yarn ios
-```
+### Tech Stack
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+- **Frontend:**
+  - [React](https://reactjs.org/) - A declarative, efficient, and flexible JavaScript library for building user interfaces.
+  - [React Native](https://reactnative.dev/) - Build mobile apps using React.
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+- **Backend:**
+  - [Node.js](https://nodejs.org/) - Event-driven JavaScript runtime for building scalable network applications.
+  - [Express.js](https://expressjs.com/) - Web application framework for Node.js.
+  - [MongoDB](https://www.mongodb.com/) - NoSQL database for flexible and scalable data storage.
 
-## Step 3: Modifying your App
+- **Deployment and Scalability:**
+  - [AWS](https://aws.amazon.com/) - Cloud services for hosting, scaling, and ensuring high availability.
+  - [Docker](https://www.docker.com/) - Containerization for consistent deployment across environments.
+  - [Kubernetes](https://kubernetes.io/) - Container orchestration for automating deployment, scaling, and management.
 
-Now that you have successfully run the app, let's modify it.
+## Getting Started
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
-
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+1. **Clone the Repository:**
+   ```bash
+   git clone https://github.com/razespace-q/RazeCued-backend.git
