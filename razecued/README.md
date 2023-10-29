@@ -14,6 +14,8 @@ RazeCued is an advanced event management app designed to streamline the event ex
   - Users can create detailed profiles with personal preferences.
   - Smart recommendation engine suggests events based on user preferences.
 
+![Authentication](docs/images/authentication.gif)
+
 ### Event Exploration
 
 - **Comprehensive Event Details:**
@@ -23,6 +25,8 @@ RazeCued is an advanced event management app designed to streamline the event ex
 - **Real-time Notifications:**
   - Receive instant updates on event changes or announcements.
   - Push notifications for subscribed events.
+
+![Event Details](docs/images/event_details.gif)
 
 ### User Interaction
 
@@ -34,6 +38,8 @@ RazeCued is an advanced event management app designed to streamline the event ex
   - Personalized calendars to manage and organize upcoming events.
   - Sync with device calendars for a seamless experience.
 
+![Social Interaction](docs/images/social_interaction.gif)
+
 ### Dynamic Event Feed
 
 - **AI-Powered Event Recommendations:**
@@ -43,6 +49,8 @@ RazeCued is an advanced event management app designed to streamline the event ex
 - **Trending Events:**
   - Stay informed about trending events in your network.
   - Explore popular and highly rated events.
+
+![Event Recommendations](docs/images/event_recommendations.gif)
 
 ### Tech Stack
 
