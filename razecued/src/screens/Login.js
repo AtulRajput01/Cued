@@ -1,21 +1,28 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { View, Alert, Text, Animated, TouchableOpacity, Image, StyleSheet, TextInput, Easing } from 'react-native';
+import { View,Alert, Text, Animated, TouchableOpacity, Image, StyleSheet, Pressable, TextInput, Easing, Keyboard } from 'react-native';
 import { ImageBackground } from 'react-native';
-import { Auth } from 'aws-amplify';
+import CheckBox from 'react-native-check-box';
+import {Amplify} from 'aws-amplify';
+import  {Auth}  from 'aws-amplify';
 import CustomInput from './../components/CustomInput';
 import CustomButton from './../components/CustomButton';
-import { useForm } from 'react-hook-form';
+import {useForm, Controller} from 'react-hook-form';
 import Discover from './Discover';
 
 const Login = () => {
-  const navigation = useNavigation();
-  const {
+ const navigation = useNavigation();
+  const{
     control,
     handleSubmit,
+    formState: {errors},
   } = useForm();
 
   const transY = useRef(new Animated.Value(0));
+  const transYN = useRef(new Animated.Value(0));
+  const transYE = useRef(new Animated.Value(0));
+  const transYP = useRef(new Animated.Value(0));
+  const transYC = useRef(new Animated.Value(0));
 
   const handleFocus = (animatedValue) => {
     Animated.timing(animatedValue, {
@@ -35,10 +42,22 @@ const Login = () => {
       }).start();
     }
   };
-
+  
+  
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [confirmationSent, setConfirmationSent] = useState(false);
+  const [registrationResponse, setRegistrationResponse] = useState(null);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
+
+  const passwordInputType = isPasswordVisible ? 'text' : 'password';
 
   const transX = transY.current.interpolate({
     inputRange: [-35, 0],
@@ -46,7 +65,31 @@ const Login = () => {
     extrapolate: 'clamp',
   });
 
-  const handleRegister = async (data) => {
+  const transXN = transYN.current.interpolate({
+    inputRange: [-35, 0],
+    outputRange: [-20, 0],
+    extrapolate: 'clamp',
+  });
+
+  const transXE = transYE.current.interpolate({
+    inputRange: [-35, 0],
+    outputRange: [-20, 0],
+    extrapolate: 'clamp',
+  });
+
+  const transXP = transYP.current.interpolate({
+    inputRange: [-35, 0],
+    outputRange: [-20, 0],
+    extrapolate: 'clamp',
+  });
+
+  const transXC = transYC.current.interpolate({
+    inputRange: [-35, 0],
+    outputRange: [-20, 0],
+    extrapolate: 'clamp',
+  });
+
+const handleRegister = async (data) => {
     if (isLoading) {
       return;
     }
@@ -56,17 +99,17 @@ const Login = () => {
     try {
       const response = await Auth.signIn(data.username, data.password);
 
-      
+      // Check for an existing session
       const authenticatedUser = await Auth.currentAuthenticatedUser();
 
-      
+      // If the user is authenticated, navigate to the Discover screen
       if (authenticatedUser) {
         console.log('User is already authenticated', authenticatedUser);
         navigation.navigate('Discover');
       } else {
-        
+        // If not authenticated, handle the login logic as usual
         console.log('User successfully logged in', response);
-        
+        // Navigate to the next screen or perform other actions
         navigation.navigate('Discover');
       }
     } catch (e) {
@@ -92,7 +135,6 @@ const Login = () => {
 
     checkSession();
   }, []);
-
 
   return (
     <ImageBackground
