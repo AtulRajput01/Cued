@@ -99,17 +99,17 @@ const handleRegister = async (data) => {
     try {
       const response = await Auth.signIn(data.username, data.password);
 
-      // Check for an existing session
+      
       const authenticatedUser = await Auth.currentAuthenticatedUser();
 
-      // If the user is authenticated, navigate to the Discover screen
+      
       if (authenticatedUser) {
         console.log('User is already authenticated', authenticatedUser);
         navigation.navigate('Discover');
       } else {
-        // If not authenticated, handle the login logic as usual
+        
         console.log('User successfully logged in', response);
-        // Navigate to the next screen or perform other actions
+        
         navigation.navigate('Discover');
       }
     } catch (e) {
