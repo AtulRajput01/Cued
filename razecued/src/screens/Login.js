@@ -1,28 +1,21 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { View,Alert, Text, Animated, TouchableOpacity, Image, StyleSheet, Pressable, TextInput, Easing, Keyboard } from 'react-native';
+import { View, Alert, Text, Animated, TouchableOpacity, Image, StyleSheet, TextInput, Easing } from 'react-native';
 import { ImageBackground } from 'react-native';
-import CheckBox from 'react-native-check-box';
-import {Amplify} from 'aws-amplify';
-import  {Auth}  from 'aws-amplify';
+import { Auth } from 'aws-amplify';
 import CustomInput from './../components/CustomInput';
 import CustomButton from './../components/CustomButton';
-import {useForm, Controller} from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import Discover from './Discover';
 
 const Login = () => {
- const navigation = useNavigation();
-  const{
+  const navigation = useNavigation();
+  const {
     control,
     handleSubmit,
-    formState: {errors},
   } = useForm();
 
   const transY = useRef(new Animated.Value(0));
-  const transYN = useRef(new Animated.Value(0));
-  const transYE = useRef(new Animated.Value(0));
-  const transYP = useRef(new Animated.Value(0));
-  const transYC = useRef(new Animated.Value(0));
 
   const handleFocus = (animatedValue) => {
     Animated.timing(animatedValue, {
@@ -42,22 +35,10 @@ const Login = () => {
       }).start();
     }
   };
-  
-  
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [confirmationSent, setConfirmationSent] = useState(false);
-  const [registrationResponse, setRegistrationResponse] = useState(null);
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-
-  const togglePasswordVisibility = () => {
-    setIsPasswordVisible(!isPasswordVisible);
-  };
-
-  const passwordInputType = isPasswordVisible ? 'text' : 'password';
 
   const transX = transY.current.interpolate({
     inputRange: [-35, 0],
@@ -65,46 +46,52 @@ const Login = () => {
     extrapolate: 'clamp',
   });
 
-  const transXN = transYN.current.interpolate({
-    inputRange: [-35, 0],
-    outputRange: [-20, 0],
-    extrapolate: 'clamp',
-  });
-
-  const transXE = transYE.current.interpolate({
-    inputRange: [-35, 0],
-    outputRange: [-20, 0],
-    extrapolate: 'clamp',
-  });
-
-  const transXP = transYP.current.interpolate({
-    inputRange: [-35, 0],
-    outputRange: [-20, 0],
-    extrapolate: 'clamp',
-  });
-
-  const transXC = transYC.current.interpolate({
-    inputRange: [-35, 0],
-    outputRange: [-20, 0],
-    extrapolate: 'clamp',
-  });
-
-  const handleRegister = async data => {
-
-    if (isLoading){
+  const handleRegister = async (data) => {
+    if (isLoading) {
       return;
     }
 
     setIsLoading(true);
 
-    try{
+    try {
       const response = await Auth.signIn(data.username, data.password);
-      navigation.navigate('Discover');
-    } catch(e){
-      Alert.alert('Oops' , e.message)
+
+      
+      const authenticatedUser = await Auth.currentAuthenticatedUser();
+
+      
+      if (authenticatedUser) {
+        console.log('User is already authenticated', authenticatedUser);
+        navigation.navigate('Discover');
+      } else {
+        
+        console.log('User successfully logged in', response);
+        
+        navigation.navigate('Discover');
+      }
+    } catch (e) {
+      Alert.alert('Oops', e.message);
     }
+
     setIsLoading(false);
   };
+
+  useEffect(() => {
+    // Check for an existing session when the component mounts
+    const checkSession = async () => {
+      try {
+        const authenticatedUser = await Auth.currentAuthenticatedUser();
+        console.log('User on Mount:', authenticatedUser);
+        if (authenticatedUser) {
+          navigation.navigate('Discover');
+        }
+      } catch (error) {
+        console.error('Session Check Error:', error);
+      }
+    };
+
+    checkSession();
+  }, []);
 
 
   return (
