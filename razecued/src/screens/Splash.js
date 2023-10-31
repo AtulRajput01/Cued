@@ -11,7 +11,7 @@ export default class Splash extends Component {
   componentDidMount() {
     // Delay navigation to BasicDetail screen by 3 seconds (3000 milliseconds)
     setTimeout(() => {
-      this.props.navigation.replace('Register');
+      this.props.navigation.replace('Login');
     }, 3000);
   }
 
