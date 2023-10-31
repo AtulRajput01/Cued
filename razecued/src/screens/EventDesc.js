@@ -1,11 +1,12 @@
-import React, { useEffect,useState } from 'react';
-import { View, Text, Alert, StyleSheet, BackHandler, Dimensions, TouchableOpacity, Linking, Image, Pressable, ImageBackground, } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, Alert, StyleSheet, BackHandler, Dimensions, TouchableOpacity, Linking, Image, Pressable, ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useRoute } from '@react-navigation/native';
 import RNFS from 'react-native-fs';
 import { PermissionsAndroid, Platform } from 'react-native';
+import { Auth } from 'aws-amplify';
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -13,9 +14,7 @@ const EventDesc = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const { events } = route.params;
-  const [userId, setUserId] = useState('');
   const [registrationStatus, setRegistrationStatus] = useState('Register');
-  
 
   const openVideoUrl = (video_url) => {
     Linking.openURL(video_url).catch((error) => {
@@ -52,14 +51,14 @@ const EventDesc = () => {
   const handleRegister = async () => {
     try {
       // Assuming you have an API endpoint for event registration
-      const response = await fetch('https://hk1630uulc.execute-api.us-east-1.amazonaws.com/Dev/event-registration', {
+      const response = await fetch('https://hk1630uulc.execute-api.us-east-1.amazonaws.com/Dev/new-event-reg', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          id: userId,          // Assuming 'userId' is the user ID field in the user table
-          id: events.id,      // Assuming 'id' is the event ID field in the event table
+          userId: Auth.user.attributes.sub, // Use Cognito 'sub' as the userId
+          id: events.id, // Assuming 'id' is the event ID field in the event table
         }),
       });
 
