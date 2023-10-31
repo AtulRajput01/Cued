@@ -10,25 +10,20 @@ const Splash = () => {
   useEffect(() => {
     const checkSession = async () => {
       try {
-        // Check if the user is already authenticated
         const user = await Auth.currentAuthenticatedUser();
 
         if (user) {
-          // If authenticated, navigate to 'Discover'
           navigation.replace('Discover');
         } else {
-          // If not authenticated, navigate to 'Login'
           navigation.replace('Login');
         }
       } catch (error) {
         console.error('Session Check Error:', error);
 
-        // If there's an error, navigate to 'Login'
         navigation.replace('Login');
       }
     };
 
-    // Check session immediately on component mount
     checkSession();
   }, [navigation]);
 
@@ -40,11 +35,11 @@ const Splash = () => {
       <View style={styles.container}>
         <View style={styles.row}>
           <Image
-            source={require('../../assets/images/C.png')} // Replace with your first PNG image path
+            source={require('../../assets/images/C.png')} 
             style={styles.image}
           />
           <Image
-            source={require('../../assets/images/ued.png')} // Replace with your second PNG image path
+            source={require('../../assets/images/ued.png')} 
             style={styles.image}
           />
         </View>
@@ -85,4 +80,3 @@ const styles = StyleSheet.create({
 });
 
 export default Splash;
-
