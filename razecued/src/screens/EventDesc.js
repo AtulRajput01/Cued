@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Alert, StyleSheet, BackHandler, Dimensions, TouchableOpacity, Linking, Image, Pressable, ImageBackground } from 'react-native';
+import React, { useEffect,useState } from 'react';
+import { View, Text, Alert, StyleSheet, BackHandler, Dimensions, TouchableOpacity, Linking, Image, Pressable, ImageBackground, } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useRoute } from '@react-navigation/native';
 import RNFS from 'react-native-fs';
 import { PermissionsAndroid, Platform } from 'react-native';
-import { Auth } from 'aws-amplify';
+import { Auth } from 'aws-amplify'; // Import the Auth module from Amplify
+
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -14,7 +15,9 @@ const EventDesc = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const { events } = route.params;
+  const [userId, setUserId] = useState('');
   const [registrationStatus, setRegistrationStatus] = useState('Register');
+  
 
   const openVideoUrl = (video_url) => {
     Linking.openURL(video_url).catch((error) => {
@@ -48,33 +51,36 @@ const EventDesc = () => {
     }
   };
 
-  const handleRegister = async () => {
-    try {
-      // Assuming you have an API endpoint for event registration
-      const response = await fetch('https://hk1630uulc.execute-api.us-east-1.amazonaws.com/Dev/new-event-reg', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          userId: Auth.user.attributes.sub, // Use Cognito 'sub' as the userId
-          id: events.id, // Assuming 'id' is the event ID field in the event table
-        }),
-      });
+const handleRegister = async () => {
+  try {
+    // Assuming you have an API endpoint for event registration
+    const user = await Auth.currentAuthenticatedUser();
+    const userId = user.attributes.sub; // Use the Cognito ID as the unique identifier
 
-      if (response.ok) {
-        // Registration successful, you can handle the response or navigate to another screen
-        setRegistrationStatus('Wohoo!,Registered');
-        console.log('User registered successfully for the event');
-      } else {
-        // Registration failed, handle the error
-        console.error('Error registering for event:', response.status);
-      }
-    } catch (error) {
-      console.error('Error registering for event:', error);
-      // Handle the error
+    const response = await fetch('https://hk1630uulc.execute-api.us-east-1.amazonaws.com/Dev/event-registration', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userId, // Include the Cognito ID in the request body
+        id: events.id, // Assuming 'id' is the event ID field in the event table
+      }),
+    });
+
+    if (response.ok) {
+      // Registration successful, you can handle the response or navigate to another screen
+      setRegistrationStatus('Wohoo!,Registered');
+      console.log('User registered successfully for the event');
+    } else {
+      // Registration failed, handle the error
+      console.error('Error registering for event:', response.status);
     }
-  };
+  } catch (error) {
+    console.error('Error registering for event:', error);
+    // Handle the error
+  }
+};
 
   useEffect(() => {
     const backAction = () => {

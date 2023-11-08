@@ -15,16 +15,16 @@ const Splash = () => {
 
         if (user) {
           // If authenticated, navigate to 'Discover'
-          navigation.replace('Discover');
+          navigation.replace('Register');
         } else {
           // If not authenticated, navigate to 'Login'
-          navigation.replace('Login');
+          navigation.replace('Register');
         }
       } catch (error) {
         console.error('Session Check Error:', error);
 
         // If there's an error, navigate to 'Login'
-        navigation.replace('Login');
+        navigation.replace('Register');
       }
     };
 
