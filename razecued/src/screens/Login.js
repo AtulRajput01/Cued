@@ -158,7 +158,7 @@ const handleRegister = async (data) => {
         const authenticatedUser = await Auth.currentAuthenticatedUser();
         console.log('User on Mount:', authenticatedUser);
         if (authenticatedUser) {
-          navigation.navigate('Login');
+          navigation.navigate('Discover');
         }
       } catch (error) {
         console.error('Session Check Error:', error);
