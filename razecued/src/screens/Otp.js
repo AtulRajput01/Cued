@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { View, Alert, Text, StyleSheet, ImageBackground } from 'react-native';
-import CustomButton from '../components/CustomButton';
-import CustomInput from './../components/CustomInput';
+import { View,Alert, Text,StyleSheet,ImageBackground,Pressable, TextInput, Button } from 'react-native';
 import { Auth } from 'aws-amplify';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
+import CustomButton from '../components/CustomButton';
+import CustomInput from './../components/CustomInput';
 
 const Otp = () => {
   const route = useRoute();
@@ -13,27 +13,29 @@ const Otp = () => {
   });
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const navigation = useNavigation();
-
+  
   const email = watch('email');
+    
 
   const handleVerifyOTP = async (data) => {
-    try {
-      await Auth.confirmSignUp(data.username, data.code);
-      navigation.navigate('BasicDetail', { cognitoUserId: route?.params?.cognitoUserId });
+    try{
+     await Auth.confirmSignUp(data.username, data.code);
+     navigation.navigate('BasicDetail')
+
     } catch (e) {
-      Alert.alert('Oops', e.message);
+      Alert.alert("Oops" , e.message);
     }
   };
 
   const resendPress = async () => {
-    try {
-      await Auth.resendSignUp(email);
-      Alert.alert('Success', 'Code has been resent to your email');
+    try{
+     await Auth.resendSignUp(email);
+     Alert.alert('Success', 'code has been resend on your mail');
+
     } catch (e) {
-      Alert.alert('Oops', e.message);
+      Alert.alert("Oops" , e.message);
     }
   };
-
 
   return (
     <ImageBackground
