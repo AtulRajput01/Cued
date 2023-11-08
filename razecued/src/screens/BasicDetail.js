@@ -6,11 +6,11 @@ import DatePicker from 'react-native-datepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const BasicDetail = ({ navigation, route }) => {
+  const [Name, setName] = useState('');
   const [collegeRollNo, setCollegeRollNo] = useState('');
   const [collegeName, setCollegeName] = useState('');
   const [passingYear, setPassingYear] = useState('');
   const [age, setAge] = useState('');
-  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [gender, setGender] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
@@ -28,6 +28,7 @@ const BasicDetail = ({ navigation, route }) => {
       const storedBasicDetails = await AsyncStorage.getItem('basicDetails');
       if (storedBasicDetails) {
         const parsedBasicDetails = JSON.parse(storedBasicDetails);
+        setName(parsedBasicDetails.Name || '');
         setCollegeRollNo(parsedBasicDetails.collegeRollNo || '');
         setCollegeName(parsedBasicDetails.collegeName || '');
         setPassingYear(parsedBasicDetails.passingYear || '');
@@ -43,11 +44,12 @@ const BasicDetail = ({ navigation, route }) => {
   
 
 const saveUserProfile = async () => {
-  if (!collegeName || !passingYear || !collegeRollNo || !age || !dateOfBirth) {
+  if (!Name || !collegeName || !passingYear || !collegeRollNo || !age || !dateOfBirth) {
     Alert.alert('Incomplete Fields', 'Please complete all the fields.');
   } else {
     try {
       const basicDetails = {
+        Name,
         collegeName,
         passingYear,
         collegeRollNo,
