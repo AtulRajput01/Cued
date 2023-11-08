@@ -15,7 +15,7 @@ const Splash = () => {
 
         if (user) {
           // If authenticated, navigate to 'Discover'
-          navigation.replace('Register');
+          navigation.replace('Discover');
         } else {
           // If not authenticated, navigate to 'Login'
           navigation.replace('Register');
@@ -24,7 +24,7 @@ const Splash = () => {
         console.error('Session Check Error:', error);
 
         // If there's an error, navigate to 'Login'
-        navigation.replace('Register');
+        navigation.replace('Login');
       }
     };
 
