@@ -6,8 +6,6 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { useRoute } from '@react-navigation/native';
 import RNFS from 'react-native-fs';
 import { PermissionsAndroid, Platform } from 'react-native';
-import { Auth } from 'aws-amplify'; // Import the Auth module from Amplify
-
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -51,11 +49,6 @@ const EventDesc = () => {
     }
   };
 
-const handleRegister = async () => {
-  try {
-    // Assuming you have an API endpoint for event registration
-    const user = await Auth.currentAuthenticatedUser();
-    const userId = user.attributes.sub; // Use the Cognito ID as the unique identifier
 
     const response = await fetch('https://hk1630uulc.execute-api.us-east-1.amazonaws.com/Dev/event-registration', {
       method: 'POST',
