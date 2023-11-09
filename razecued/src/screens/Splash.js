@@ -15,7 +15,7 @@ const Splash = () => {
         if (user) {
           navigation.replace('Discover');
         } else {
-          navigation.replace('Login');
+
         }
       } catch (error) {
         console.error('Session Check Error:', error);

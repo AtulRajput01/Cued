@@ -9,6 +9,8 @@ import CustomInput from './../components/CustomInput';
 import CustomButton from './../components/CustomButton';
 import {useForm, Controller} from 'react-hook-form';
 import Discover from './Discover';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const Login = () => {
  const navigation = useNavigation();
@@ -90,35 +92,43 @@ const Login = () => {
   });
 
 const handleRegister = async (data) => {
-    if (isLoading) {
-      return;
-    }
+  if (isLoading) {
+    return;
+  }
 
-    setIsLoading(true);
+  setIsLoading(true);
 
-    try {
-      const response = await Auth.signIn(data.username, data.password);
+  try {
+    // Sign in to get the Cognito User ID
+    const response = await Auth.signIn(data.username, data.password);
+    const authenticatedUser = await Auth.currentAuthenticatedUser();
 
+    if (authenticatedUser) {
+      // Log the Cognito User ID
+      const currentUserId = authenticatedUser.attributes.sub;
+      console.log('Cognito User ID:', currentUserId);
+
+      // Retrieve basic details from local storage
+      const storedBasicDetails = await AsyncStorage.getItem('basicDetails');
+      const basicDetails = storedBasicDetails ? JSON.parse(storedBasicDetails) : {};
       
-      const authenticatedUser = await Auth.currentAuthenticatedUser();
-
       
-      if (authenticatedUser) {
-        console.log('User is already authenticated', authenticatedUser);
-        navigation.navigate('Discover');
-      } else {
-        
-        console.log('User successfully logged in', response);
-        
-        navigation.navigate('Discover');
+      console.log('Basic Details:', basicDetails);
+
+
       }
-    } catch (e) {
-      Alert.alert('Oops', e.message);
+    } else {
+      console.log('User successfully logged in', response);
+      navigation.navigate('Discover');
     }
+  } catch (e) {
+    Alert.alert('Oops', e.message);
+  }
 
-    setIsLoading(false);
-  };
+  setIsLoading(false);
+};
 
+  
   useEffect(() => {
     // Check for an existing session when the component mounts
     const checkSession = async () => {
