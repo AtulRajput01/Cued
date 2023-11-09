@@ -116,6 +116,28 @@ const handleRegister = async (data) => {
       console.log('Basic Details:', basicDetails);
 
 
+      // Combine Cognito User ID and basic details
+      const userData = {
+        userId: currentUserId,
+        ...basicDetails,
+      };
+
+      // Send the combined data to the backend API
+      const apiResponse = await fetch('https://hk1630uulc.execute-api.us-east-1.amazonaws.com/Dev/userdata', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (apiResponse.ok) {
+        const apiData = await apiResponse.json();
+        console.log('API Response:', apiData);
+        navigation.navigate('Discover');
+      } else {
+        console.error('API Error:', apiResponse.statusText);
+        Alert.alert('API Error', 'There was an error while submitting your data. Please try again.');
       }
     } else {
       console.log('User successfully logged in', response);
