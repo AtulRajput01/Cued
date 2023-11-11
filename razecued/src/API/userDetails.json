@@ -1,0 +1,18 @@
+{
+  "user": [
+    {
+      "id": 1,
+      "name": "Sakshi Singh",
+      "collegename": "LPU",
+      "gender": "Female",
+      "collegeId": "SAK2020344",
+      "date": "25th-30thDec",
+      "phoneNo": 9058467680,
+      "dob": "13-07-2002",
+      "passingYear": 2020,
+      "age": 22
+      
+    }
+    
+  ]
+}

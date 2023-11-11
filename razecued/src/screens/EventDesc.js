@@ -6,8 +6,11 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { useRoute } from '@react-navigation/native';
 import RNFS from 'react-native-fs';
 import { PermissionsAndroid, Platform } from 'react-native';
+import { Auth } from 'aws-amplify'; // Import the Auth module from Amplify
+import EnlargedEventPoster from './EnlargedEventPoster';
 
 const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get('window').width;
 
 const EventDesc = () => {
   const navigation = useNavigation();
@@ -16,6 +19,15 @@ const EventDesc = () => {
   const [userId, setUserId] = useState('');
   const [registrationStatus, setRegistrationStatus] = useState('Register');
   
+  const [enlargedImageVisible, setEnlargedImageVisible] = useState(false);
+
+  const openEnlargedPoster = () => {
+    setEnlargedImageVisible(true);
+  };
+
+  const closeEnlargedPoster = () => {
+    setEnlargedImageVisible(false);
+  };
 
   const openVideoUrl = (video_url) => {
     Linking.openURL(video_url).catch((error) => {
@@ -49,33 +61,36 @@ const EventDesc = () => {
     }
   };
 
-  const handleRegister = async () => {
-    try {
-      // Assuming you have an API endpoint for event registration
-      const response = await fetch('https://hk1630uulc.execute-api.us-east-1.amazonaws.com/Dev/event-registration', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          id: userId,          // Assuming 'userId' is the user ID field in the user table
-          id: events.id,      // Assuming 'id' is the event ID field in the event table
-        }),
-      });
+const handleRegister = async () => {
+  try {
+    // Assuming you have an API endpoint for event registration
+    const user = await Auth.currentAuthenticatedUser();
+    const userId = user.attributes.sub; // Use the Cognito ID as the unique identifier
 
-      if (response.ok) {
-        // Registration successful, you can handle the response or navigate to another screen
-        setRegistrationStatus('Wohoo!,Registered');
-        console.log('User registered successfully for the event');
-      } else {
-        // Registration failed, handle the error
-        console.error('Error registering for event:', response.status);
-      }
-    } catch (error) {
-      console.error('Error registering for event:', error);
-      // Handle the error
+    const response = await fetch('https://hk1630uulc.execute-api.us-east-1.amazonaws.com/Dev/event-registration', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userId, // Include the Cognito ID in the request body
+        id: events.id, // Assuming 'id' is the event ID field in the event table
+      }),
+    });
+
+    if (response.ok) {
+      // Registration successful, you can handle the response or navigate to another screen
+      setRegistrationStatus('Wohoo!,Registered');
+      console.log('User registered successfully for the event');
+    } else {
+      // Registration failed, handle the error
+      console.error('Error registering for event:', response.status);
     }
-  };
+  } catch (error) {
+    console.error('Error registering for event:', error);
+    // Handle the error
+  }
+};
 
   useEffect(() => {
     const backAction = () => {
@@ -88,7 +103,7 @@ const EventDesc = () => {
             onPress: () => null,
             style: 'cancel',
           },
-          { text: 'Yes', onPress: () => navigation.navigate('Home') },
+          { text: 'Yes', onPress: () => navigation.navigate('Discover') },
         ],
         { cancelable: false }
       );
@@ -109,6 +124,7 @@ const EventDesc = () => {
       style={styles.backgroundImage}
     >
       <View style={styles.container}>
+        <TouchableOpacity onPress={openEnlargedPoster}>
         <ImageBackground
           source={{ uri: events.eventPoster }}  // Replace with your PNG image
           style={styles.greyBox}
@@ -125,7 +141,12 @@ const EventDesc = () => {
             </View>
           </View>
         </ImageBackground>
-
+        </TouchableOpacity>
+        <EnlargedEventPoster
+        visible={enlargedImageVisible}
+        imageUri={events.eventPoster}
+        onClose={closeEnlargedPoster}
+      />
         <ScrollView>
           <View style={styles.whiteContainer}>
             <Text style={[styles.eventName, styles.firstText]}>
@@ -248,6 +269,11 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     alignSelf: 'center',
   },
+  eventPoster: {
+    width: 200, // Adjust this to your preferred size
+    height: 200, // Adjust this to your preferred size
+    resizeMode: 'cover',
+  },
   tileImage: {
     width: 120,
     height: '60%',
@@ -308,7 +334,7 @@ const styles = StyleSheet.create({
     height: 15,
   },
   greyBox: {
-    width: '100%',
+    width: windowWidth,
     height: windowHeight * 0.4,
   },
   textContainer: {

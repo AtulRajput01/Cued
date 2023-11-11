@@ -1,10 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View,FlatList, Animated, Text, StyleSheet, BackHandler, Alert, TouchableOpacity,  Pressable, Dimensions, Image, TextInput,ScrollView } from 'react-native';
+import { View,FlatList,ActivityIndicator, Animated, Text, StyleSheet, BackHandler, Alert, TouchableOpacity,  Pressable, Dimensions, Image, TextInput,ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
 import RegisteredEvents from './RegisteredEvents';
-import UserDetail from './Userdetail';
 import EventDesc from './EventDesc';
 import { createStackNavigator } from '@react-navigation/stack';
 import homeIcon from '../../assets/images/home.png';
@@ -16,13 +14,15 @@ import profileIcon from '../../assets/images/profile.png';
 import tokenIcon from '../../assets/images/token.png';
 import tokenIcon1 from '../../assets/images/token1.png';
 import Token from './Token';
+import NetInfo from '@react-native-community/netinfo';
 import { ImageBackground } from 'react-native';
-import { sortBy } from 'lodash';
-
+import LottieView from 'lottie-react-native';
+import Userdetail from './Userdetail';
+import loadingAnimation from '../../assets/lottie/handLottie.json';
+import noInternetAnimation from '../../assets/lottie/networkPblm.json';
 import Register from './Register';
 import LinearGradient from 'react-native-linear-gradient';
 import {createShimmerPlaceholder} from 'react-native-shimmer-placeholder';
-
 const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient);
 const windowWidth = Dimensions.get('window').width;
 const containerWidth = windowWidth * 0.72; // Width of the container item
@@ -36,11 +36,12 @@ const Discover = () => {
   const [recommendedEvents, setRecommendedEvents] = useState([]);
   const [displayedEvents, setDisplayedEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const [isConnected, setIsConnected] = useState(true);
    // Shimmer control states
-   const [recommendedShimmer, setRecommendedShimmer] = useState(false);
-   const [displayedShimmer, setDisplayedShimmer] = useState(true);
+   const [recommendedShimmer, setRecommendedShimmer] = useState(true);
    
+   
+
   useEffect(() => {
     const backAction = () => {
       Alert.alert(
@@ -67,6 +68,15 @@ const Discover = () => {
     return () => backHandler.remove();
   }, []);
 
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener((state) => {
+      setIsConnected(state.isConnected);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   // Simulate fetching data from your Recommended API/Vertical events
   useEffect(() => {
@@ -79,7 +89,7 @@ const Discover = () => {
       setLoading(false);
     })
     .catch((error) => {
-      console.error('Error fetching recommended events:', error);
+      setRecommendedShimmer(false);
       setLoading(false);
     });
 
@@ -91,16 +101,43 @@ const Discover = () => {
       
     })
     .catch((error) => {
-      console.error('Error fetching displayed events:', error);
-    });
+    })
+    .then(() => setLoading(false))
+      .catch(() => setLoading(false));
   }, []);
 
-  
+  if (!isConnected) {
+    return (
+      <View style={styles.noInternetContainer}>
+        <LottieView
+          source={noInternetAnimation}  // Replace with your no internet animation source
+          autoPlay
+          loop
+          style={styles.lottieAnimation}
+        />
+      </View>
+    );
+  }
+
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <LottieView
+          source={loadingAnimation}
+          autoPlay
+          loop
+          style={styles.lottieAnimation}
+        />
+        
+      </View>
+    );
+  }
 
 // Render a single recommended event item
 const renderRecommendedEventItem = ({ item }) => (
   
   <ShimmerPlaceHolder visible={recommendedShimmer} style={styles.bottomContainer}>
+  
   <Pressable
     style={styles.bottomContainer}
     onPress={() => navigation.navigate('EventDesc', { events: item })}
@@ -203,6 +240,13 @@ const renderDisplayedEventItem = ({ item , index}) => {
       style={styles.backgroundImage}
       >
       <View style={styles.container}>
+      <LottieView
+        source={require('../../assets/lottie/background.json')}  // Replace with your Lottie animation source
+        autoPlay
+        loop
+        style={styles.lottieAnimation}
+      />
+
       <View style={styles.imageContainer}>
         <View style={styles.row}>
           <Image
@@ -272,7 +316,18 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: 'Poppins',
     fontWeight: '500',
-    marginBottom: 5
+    marginBottom: 3
+  },
+  lottieAnimation: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+  },
+  
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   imageContainer: { 
     marginTop: 15, 
@@ -296,6 +351,19 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     opacity: 0.8 
   },
+  noInternetContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  noInternetText: {
+    marginTop: 10,
+    color: '#FF0000',
+    fontSize: 16,
+    fontFamily: 'Poppins',
+    fontWeight: '500',
+  },
+
   backgroundImage: {
     flex: 1, 
     resizeMode: 'cover', 
@@ -362,7 +430,7 @@ const styles = StyleSheet.create({
   },
   horizontalContainer: {
     flexDirection: 'row',
-    marginTop: 30
+    marginTop: 10
     
   },
   containerItem: {
@@ -586,41 +654,37 @@ const TabBarIcon = ({ focused, icon }) => {
 const AppNavigator = () => {
   return (
    
-      <Tab.Navigator
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused }) => {
-            let iconSource;
-            switch (route.name) {
-              case 'Home':
-                iconSource = focused ? homeIcon : homeIcon1;
-                break;
-              case 'Events':
-                iconSource = focused ? eventIconjpg : eventIcon1;
-                break;
-              case 'Profile':
-                iconSource = focused ? profileIcon : profileIcon;
-                break;
-              case 'Token':
-                iconSource = focused ? tokenIcon : tokenIcon1;
-                break;
-              default:
-                break;
-            }
-            return <TabBarIcon focused={focused} icon={iconSource} />;
-          },
-           
-        })}
-        tabBarOptions={{
-          activeTintColor: 'blue', 
-          inactiveTintColor: 'gray', 
-        }}
-      >
-        <Tab.Screen name="Home" component={Discover}  options={{ headerShown: false }}  />
-        <Tab.Screen name="Events" component={RegisteredEvents}  options={{ headerShown: false }} />
-        <Tab.Screen name="Profile" component={UserDetail}  options={{ headerShown: false }} />
-        <Tab.Screen name="Token" component={Token}  options={{ headerShown: false }}  />
-      </Tab.Navigator>
+    <Tab.Navigator
+    screenOptions={({ route }) => ({
+      tabBarIcon: ({ focused }) => {
+        let iconSource;
+        switch (route.name) {
+          case 'Home':
+            iconSource = focused ? homeIcon : homeIcon1;
+            break;
+          case 'Events':
+            iconSource = focused ? eventIconjpg : eventIcon1;
+            break;
+          case 'Profile':
+            iconSource = focused ? profileIcon : profileIcon;
+            break;
+          case 'Token':
+            iconSource = focused ? tokenIcon : tokenIcon1;
+            break;
+          default:
+            break;
+        }
+        return <TabBarIcon focused={focused} icon={iconSource} />;
+      },
+    })}
     
+  >
+    <Tab.Screen name="Home" component={Discover} options={{ headerShown: false }} />
+    <Tab.Screen name="Events" component={RegisteredEvents} options={{ headerShown: false }} />
+    <Tab.Screen name="Profile" component={Userdetail} options={{ headerShown: false }} />
+    <Tab.Screen name="Token" component={Token} options={{ headerShown: false }} />
+  </Tab.Navigator>
+  
   );
 };
 

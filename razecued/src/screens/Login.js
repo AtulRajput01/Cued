@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { View,Alert, Text, Animated, TouchableOpacity, Image, StyleSheet, Pressable, TextInput, Easing, Keyboard } from 'react-native';
 import { ImageBackground } from 'react-native';
@@ -89,23 +89,52 @@ const Login = () => {
     extrapolate: 'clamp',
   });
 
-  const handleRegister = async data => {
-
-    if (isLoading){
+const handleRegister = async (data) => {
+    if (isLoading) {
       return;
     }
 
     setIsLoading(true);
 
-    try{
+    try {
       const response = await Auth.signIn(data.username, data.password);
-      navigation.navigate('Discover');
-    } catch(e){
-      Alert.alert('Oops' , e.message)
+
+      
+      const authenticatedUser = await Auth.currentAuthenticatedUser();
+
+      
+      if (authenticatedUser) {
+        console.log('User is already authenticated', authenticatedUser);
+        navigation.navigate('Discover');
+      } else {
+        
+        console.log('User successfully logged in', response);
+        
+        navigation.navigate('Discover');
+      }
+    } catch (e) {
+      Alert.alert('Oops', e.message);
     }
+
     setIsLoading(false);
   };
 
+  useEffect(() => {
+    // Check for an existing session when the component mounts
+    const checkSession = async () => {
+      try {
+        const authenticatedUser = await Auth.currentAuthenticatedUser();
+        console.log('User on Mount:', authenticatedUser);
+        if (authenticatedUser) {
+          navigation.navigate('Home');
+        }
+      } catch (error) {
+        console.error('Session Check Error:', error);
+      }
+    };
+
+    checkSession();
+  }, []);
 
   return (
     <ImageBackground
