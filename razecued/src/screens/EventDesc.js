@@ -8,6 +8,8 @@ import RNFS from 'react-native-fs';
 import { PermissionsAndroid, Platform } from 'react-native';
 import { Auth } from 'aws-amplify'; // Import the Auth module from Amplify
 import EnlargedEventPoster from './EnlargedEventPoster';
+import Modal from 'react-native-modal';
+import LottieView from 'lottie-react-native';
 
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
@@ -18,8 +20,26 @@ const EventDesc = () => {
   const { events } = route.params;
   const [userId, setUserId] = useState('');
   const [registrationStatus, setRegistrationStatus] = useState('Register');
-  
   const [enlargedImageVisible, setEnlargedImageVisible] = useState(false);
+  const [showCustomAlert, setShowCustomAlert] = useState(false);
+  const [showSuccessAnimation, setShowSuccessAnimation] = useState(false);
+  const openCustomAlert = () => {
+    setShowCustomAlert(true);
+  };
+
+  const closeCustomAlert = () => {
+    setShowCustomAlert(false);
+  };
+
+  const handleNo = () => {
+    // Handle 'Yes' button click
+    navigation.navigate('Discover');// Close the custom alert or navigate, etc.
+  };
+
+  const handleYes = () => {
+    // Handle 'No' button click
+    closeCustomAlert(); // Close the custom alert or navigate, etc.
+  };
 
   const openEnlargedPoster = () => {
     setEnlargedImageVisible(true);
@@ -79,9 +99,15 @@ const handleRegister = async () => {
     });
 
     if (response.ok) {
-      // Registration successful, you can handle the response or navigate to another screen
+      // Registration successful, show Lottie animation
       setRegistrationStatus('Wohoo!,Registered');
       console.log('User registered successfully for the event');
+      setShowSuccessAnimation(true);
+
+      // You can reset the animation after a certain duration
+      setTimeout(() => {
+        setShowSuccessAnimation(false);
+      }, 3000); // Adjust the duration as needed
     } else {
       // Registration failed, handle the error
       console.error('Error registering for event:', response.status);
@@ -92,38 +118,59 @@ const handleRegister = async () => {
   }
 };
 
-  useEffect(() => {
-    const backAction = () => {
-      Alert.alert(
-        'Confirm Exit',
-        'Do you really want to get back to the home screen',
-        [
-          {
-            text: 'Cancel',
-            onPress: () => null,
-            style: 'cancel',
-          },
-          { text: 'Yes', onPress: () => navigation.navigate('Discover') },
-        ],
-        { cancelable: false }
-      );
-      return true;
-    };
+useEffect(() => {
+  const backAction = () => {
+    openCustomAlert(); // Show the custom alert when the back button is pressed
+    return true;
+  };
 
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction
-    );
+  const backHandler = BackHandler.addEventListener(
+    'hardwareBackPress',
+    backAction
+  );
 
-    return () => backHandler.remove();
-  }, []);
+  return () => backHandler.remove();
+}, []);
 
   return (
     <ImageBackground
       source={require('../../assets/images/Eventsdetailbg.jpg')}
       style={styles.backgroundImage}
     >
+      <Modal
+      isVisible={showCustomAlert}
+      onBackdropPress={closeCustomAlert}
+      backdropColor="#000000"
+      backdropOpacity={0.7}
+      animationIn="fadeIn"
+      animationOut="fadeOut"
+      animationInTiming={300}
+      animationOutTiming={300}
+      useNativeDriver={true}
+      style={styles.customAlertContainer}
+    >
+      <View style={styles.customAlertContent}>
+        <LottieView
+          source={require('../../assets/lottie/sadEmoji.json')} // Replace with your Lottie animation source
+          autoPlay
+          loop
+          style={styles.sadEmojiAnimation}
+        />
+        <Text style={styles.customAlertText}>Registered here?{'\n'} Reallywanna go back!!</Text>
+        <View style={styles.customAlertButtons}>
+          <TouchableOpacity style={styles.customAlertButton} onPress={handleYes}>
+            <Text style={styles.customAlertButtonText}>Yet to register</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.customAlertButton} onPress={handleNo}>
+            <Text style={styles.customAlertButtonText}>Home</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </Modal>
+    
+
       <View style={styles.container}>
+      
         <TouchableOpacity onPress={openEnlargedPoster}>
         <ImageBackground
           source={{ uri: events.eventPoster }}  // Replace with your PNG image
@@ -241,7 +288,14 @@ const handleRegister = async () => {
           </View>
         </ScrollView>
         <View style={styles.gap} />
-
+        {showSuccessAnimation && (
+          <LottieView
+            source={require('../../assets/lottie/success.json')} // Replace with your Lottie animation source
+            autoPlay
+            loop={false}
+            onAnimationFinish={() => setShowSuccessAnimation(false)}
+          />
+        )}
         <Pressable
           style={styles.button}
           onPress={handleRegister} 
@@ -430,6 +484,42 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     fontFamily: 'Poppins',
+  },
+  customAlertContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  customAlertContent: {
+    backgroundColor: '#FFFFFF',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  sadEmojiAnimation: {
+    width: 100,
+    height: 100,
+  },
+  customAlertText: {
+    fontSize: 16,
+    marginBottom: 20,
+    textAlign: 'center',
+    color: '#000000',
+  },
+  customAlertButtons: {
+    flexDirection: 'row',
+  },
+  customAlertButton: {
+    flex: 1,
+    padding: 10,
+    borderRadius: 5,
+    marginHorizontal: 5,
+    backgroundColor: '#B51E71',
+    alignItems: 'center',
+  },
+  customAlertButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 

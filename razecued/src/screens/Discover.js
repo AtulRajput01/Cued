@@ -16,6 +16,7 @@ import tokenIcon1 from '../../assets/images/token1.png';
 import Token from './Token';
 import NetInfo from '@react-native-community/netinfo';
 import { ImageBackground } from 'react-native';
+import Modal from 'react-native-modal';
 import LottieView from 'lottie-react-native';
 import Userdetail from './Userdetail';
 import loadingAnimation from '../../assets/lottie/handLottie.json';
@@ -37,36 +38,43 @@ const Discover = () => {
   const [displayedEvents, setDisplayedEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isConnected, setIsConnected] = useState(true);
+  const [showCustomAlert, setShowCustomAlert] = useState(false);
+
    // Shimmer control states
    const [recommendedShimmer, setRecommendedShimmer] = useState(true);
    
-   
+   const openCustomAlert = () => {
+    setShowCustomAlert(true);
+  };
+
+  const closeCustomAlert = () => {
+    setShowCustomAlert(false);
+  };
+
+  const handleNo = () => {
+    // Handle 'Yes' button click
+    BackHandler.exitApp();// Close the custom alert or navigate, etc.
+  };
+
+  const handleYes = () => {
+    // Handle 'No' button click
+    closeCustomAlert(); // Close the custom alert or navigate, etc.
+  };
 
   useEffect(() => {
     const backAction = () => {
-      Alert.alert(
-        'Confirm Exit',
-        'Do you really want to close the app?',
-        [
-          {
-            text: 'Cancel',
-            onPress: () => null,
-            style: 'cancel',
-          },
-          { text: 'OK', onPress: () => BackHandler.exitApp() },
-        ],
-        { cancelable: false }
-      );
+      openCustomAlert(); // Show the custom alert when the back button is pressed
       return true;
     };
-
+  
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
       backAction
     );
-
+  
     return () => backHandler.remove();
   }, []);
+  
 
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener((state) => {
@@ -239,6 +247,36 @@ const renderDisplayedEventItem = ({ item , index}) => {
       source={require('../../assets/images/discover.jpg')} 
       style={styles.backgroundImage}
       >
+        <Modal
+      isVisible={showCustomAlert}
+      onBackdropPress={closeCustomAlert}
+      backdropColor="#000000"
+      backdropOpacity={0.7}
+      animationIn="fadeIn"
+      animationOut="fadeOut"
+      animationInTiming={300}
+      animationOutTiming={300}
+      useNativeDriver={true}
+      style={styles.customAlertContainer}
+    >
+      <View style={styles.customAlertContent}>
+        <LottieView
+          source={require('../../assets/lottie/sadEmoji.json')} // Replace with your Lottie animation source
+          autoPlay
+          loop
+          style={styles.sadEmojiAnimation}
+        />
+        <Text style={styles.customAlertText}>Leaving us?{'\n'} Really want to close the app{'\n'}Try to explore more feeds on home</Text>
+        <View style={styles.customAlertButtons}>
+          <TouchableOpacity style={styles.customAlertButton} onPress={handleYes}>
+            <Text style={styles.customAlertButtonText}>Stay here</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.customAlertButton} onPress={handleNo}>
+            <Text style={styles.customAlertButtonText}>Exit</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </Modal>
       <View style={styles.container}>
       <LottieView
         source={require('../../assets/lottie/background.json')}  // Replace with your Lottie animation source
@@ -615,7 +653,42 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins',
   },
 
- 
+  customAlertContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  customAlertContent: {
+    backgroundColor: '#FFFFFF',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  sadEmojiAnimation: {
+    width: 100,
+    height: 100,
+  },
+  customAlertText: {
+    fontSize: 16,
+    marginBottom: 20,
+    textAlign: 'center',
+    color: '#000000',
+  },
+  customAlertButtons: {
+    flexDirection: 'row',
+  },
+  customAlertButton: {
+    flex: 1,
+    padding: 10,
+    borderRadius: 5,
+    marginHorizontal: 5,
+    backgroundColor: '#B51E71',
+    alignItems: 'center',
+  },
+  customAlertButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
   
 });
 
