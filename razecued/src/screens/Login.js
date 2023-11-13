@@ -92,9 +92,29 @@ const Login = () => {
   });
 
 const handleRegister = async (data) => {
-    if (isLoading) {
-      return;
-    }
+  if (isLoading) {
+    return;
+  }
+
+  setIsLoading(true);
+
+  try {
+    // Sign in to get the Cognito User ID
+    const response = await Auth.signIn(data.username, data.password);
+    const authenticatedUser = await Auth.currentAuthenticatedUser();
+
+    if (authenticatedUser) {
+      // Log the Cognito User ID
+      const currentUserId = authenticatedUser.attributes.sub;
+      console.log('Cognito User ID:', currentUserId);
+
+      // Retrieve basic details from local storage
+      const storedBasicDetails = await AsyncStorage.getItem('basicDetails');
+      const basicDetails = storedBasicDetails ? JSON.parse(storedBasicDetails) : {};
+      
+      
+      console.log('Basic Details:', basicDetails);
+
 
       // Combine Cognito User ID and basic details
       const userData = {
@@ -102,29 +122,35 @@ const handleRegister = async (data) => {
         ...basicDetails,
       };
 
-    try {
-      const response = await Auth.signIn(data.username, data.password);
+      // Send the combined data to the backend API
+      const apiResponse = await fetch('https://hk1630uulc.execute-api.us-east-1.amazonaws.com/Dev/userdata', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
 
-      
-      const authenticatedUser = await Auth.currentAuthenticatedUser();
-
-      
-      if (authenticatedUser) {
-        console.log('User is already authenticated', authenticatedUser);
+      if (apiResponse.ok) {
+        const apiData = await apiResponse.json();
+        console.log('API Response:', apiData);
         navigation.navigate('Discover');
       } else {
-        
-        console.log('User successfully logged in', response);
-        
-        navigation.navigate('Discover');
+        console.error('API Error:', apiResponse.statusText);
+        Alert.alert('API Error', 'There was an error while submitting your data. Please try again.');
       }
-    } catch (e) {
-      Alert.alert('Oops', e.message);
+    } else {
+      console.log('User successfully logged in', response);
+      navigation.navigate('Discover');
     }
+  } catch (e) {
+    Alert.alert('Oops', e.message);
+  }
 
-    setIsLoading(false);
-  };
+  setIsLoading(false);
+};
 
+  
   useEffect(() => {
     // Check for an existing session when the component mounts
     const checkSession = async () => {
@@ -132,7 +158,7 @@ const handleRegister = async (data) => {
         const authenticatedUser = await Auth.currentAuthenticatedUser();
         console.log('User on Mount:', authenticatedUser);
         if (authenticatedUser) {
-          navigation.navigate('Home');
+          navigation.navigate('Discover');
         }
       } catch (error) {
         console.error('Session Check Error:', error);
@@ -141,7 +167,7 @@ const handleRegister = async (data) => {
 
     checkSession();
   }, []);
-
+ 
   return (
     <ImageBackground
       source={require('../../assets/images/Landingbg.jpg')}
