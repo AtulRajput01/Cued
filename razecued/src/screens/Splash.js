@@ -1,23 +1,25 @@
-
 import React, { Component } from 'react';
 import { View, StyleSheet, Image, Text } from 'react-native';
 import { ImageBackground } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-
+import { Auth } from 'aws-amplify'; // Assuming you are using AWS Amplify for authentication
 
 export default class Splash extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-
   componentDidMount() {
-    // Delay navigation to BasicDetail screen by 3 seconds (3000 milliseconds)
-    setTimeout(() => {
-      this.props.navigation.replace('Login');
-    }, 3000);
+    this.checkUserAuthentication();
   }
 
+  checkUserAuthentication = async () => {
+    try {
+      // Check if the user is already authenticated
+      const user = await Auth.currentAuthenticatedUser();
+
+      // If the user is authenticated, navigate to the desired screen (e.g., Discover)
+      this.props.navigation.replace('Home');
+    } catch (error) {
+      // If there's an error or the user is not authenticated, navigate to the Login screen
+      this.props.navigation.replace('Login');
+    }
+  };
 
   render() {
     return (
@@ -28,11 +30,11 @@ export default class Splash extends Component {
         <View style={styles.container}>
           <View style={styles.row}>
             <Image
-              source={require('../../assets/images/C.png')} // Replace with your first PNG image path
+              source={require('../../assets/images/C.png')}
               style={styles.image}
             />
             <Image
-              source={require('../../assets/images/ued.png')} // Replace with your second PNG image path
+              source={require('../../assets/images/ued.png')}
               style={styles.image}
             />
           </View>
@@ -42,7 +44,6 @@ export default class Splash extends Component {
     );
   }
 }
-
 
 const styles = StyleSheet.create({
   backgroundImage: {
@@ -72,4 +73,4 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginBottom: 40,
   },
-});
+})

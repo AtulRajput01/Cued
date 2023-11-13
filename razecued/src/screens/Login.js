@@ -134,14 +134,14 @@ const handleRegister = async (data) => {
       if (apiResponse.ok) {
         const apiData = await apiResponse.json();
         console.log('API Response:', apiData);
-        navigation.navigate('Discover');
+        navigation.navigate('Home');
       } else {
         console.error('API Error:', apiResponse.statusText);
         Alert.alert('API Error', 'There was an error while submitting your data. Please try again.');
       }
     } else {
       console.log('User successfully logged in', response);
-      navigation.navigate('Discover');
+      navigation.navigate('Home');
     }
   } catch (e) {
     Alert.alert('Oops', e.message);
@@ -158,7 +158,7 @@ const handleRegister = async (data) => {
         const authenticatedUser = await Auth.currentAuthenticatedUser();
         console.log('User on Mount:', authenticatedUser);
         if (authenticatedUser) {
-          navigation.navigate('Discover');
+          navigation.navigate('Home');
         }
       } catch (error) {
         console.error('Session Check Error:', error);
