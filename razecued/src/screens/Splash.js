@@ -1,12 +1,15 @@
+
 import React, { Component } from 'react';
 import { View, StyleSheet, Image, Text } from 'react-native';
 import { ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+
 export default class Splash extends Component {
   constructor(props) {
     super(props);
   }
+
 
   componentDidMount() {
     // Delay navigation to BasicDetail screen by 3 seconds (3000 milliseconds)
@@ -14,6 +17,7 @@ export default class Splash extends Component {
       this.props.navigation.replace('Login');
     }, 3000);
   }
+
 
   render() {
     return (
@@ -38,6 +42,7 @@ export default class Splash extends Component {
     );
   }
 }
+
 
 const styles = StyleSheet.create({
   backgroundImage: {

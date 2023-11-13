@@ -9,6 +9,8 @@ import CustomInput from './../components/CustomInput';
 import CustomButton from './../components/CustomButton';
 import {useForm, Controller} from 'react-hook-form';
 import Discover from './Discover';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const Login = () => {
  const navigation = useNavigation();
@@ -94,7 +96,11 @@ const handleRegister = async (data) => {
       return;
     }
 
-    setIsLoading(true);
+      // Combine Cognito User ID and basic details
+      const userData = {
+        userId: currentUserId,
+        ...basicDetails,
+      };
 
     try {
       const response = await Auth.signIn(data.username, data.password);

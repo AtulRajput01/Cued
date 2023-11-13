@@ -3,8 +3,10 @@ import { View, Text, Alert, BackHandler, Image, StyleSheet, TextInput } from 're
 import { ImageBackground } from 'react-native';
 import CustomButton from './../components/CustomButton';
 import DatePicker from 'react-native-datepicker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const BasicDetail = ({ navigation, route }) => {
+  const [Name, setName] = useState('');
   const [collegeRollNo, setCollegeRollNo] = useState('');
   const [collegeName, setCollegeName] = useState('');
   const [passingYear, setPassingYear] = useState('');
@@ -14,86 +16,76 @@ const BasicDetail = ({ navigation, route }) => {
   const [gender, setGender] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [phone, setPhone] = useState('');
-  const [altPhone, setAltPhone] = useState('');
   const [basicDetailResponse, setBasicDetailResponse] = useState(null);
   const [selectedDate, setSelectedDate] = useState('');
 
-  // useEffect(() => {
-  //   const backAction = () => {
-  //     Alert.alert(
-  //       'Confirm Exit',
-  //       'Do you really want to Exit',
-  //       [
-  //         {
-  //           text: 'Cancel',
-  //           onPress: () => null,
-  //           style: 'cancel',
-  //         },
-  //         { text: 'OK', onPress: () => navigation.navigate('Discover') },
-  //       ],
-  //       { cancelable: false }
-  //     );
-  //     return true;
-  //   };
+  useEffect(() => {
+    // If you need to load previously stored basic details, you can do it here
+    loadStoredBasicDetails();
+  }, []);
 
-  //   const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
-
-  //   return () => backHandler.remove();
-  // }, []);
-
-  const saveUserProfile = async () => {
-    if (!collegeName || !passingYear || !collegeRollNo || !age  || !dateOfBirth ) {
-      Alert.alert('Incomplete Fields', 'Please complete all the fields.');
-    } else {
-      try {
-        const response = await fetch('https://hk1630uulc.execute-api.us-east-1.amazonaws.com/Dev/basic-details1', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            collegeName,
-            passingYear,
-            collegeRollNo,
-            age,
-            gender,
-            dateOfBirth,
-            phone,
-            altPhone,
-            
-          }),
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          console.log('API Response:', data);
-          // Alert.alert('Success', 'User profile data saved successfully!', [
-          //   {
-          //     text: 'OK',
-          //     onPress: () => navigation.navigate('Home'), // Navigate to the 'Discover' screen
-          //   },
-          // ]);
-          navigation.navigate('Login');
-        } else {
-          console.error('API Error:', response.statusText);
-          Alert.alert('API Error', 'There was an error while submitting your data. Please try again.');
-        }
-      } catch (error) {
-        console.error('API Error:', error);
-        Alert.alert('API Error', 'There was an error while submitting your data. Please try again.');
+  const loadStoredBasicDetails = async () => {
+    try {
+      const storedBasicDetails = await AsyncStorage.getItem('basicDetails');
+      if (storedBasicDetails) {
+        const parsedBasicDetails = JSON.parse(storedBasicDetails);
+        setName(parsedBasicDetails.Name || '');
+        setCollegeRollNo(parsedBasicDetails.collegeRollNo || '');
+        setCollegeName(parsedBasicDetails.collegeName || '');
+        setPassingYear(parsedBasicDetails.passingYear || '');
+        setAge(parsedBasicDetails.age || '');
+        setGender(parsedBasicDetails.gender || '');
+        setDateOfBirth(parsedBasicDetails.dateOfBirth || '');
+        setPhone(parsedBasicDetails.phone || '');
       }
+    } catch (error) {
+      console.error('Error loading stored basic details:', error);
     }
   };
+  
 
-  // Extracting parameters from the navigation route
-  // const { eventId, eventName, eventOrganizer: passedEventOrganizer } = route.params;
+const saveUserProfile = async () => {
+  if (!Name || !collegeName || !passingYear || !collegeRollNo || !age || !dateOfBirth) {
+    Alert.alert('Incomplete Fields', 'Please complete all the fields.');
+  } else {
+    try {
+      const basicDetails = {
+        Name,
+        collegeName,
+        passingYear,
+        collegeRollNo,
+        age,
+        gender,
+        dateOfBirth,
+        phone,
+      };
 
-  // Setting the passed eventOrganizer to the state
-  // useEffect(() => {
-  //   if (passedEventOrganizer) {
-  //     setEventOrganizer(passedEventOrganizer);
-  //   }
-  // }, [passedEventOrganizer]);
+      // Store basic details in AsyncStorage
+      await AsyncStorage.setItem('basicDetails', JSON.stringify(basicDetails));
+
+      const response = await fetch('https://hk1630uulc.execute-api.us-east-1.amazonaws.com/Dev/basic-details1', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(basicDetails), // Use basicDetails here instead of the undefined variable
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('API Response:', data);
+        navigation.navigate('Login');
+      } else {
+        console.error('API Error:', response.statusText);
+        Alert.alert('API Error', 'There was an error while submitting your data. Please try again.');
+      }
+    } catch (error) {
+      console.error('API Error:', error);
+      Alert.alert('API Error', 'There was an error while submitting your data. Please try again.');
+    }
+  }
+};
+
 
   return (
     <ImageBackground source={require('../../assets/images/Landingbg.jpg')} style={styles.backgroundImage}>
