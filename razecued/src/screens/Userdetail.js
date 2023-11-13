@@ -1,5 +1,5 @@
-import React, { useState, useCallback, useRef } from 'react';
-import { View, Text, StyleSheet,Image, Pressable, TouchableOpacity,  TextInput } from 'react-native';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { View,FlatList, Animated, Text, StyleSheet, BackHandler, Alert, TouchableOpacity,  Pressable, Dimensions, Image, TextInput,ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -9,13 +9,46 @@ import { ImageBackground } from 'react-native';
 const UserDetail = () => {
   const navigation = useNavigation();
   const [profilePicture, setProfilePicture] = useState(null);
+  const [userDetails, setUserDetails] = useState([]);
   const actionSheetRef = useRef(null);
+  const [recommendedEvents, setRecommendedEvents] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [userId, setUserId] = useState('');
 
+  useEffect(() => {
+    const fetchDetails = async () => {
+      try {
+        const user = await Auth.currentAuthenticatedUser();
+        const currentUserId = user.attributes.sub;
+        console.log('User ID:', currentUserId);
+  
+        const response = await fetch(
+          `https://hk1630uulc.execute-api.us-east-1.amazonaws.com/Dev/profile?userId=${currentUserId}`
+        );
+  
+        const data = await response.json();
+        console.log('Fetched events:', data);
+  
+        setRecommendedEvents(data.data.users.filter(frontUserId) || []);
+        setUserId(currentUserId);
+  
+        setLoading(false);
+      } catch (error) {
+        console.error('details not fetched:', error);
+        setLoading(false);
+      }
+    };
+  
+    const frontUserId = (item) => item?.user?.userId === userId;
+  
+    fetchDetails();
+  }, [userId]);
   
   const handleImagePicker = useCallback(() => {
     actionSheetRef.current.show();
   }, []);
 
+  
   const handleCameraPicker = () => {
     ImagePicker.openCamera({
       width: 300,
@@ -45,6 +78,46 @@ const UserDetail = () => {
   const removePhoto = () => {
     setProfilePicture(null);
   };
+
+  // Render a single recommended event item
+const renderRecommendedEventItem = () => {
+  
+
+     
+     
+     <View style={styles.textContainer}>     
+          <View style={styles.button1}>
+            <Text style={styles.buttonText1}>{item.name}</Text>
+          </View>
+          <View style={styles.gap} />
+          <View style={styles.button1}>
+            <Text style={styles.buttonText1}>{item.collegeName}</Text>
+          </View>
+          <View style={styles.gap} />
+          <View style={styles.button1}>
+            <Text style={styles.buttonText1}>{item.passingYear}</Text>
+          </View>
+          <View style={styles.gap} />
+          <View style={styles.button1}>
+            <Text style={styles.buttonText1}>{item.collegeRollNo}</Text>
+          </View>
+          <View style={styles.gap} />
+          <View style={styles.button1}>
+            <Text style={styles.buttonText1}>{item.age}</Text>
+          </View>
+          <View style={styles.gap} />
+          <View style={styles.button1}>
+            <Text style={styles.buttonText1}>{item.gender}</Text>
+          </View>
+          <View style={styles.gap} />
+          <View style={styles.button1}>
+            <Text style={styles.buttonText1}>{item.phone}</Text>
+          </View>
+         
+      </View>
+    
+  
+};
 
   return (
 
@@ -86,74 +159,18 @@ const UserDetail = () => {
           }
         }}
       />
-
-      <TextInput
-        style={styles.input1}
-        placeholder="Name"
-        placeholderTextColor="#A9A9A9"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Age"
-        keyboardType="numeric"
-        placeholderTextColor="#A9A9A9"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Gender"
-        placeholderTextColor="#A9A9A9"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="DOB (Date of Birth)"
-        keyboardType="numeric"
-        placeholderTextColor="#A9A9A9"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        keyboardType="email-address"
-        placeholderTextColor="#A9A9A9"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        secureTextEntry={true}
-        placeholderTextColor="#A9A9A9"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Contact Number"
-        keyboardType="numeric"
-        placeholderTextColor="#A9A9A9"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Alternate Number"
-        keyboardType="numeric"
-        placeholderTextColor="#A9A9A9"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="College Name"
-        keyboardType="numeric"
-        placeholderTextColor="#A9A9A9"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Passing year"
-        keyboardType="numeric"
-        placeholderTextColor="#A9A9A9"
-      />
-     
-
 <View style={styles.gap} />
-      <TouchableOpacity style={styles.button}>
-        <View style={styles.row}>
-                <Image source={require('../../assets/images/check.png')}/>
-                <Text style={styles.buttonText}>Save changes</Text>
-        </View>
-              </TouchableOpacity>
+        {/* Recommended Events */}
+        
+          <FlatList
+            data={recommendedEvents}
+            renderItem={renderRecommendedEventItem}
+            keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
+            ItemSeparatorComponent={() => <View style={styles.gap1} />} // Replace 'id' with the actual unique identifier for your events
+          />
+
+    
+
     </View>
     </ImageBackground>
 
@@ -167,12 +184,31 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
   },
+  buttonText1: {
+    color: 'red',
+    fontSize: 20,
+    fontWeight: '400',
+    fontFamily: 'Poppins',
+  },
+  button1: {
+    backgroundColor: '#FFF1F8',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 2,
+    marginLeft: 4,
+  },
+  textContainer: {
+    marginLeft: 10,
+    marginTop: 15
+  
+  },
+  
   backgroundImage: {
     flex: 1,
     resizeMode: 'cover'
   },
   gap: {
-    height: 20,
+    height: 15,
   },
   arrowImage: {
     width: 20,

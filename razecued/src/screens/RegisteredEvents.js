@@ -9,7 +9,12 @@ import {
   Pressable,
   Dimensions,
   ScrollView,
+  RefreshControl,
 } from 'react-native';
+import LottieView from 'lottie-react-native';
+import loadingAnimation from '../../assets/lottie/sad.json';
+import EnlargedEventPoster from './EnlargedEventPoster';
+
 import EventDesc from './EventDesc';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -26,8 +31,11 @@ const RegisteredEvents = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState('');
+  const [refreshing, setRefreshing] = useState(false);
+  const [selectedEventPoster, setSelectedEventPoster] = useState(null);
 
 useEffect(() => {
+  
   const fetchEvents = async () => {
     try {
       const user = await Auth.currentAuthenticatedUser();
@@ -45,10 +53,16 @@ useEffect(() => {
       setUserId(currentUserId);
 
       setLoading(false);
+      setRefreshing(false);
     } catch (error) {
       console.error('Error fetching events:', error);
       setLoading(false);
+      setRefreshing(false);
     }
+  };
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetchEvents();
   };
 
   const frontUserId = (item) => item?.user?.userId === userId;
@@ -63,11 +77,22 @@ const renderEvents = () => {
   }
 
   if (events.length === 0) {
-    return <Text>No registered events</Text>;
+    return (
+      <View style={styles.noeventsContainer}>
+        
+        <LottieView
+          source={loadingAnimation} // Adjust the path to your Lottie animation file
+          autoPlay
+          loop
+          style={styles.lottieView}
+        />
+        <Text style={styles.noevents}>
+          Your registered events will be shown here,{'\n'}     if unable to see, try to reopen the app
+        </Text>
+      </View>
+    );
   }
-
-  console.log('User ID:', userId);
-  console.log('All events:', events);
+  
 
   const userEvents = events.filter((item) => item.user.userId === userId);
 
@@ -99,14 +124,16 @@ const renderEvents = () => {
     }
 
     return (
+      <Pressable key={eventId}
+      
+      onPress={() => setSelectedEventPoster(eventPoster)}>
       <View key={eventId} style={styles.outerContainer}>
         <View style={styles.grayContainer}>
           <Image source={{ uri: eventPoster || '' }} style={styles.image} />
         </View>
         <View>
-          <Pressable onPress={() => navigation.navigate('EventDesc', { events: item })}>
             <Text style={styles.eventName}>{eventName}</Text>
-          </Pressable>
+         
           <Text style={styles.eventDesc}>{eventDescription}</Text>
         </View>
         <View style={styles.row}>
@@ -129,6 +156,7 @@ const renderEvents = () => {
           {/* Add more buttons as needed for other attributes */}
         </View>
       </View>
+      </Pressable>
     );
   });
 };
@@ -156,6 +184,11 @@ const renderEvents = () => {
         <ScrollView style={styles.scrollContainer}>
           <View style={styles.contentContainer}>{renderEvents()}</View>
         </ScrollView>
+        <EnlargedEventPoster
+          visible={selectedEventPoster !== null}
+          imageUri={selectedEventPoster}
+          onClose={() => setSelectedEventPoster(null)}
+        />
       </View>
     </ImageBackground>
   );
@@ -170,6 +203,13 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
+  },
+  noevents: {
+    color: '#000000',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    
+    
   },
   row: {
     flexDirection: 'row',
@@ -201,6 +241,14 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 1,
+  },
+  noeventsContainer: {
+    alignItems: 'center',
+  },
+  lottieView: {
+    width: 200,
+    height: 200,
+    alignSelf: 'center',
   },
   buttonText1: {
     color: '#000000',

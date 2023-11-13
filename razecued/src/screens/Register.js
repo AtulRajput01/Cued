@@ -139,7 +139,6 @@ const handleSignup = async data => {
       <Text style={styles.welcomeText}>Hey there,</Text>
       <Text style={styles.welcomeText2}>Signup Yourself!</Text>
     
-
      {/* UserName */}
      <CustomInput
           placeholder="Username"

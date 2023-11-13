@@ -1,53 +1,48 @@
-import React, { useEffect } from 'react';
+
+import React, { Component } from 'react';
 import { View, StyleSheet, Image, Text } from 'react-native';
 import { ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Auth } from 'aws-amplify'; // Import Auth from 'aws-amplify'
 
-const Splash = () => {
-  const navigation = useNavigation();
 
-  useEffect(() => {
-    const checkSession = async () => {
-      try {
-        const user = await Auth.currentAuthenticatedUser();
+export default class Splash extends Component {
+  constructor(props) {
+    super(props);
+  }
 
-        if (user) {
-          navigation.replace('Discover');
-        } else {
 
-        }
-      } catch (error) {
-        console.error('Session Check Error:', error);
+  componentDidMount() {
+    // Delay navigation to BasicDetail screen by 3 seconds (3000 milliseconds)
+    setTimeout(() => {
+      this.props.navigation.replace('Login');
+    }, 3000);
+  }
 
-        navigation.replace('Login');
-      }
-    };
 
-    checkSession();
-  }, [navigation]);
-
-  return (
-    <ImageBackground
-      source={require('../../assets/images/BasicDetailsbg.jpg')}
-      style={styles.backgroundImage}
-    >
-      <View style={styles.container}>
-        <View style={styles.row}>
-          <Image
-            source={require('../../assets/images/C.png')} 
-            style={styles.image}
-          />
-          <Image
-            source={require('../../assets/images/ued.png')} 
-            style={styles.image}
-          />
+  render() {
+    return (
+      <ImageBackground
+        source={require('../../assets/images/BasicDetailsbg.jpg')}
+        style={styles.backgroundImage}
+      >
+        <View style={styles.container}>
+          <View style={styles.row}>
+            <Image
+              source={require('../../assets/images/C.png')} // Replace with your first PNG image path
+              style={styles.image}
+            />
+            <Image
+              source={require('../../assets/images/ued.png')} // Replace with your second PNG image path
+              style={styles.image}
+            />
+          </View>
         </View>
-      </View>
-      <Text style={styles.bottomText}>by Razespace</Text>
-    </ImageBackground>
-  );
-};
+        <Text style={styles.bottomText}>by Razespace</Text>
+      </ImageBackground>
+    );
+  }
+}
+
 
 const styles = StyleSheet.create({
   backgroundImage: {
@@ -78,5 +73,3 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
 });
-
-export default Splash;

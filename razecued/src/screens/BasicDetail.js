@@ -11,6 +11,7 @@ const BasicDetail = ({ navigation, route }) => {
   const [collegeName, setCollegeName] = useState('');
   const [passingYear, setPassingYear] = useState('');
   const [age, setAge] = useState('');
+  const [name, setname] = useState('');
   const [email, setEmail] = useState('');
   const [gender, setGender] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
@@ -90,11 +91,19 @@ const saveUserProfile = async () => {
     <ImageBackground source={require('../../assets/images/Landingbg.jpg')} style={styles.backgroundImage}>
       <View style={styles.container}>
         <View style={styles.header}></View>
-        <Text style={styles.alert}>Complete Profile!</Text>
+        <Text style={styles.alert}>Complete</Text>
+        <Text style={styles.alert2}>Profile!</Text>
         <Text style={styles.greetings}>
-          Hey there, Please complete your profile, these data will be used and check during your entry.
+          Hey there, Please complete your profile, these data will be used and check during your entry.kindly fill them correctly,otherwise you will be responsible!
         </Text>
         
+        <TextInput
+          style={styles.input}
+          placeholder="Name"
+          placeholderTextColor="#A9A9A9"
+          value={name}
+          onChangeText={(text) => setname(text)}
+        />
 
         <TextInput
           style={styles.input}
@@ -155,7 +164,8 @@ const saveUserProfile = async () => {
         />
 
         <View style={styles.gap2} />
-        <CustomButton text="Complete Registration" bgColor="#B51E71" onPress={saveUserProfile} />
+        <CustomButton 
+        text="Complete Registration" bgColor="#B51E71" onPress={saveUserProfile} />
       </View>
     </ImageBackground>
   );
@@ -164,8 +174,7 @@ const saveUserProfile = async () => {
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
+    
     marginTop: 10,
   },
   backgroundImage: {
@@ -199,16 +208,22 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontFamily: 'Poppins',
     paddingTop: 40,
-    paddingRight: 190,
+    
+  },
+  alert2:{
+    fontSize: 32,
+    color: '#000000',
+    fontWeight: '700',
+    fontFamily: 'Poppins',
   },
   greetings: {
     color: '#7B6F72',
-    fontSize: 18,
+    fontSize: 12,
     fontFamily: 'Poppins',
     fontWeight: '400',
     marginBottom: 30,
     paddingRight: 55,
-    paddingTop: 18,
+   
   },
 });
 
