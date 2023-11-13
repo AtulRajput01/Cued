@@ -6,16 +6,16 @@ import DatePicker from 'react-native-datepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const BasicDetail = ({ navigation, route }) => {
-  const [Name, setName] = useState('');
+  const [name, setname] = useState('');
   const [collegeRollNo, setCollegeRollNo] = useState('');
   const [collegeName, setCollegeName] = useState('');
   const [passingYear, setPassingYear] = useState('');
   const [age, setAge] = useState('');
-  const [name, setname] = useState('');
   const [email, setEmail] = useState('');
   const [gender, setGender] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [phone, setPhone] = useState('');
+  const [altPhone, setAltPhone] = useState('');
   const [basicDetailResponse, setBasicDetailResponse] = useState(null);
   const [selectedDate, setSelectedDate] = useState('');
 
@@ -29,7 +29,7 @@ const BasicDetail = ({ navigation, route }) => {
       const storedBasicDetails = await AsyncStorage.getItem('basicDetails');
       if (storedBasicDetails) {
         const parsedBasicDetails = JSON.parse(storedBasicDetails);
-        setName(parsedBasicDetails.Name || '');
+        setname(parsedBasicDetails.name || '');
         setCollegeRollNo(parsedBasicDetails.collegeRollNo || '');
         setCollegeName(parsedBasicDetails.collegeName || '');
         setPassingYear(parsedBasicDetails.passingYear || '');
@@ -45,12 +45,12 @@ const BasicDetail = ({ navigation, route }) => {
   
 
 const saveUserProfile = async () => {
-  if (!Name || !collegeName || !passingYear || !collegeRollNo || !age || !dateOfBirth) {
+  if (!name || !collegeName || !passingYear || !collegeRollNo || !age || !dateOfBirth) {
     Alert.alert('Incomplete Fields', 'Please complete all the fields.');
   } else {
     try {
       const basicDetails = {
-        Name,
+        name,
         collegeName,
         passingYear,
         collegeRollNo,
@@ -91,15 +91,14 @@ const saveUserProfile = async () => {
     <ImageBackground source={require('../../assets/images/Landingbg.jpg')} style={styles.backgroundImage}>
       <View style={styles.container}>
         <View style={styles.header}></View>
-        <Text style={styles.alert}>Complete</Text>
-        <Text style={styles.alert2}>Profile!</Text>
+        <Text style={styles.alert}>Complete Profile!</Text>
         <Text style={styles.greetings}>
-          Hey there, Please complete your profile, these data will be used and check during your entry.kindly fill them correctly,otherwise you will be responsible!
+          Hey there, Please complete your profile, these data will be used and check during your entry.
         </Text>
         
         <TextInput
           style={styles.input}
-          placeholder="Name"
+          placeholder="name"
           placeholderTextColor="#A9A9A9"
           value={name}
           onChangeText={(text) => setname(text)}
@@ -164,8 +163,7 @@ const saveUserProfile = async () => {
         />
 
         <View style={styles.gap2} />
-        <CustomButton 
-        text="Complete Registration" bgColor="#B51E71" onPress={saveUserProfile} />
+        <CustomButton text="Complete Registration" bgColor="#B51E71" onPress={saveUserProfile} />
       </View>
     </ImageBackground>
   );
@@ -174,7 +172,8 @@ const saveUserProfile = async () => {
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-    
+    justifyContent: 'center',
+    alignItems: 'center',
     marginTop: 10,
   },
   backgroundImage: {
@@ -208,22 +207,16 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontFamily: 'Poppins',
     paddingTop: 40,
-    
-  },
-  alert2:{
-    fontSize: 32,
-    color: '#000000',
-    fontWeight: '700',
-    fontFamily: 'Poppins',
+    paddingRight: 190,
   },
   greetings: {
     color: '#7B6F72',
-    fontSize: 12,
+    fontSize: 18,
     fontFamily: 'Poppins',
     fontWeight: '400',
     marginBottom: 30,
     paddingRight: 55,
-   
+    paddingTop: 18,
   },
 });
 
