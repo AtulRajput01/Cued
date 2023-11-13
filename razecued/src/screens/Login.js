@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { View,Alert, Text, Animated, TouchableOpacity, Image, StyleSheet, Pressable, TextInput, Easing, Keyboard } from 'react-native';
 import { ImageBackground } from 'react-native';
@@ -9,6 +9,8 @@ import CustomInput from './../components/CustomInput';
 import CustomButton from './../components/CustomButton';
 import {useForm, Controller} from 'react-hook-form';
 import Discover from './Discover';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const Login = () => {
  const navigation = useNavigation();
@@ -89,23 +91,82 @@ const Login = () => {
     extrapolate: 'clamp',
   });
 
-  const handleRegister = async data => {
+const handleRegister = async (data) => {
+  if (isLoading) {
+    return;
+  }
 
-    if (isLoading){
-      return;
-    }
+  setIsLoading(true);
 
-    setIsLoading(true);
+  try {
+    // Sign in to get the Cognito User ID
+    const response = await Auth.signIn(data.username, data.password);
+    const authenticatedUser = await Auth.currentAuthenticatedUser();
 
-    try{
-      const response = await Auth.signIn(data.username, data.password);
+    if (authenticatedUser) {
+      // Log the Cognito User ID
+      const currentUserId = authenticatedUser.attributes.sub;
+      console.log('Cognito User ID:', currentUserId);
+
+      // Retrieve basic details from local storage
+      const storedBasicDetails = await AsyncStorage.getItem('basicDetails');
+      const basicDetails = storedBasicDetails ? JSON.parse(storedBasicDetails) : {};
+      
+      
+      console.log('Basic Details:', basicDetails);
+
+
+      // Combine Cognito User ID and basic details
+      const userData = {
+        userId: currentUserId,
+        ...basicDetails,
+      };
+
+      // Send the combined data to the backend API
+      const apiResponse = await fetch('https://hk1630uulc.execute-api.us-east-1.amazonaws.com/Dev/userdata', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (apiResponse.ok) {
+        const apiData = await apiResponse.json();
+        console.log('API Response:', apiData);
+        navigation.navigate('Discover');
+      } else {
+        console.error('API Error:', apiResponse.statusText);
+        Alert.alert('API Error', 'There was an error while submitting your data. Please try again.');
+      }
+    } else {
+      console.log('User successfully logged in', response);
       navigation.navigate('Discover');
-    } catch(e){
-      Alert.alert('Oops' , e.message)
     }
-    setIsLoading(false);
-  };
+  } catch (e) {
+    Alert.alert('Oops', e.message);
+  }
 
+  setIsLoading(false);
+};
+
+  
+  useEffect(() => {
+    // Check for an existing session when the component mounts
+    const checkSession = async () => {
+      try {
+        const authenticatedUser = await Auth.currentAuthenticatedUser();
+        console.log('User on Mount:', authenticatedUser);
+        if (authenticatedUser) {
+          navigation.navigate('Discover');
+        }
+      } catch (error) {
+        console.error('Session Check Error:', error);
+      }
+    };
+
+    checkSession();
+  }, []);
 
   return (
     <ImageBackground
