@@ -15,16 +15,6 @@ import Otp from './Otp';
 import Userdetail from './Userdetail';
 
 import Register from './Register';
-import * as Sentry from "@sentry/react-native";
-
-Sentry.init({
-  dsn: "https://1667923cd6b54f5ff4f494632cfdec85@o4506172964995072.ingest.sentry.io/4506173604102144",
-
-  // Set tracesSampleRate to 1.0 to capture 100%
-  // of transactions for performance monitoring.
-  // We recommend adjusting this value in production
-  tracesSampleRate: 1.0,
-});
 
 const Stack = createStackNavigator();
 
@@ -69,4 +59,4 @@ const AppNavigator = () => {
   );
 };
 
-export default Sentry.wrap(AppNavigator);
+export default AppNavigator;

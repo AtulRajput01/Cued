@@ -7,7 +7,6 @@ import EventDesc from './EventDesc';
 import { createStackNavigator } from '@react-navigation/stack';
 import homeIcon from '../../assets/images/home.png';
 import homeIcon1 from '../../assets/images/home1.png';
-import eventIcon from '../../assets/images/events.png';
 import eventIconjpg from '../../assets/images/events.jpg';
 import eventIcon1 from '../../assets/images/events1.png';
 import profileIcon from '../../assets/images/profile.png';
