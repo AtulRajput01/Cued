@@ -15,7 +15,7 @@ RazeCued is an advanced event management app designed to streamline the event ex
   - Smart recommendation engine suggests events based on user preferences.
 
 ![Authentication](docs/images/authentication.gif)
-![Login Page](https://raw.githubusercontent.com/AtulRajput01/cued-solution/main/razecued/src/img/cued_login.jpeg)
+![Login Page](https://drive.google.com/file/d/1YIwwZxVEyJeyWx-n8ISrj9rH2xGj9MNX/view?usp=sharing)
 
 
 ### Event Exploration
