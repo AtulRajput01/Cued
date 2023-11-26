@@ -15,6 +15,7 @@ RazeCued is an advanced event management app designed to streamline the event ex
   - Smart recommendation engine suggests events based on user preferences.
 
 ![Authentication](docs/images/authentication.gif)
+![Login Page](https://github.com/AtulRajput01/cued-solution/blob/main/razecued/src/img/cued_login.jpeg)
 
 ### Event Exploration
 
@@ -27,6 +28,7 @@ RazeCued is an advanced event management app designed to streamline the event ex
   - Push notifications for subscribed events.
 
 ![Event Details](docs/images/event_details.gif)
+![Functionality](https://github.com/AtulRajput01/cued-solution/blob/main/razecued/src/img/cued_events.jpeg)
 
 ### User Interaction
 
@@ -68,8 +70,7 @@ RazeCued is an advanced event management app designed to streamline the event ex
   - [Docker](https://www.docker.com/) - Containerization for consistent deployment across environments.
   - [Kubernetes](https://kubernetes.io/) - Container orchestration for automating deployment, scaling, and management.
 
-## Getting Started
+![Token](https://github.com/AtulRajput01/cued-solution/blob/main/razecued/src/img/cued_token.jpeg)
 
-1. **Clone the Repository:**
-   ```bash
-   git clone https://github.com/razespace-q/RazeCued-backend.git
+
+
