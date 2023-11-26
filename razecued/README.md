@@ -17,7 +17,7 @@ RazeCued is an advanced event management app designed to streamline the event ex
 ![Authentication](docs/images/authentication.gif)
 
 <a href="https://drive.google.com/file/d/1YIwwZxVEyJeyWx-n8ISrj9rH2xGj9MNX/view?usp=sharing">
-    <img width="400" src="https://www.jenkins.io/images/jenkins-logo-title-dark.svg" alt="Jenkins logo"> 
+    <img width="400" src="https://drive.google.com/file/d/1YIwwZxVEyJeyWx-n8ISrj9rH2xGj9MNX/view?usp=sharing" alt="Jenkins logo"> 
 </a>
 
 
