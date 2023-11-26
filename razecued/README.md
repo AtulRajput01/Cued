@@ -84,10 +84,3 @@ RazeCued is an advanced event management app designed to streamline the event ex
   - [Kubernetes](https://kubernetes.io/) - Container orchestration for automating deployment, scaling, and management.
 
 ![Token](razecued/src/img/cued_token.jpeg)
-
-## Getting Started
-
-1. **Clone the Repository:**
-   ```bash
-   git clone https://github.com/razespace-q/RazeCued-backend.git
-
