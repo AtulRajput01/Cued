@@ -15,6 +15,11 @@ RazeCued is an advanced event management app designed to streamline the event ex
   - Smart recommendation engine suggests events based on user preferences.
 
 ![Authentication](docs/images/authentication.gif)
+
+<a href="https://jenkins.io">
+    <img width="400" src="https://drive.google.com/file/d/1YIwwZxVEyJeyWx-n8ISrj9rH2xGj9MNX/view?usp=sharing" alt="login"> 
+</a>
+
 ![Login Page](https://drive.google.com/file/d/1YIwwZxVEyJeyWx-n8ISrj9rH2xGj9MNX/view?usp=sharing)
 
 
