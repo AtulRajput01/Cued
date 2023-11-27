@@ -48,13 +48,10 @@ RazeCued is an advanced event management app designed to streamline the event ex
 
 ### Dynamic Event Feed
 
-- **AI-Powered Event Recommendations:**
-  - Machine learning algorithms analyze user behavior for personalized event suggestions.
-  - Continuous learning to enhance recommendation accuracy over time.
-
 - **Trending Events:**
   - Stay informed about trending events in your network.
   - Explore popular and highly rated events.
+  - Continuous learning to enhance recommendation accuracy over time.
 
 ![Event Recommendations](docs/images/event_recommendations.gif)
 
@@ -64,10 +61,23 @@ RazeCued is an advanced event management app designed to streamline the event ex
   - [React](https://reactjs.org/) - A declarative, efficient, and flexible JavaScript library for building user interfaces.
   - [React Native](https://reactnative.dev/) - Build mobile apps using React.
 
-- **Backend:**
-  - [Node.js](https://nodejs.org/) - Event-driven JavaScript runtime for building scalable network applications.
-  - [Express.js](https://expressjs.com/) - Web application framework for Node.js.
-  - [MongoDB](https://www.mongodb.com/) - NoSQL database for flexible and scalable data storage.
+- **Backend:**Tech Stack
+
+Frontend:
+- React - A declarative, efficient, and flexible JavaScript library for building user interfaces.
+- React Native - Build mobile apps using React.
+
+Backend:
+- AWS SAM - Infrastructure as Code for serverless application models.
+- Node.js - Event-driven JavaScript runtime for building scalable network applications.
+- DynamoDB - NoSQL database for flexible and scalable data storage.
+- Lambda - Serverless computing for handling backend tasks.
+- API Gateway - Facilitates frontend communication.
+- S3 - Storage for static assets.
+- CloudWatch - Monitoring for comprehensive oversight.
+- Amplify - Streamlines frontend development.
+- Cognito - Ensures secure user authentication.
+
 
 - **Deployment and Scalability:**
   - [AWS](https://aws.amazon.com/) - Cloud services for hosting, scaling, and ensuring high availability.
