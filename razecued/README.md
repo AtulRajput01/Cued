@@ -15,11 +15,10 @@ RazeCued is an advanced event management app designed to streamline the event ex
   - Smart recommendation engine suggests events based on user preferences.
 
 ![Authentication](docs/images/authentication.gif)
-![Screenshot from 2023-11-27 14-15-49](https://github.com/AtulRajput01/cued-solution/assets/92659293/09fc75a8-31d9-4f8f-af46-0b7629a88c36){width=500px}
-![Screenshot from 2023-11-27 14-16-05](https://github.com/AtulRajput01/cued-solution/assets/92659293/339c8d6f-657b-4f8f-b7b1-280fc99a38c6){width=500px}
-![Screenshot from 2023-11-27 14-16-19](https://github.com/AtulRajput01/cued-solution/assets/92659293/2b892e7a-3afa-42a3-a798-93f2e748489d){width=500px}
-![Screenshot from 2023-11-27 14-16-35](https://github.com/AtulRajput01/cued-solution/assets/92659293/582ada97-ad28-49c8-ac47-435215c3d197){width=500px}
-
+![Screenshot from 2023-11-27 14-15-49](https://github.com/AtulRajput01/cued-solution/assets/92659293/09fc75a8-31d9-4f8f-af46-0b7629a88c36)
+![Screenshot from 2023-11-27 14-16-05](https://github.com/AtulRajput01/cued-solution/assets/92659293/339c8d6f-657b-4f8f-b7b1-280fc99a38c6)
+![Screenshot from 2023-11-27 14-16-19](https://github.com/AtulRajput01/cued-solution/assets/92659293/2b892e7a-3afa-42a3-a798-93f2e748489d)
+![Screenshot from 2023-11-27 14-16-35](https://github.com/AtulRajput01/cued-solution/assets/92659293/582ada97-ad28-49c8-ac47-435215c3d197)
 ### Event Exploration
 
 - **Comprehensive Event Details:**
@@ -31,12 +30,9 @@ RazeCued is an advanced event management app designed to streamline the event ex
   - Push notifications for subscribed events.
 
 ![Event Details](docs/images/event_details.gif)
-![cued_ani1](https://github.com/AtulRajput01/cued-solution/assets/92659293/9332ad22-6ce9-4e21-9e2d-bac8f63faec7){width=500px}
-![Screenshot from 2023-11-27 14-16-51](https://github.com/AtulRajput01/cued-solution/assets/92659293/9f4db1db-493f-47fc-b344-ae409ad89774){width=500px}
-![Screenshot from 2023-11-27 14-17-02](https://github.com/AtulRajput01/cued-solution/assets/92659293/66db2ce8-2f63-4130-8d52-ae0b6b7beb79){width=500px}
-![Screenshot from 2023-11-27 14-17-45](https://github.com/AtulRajput01/cued-solution/assets/92659293/b9024469-3cb9-44f1-9d69-265974128b27){width=500px}
-![cued_reg](https://github.com/AtulRajput01/cued-solution/assets/92659293/b6a4c498-153e-4cbc-86eb-fda9e8cac36c){width=500px}
-
+![Screenshot from 2023-11-27 14-16-51](https://github.com/AtulRajput01/cued-solution/assets/92659293/9f4db1db-493f-47fc-b344-ae409ad89774)
+![Screenshot from 2023-11-27 14-17-02](https://github.com/AtulRajput01/cued-solution/assets/92659293/66db2ce8-2f63-4130-8d52-ae0b6b7beb79)
+![Screenshot from 2023-11-27 14-17-45](https://github.com/AtulRajput01/cued-solution/assets/92659293/b9024469-3cb9-44f1-9d69-265974128b27)
 ### User Interaction
 
 - **Social Integration:**
@@ -77,6 +73,6 @@ RazeCued is an advanced event management app designed to streamline the event ex
   - [Docker](https://www.docker.com/) - Containerization for consistent deployment across environments.
   - [Kubernetes](https://kubernetes.io/) - Container orchestration for automating deployment, scaling, and management.
 
-![cued_orgevents](https://github.com/AtulRajput01/cued-solution/assets/92659293/ebfbcfa8-5a80-44c2-81c1-8114c51a74cd){width=500px}
-![cued_profile](https://github.com/AtulRajput01/cued-solution/assets/92659293/a5912b97-52e3-44d2-8790-f8b96392fb23){width=500px}
-![Screenshot from 2023-11-27 14-17-15](https://github.com/AtulRajput01/cued-solution/assets/92659293/a3480678-b14e-46ce-a63e-168690e0c1a1){width=500px}
+![Screenshot from 2023-11-27 14-17-15](https://github.com/AtulRajput01/cued-solution/assets/92659293/a3480678-b14e-46ce-a63e-168690e0c1a1)
+
+
