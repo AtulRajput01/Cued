@@ -16,8 +16,7 @@ RazeCued is an advanced event management app designed to streamline the event ex
 
 ![Authentication](docs/images/authentication.gif)
 
-![cued_events](https://github.com/AtulRajput01/cued-solution/assets/92659293/3da6d69d-67c3-4fa8-b3d5-694fb70dda2c)
-
+![cued_login](https://github.com/AtulRajput01/cued-solution/assets/92659293/733db975-3cc8-4020-8cca-a50ecdc0f04f)
 
 ### Event Exploration
 
@@ -30,7 +29,7 @@ RazeCued is an advanced event management app designed to streamline the event ex
   - Push notifications for subscribed events.
 
 ![Event Details](docs/images/event_details.gif)
-![Functionality](razecued/src/img/cued_events.jpeg)
+![cued_events](https://github.com/AtulRajput01/cued-solution/assets/92659293/3da6d69d-67c3-4fa8-b3d5-694fb70dda2c)
 
 ### User Interaction
 
@@ -54,7 +53,7 @@ RazeCued is an advanced event management app designed to streamline the event ex
   - Stay informed about trending events in your network.
   - Explore popular and highly rated events.
 
-![Event Recommendations](docs/images/event_recommendations.gif)
+![cued](https://github.com/AtulRajput01/cued-solution/assets/92659293/6fc7c064-848b-471d-b596-3329fd1d4898)
 
 ### Tech Stack
 
@@ -72,4 +71,4 @@ RazeCued is an advanced event management app designed to streamline the event ex
   - [Docker](https://www.docker.com/) - Containerization for consistent deployment across environments.
   - [Kubernetes](https://kubernetes.io/) - Container orchestration for automating deployment, scaling, and management.
 
-![Token](razecued/src/img/cued_token.jpeg)
+![cued_token](https://github.com/AtulRajput01/cued-solution/assets/92659293/5a14afe4-bf1f-487e-a136-22563a3696e5)
