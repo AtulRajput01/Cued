@@ -29,7 +29,8 @@ RazeCued is an advanced event management app designed to streamline the event ex
   - Push notifications for subscribed events.
 
 ![Event Details](docs/images/event_details.gif)
-![cued_events](https://github.com/AtulRajput01/cued-solution/assets/92659293/3da6d69d-67c3-4fa8-b3d5-694fb70dda2c)
+![Screenshot from 2023-11-27 14-15-49](https://github.com/AtulRajput01/cued-solution/assets/92659293/09fc75a8-31d9-4f8f-af46-0b7629a88c36)       
+![Screenshot from 2023-11-27 14-16-05](https://github.com/AtulRajput01/cued-solution/assets/92659293/339c8d6f-657b-4f8f-b7b1-280fc99a38c6)
 
 ### User Interaction
 
