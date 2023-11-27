@@ -16,11 +16,7 @@ RazeCued is an advanced event management app designed to streamline the event ex
 
 ![Authentication](docs/images/authentication.gif)
 
-<a href="https://jenkins.io">
-    <img width="400" src="https://drive.google.com/file/d/1YIwwZxVEyJeyWx-n8ISrj9rH2xGj9MNX/view?usp=sharing" alt="login"> 
-</a>
-
-![Login Page](https://drive.google.com/file/d/1YIwwZxVEyJeyWx-n8ISrj9rH2xGj9MNX/view?usp=sharing)
+![cued_events](https://github.com/AtulRajput01/cued-solution/assets/92659293/3da6d69d-67c3-4fa8-b3d5-694fb70dda2c)
 
 
 ### Event Exploration
