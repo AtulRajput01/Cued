@@ -30,10 +30,13 @@ RazeCued is an advanced event management app designed to streamline the event ex
   - Push notifications for subscribed events.
 
 ![Event Details](docs/images/event_details.gif)
+![cued_ani1](https://github.com/AtulRajput01/cued-solution/assets/92659293/9332ad22-6ce9-4e21-9e2d-bac8f63faec7)
 ![Screenshot from 2023-11-27 14-16-51](https://github.com/AtulRajput01/cued-solution/assets/92659293/9f4db1db-493f-47fc-b344-ae409ad89774)
 ![Screenshot from 2023-11-27 14-17-02](https://github.com/AtulRajput01/cued-solution/assets/92659293/66db2ce8-2f63-4130-8d52-ae0b6b7beb79)
 ![Screenshot from 2023-11-27 14-17-45](https://github.com/AtulRajput01/cued-solution/assets/92659293/b9024469-3cb9-44f1-9d69-265974128b27)
-![Screenshot from 2023-11-27 14-18-01](https://github.com/AtulRajput01/cued-solution/assets/92659293/78dea4a9-d805-4532-ba53-9f369429ee43)
+![cued_reg](https://github.com/AtulRajput01/cued-solution/assets/92659293/b6a4c498-153e-4cbc-86eb-fda9e8cac36c)
+
+
 ### User Interaction
 
 - **Social Integration:**
@@ -73,7 +76,10 @@ RazeCued is an advanced event management app designed to streamline the event ex
   - [AWS](https://aws.amazon.com/) - Cloud services for hosting, scaling, and ensuring high availability.
   - [Docker](https://www.docker.com/) - Containerization for consistent deployment across environments.
   - [Kubernetes](https://kubernetes.io/) - Container orchestration for automating deployment, scaling, and management.
-
+ 
+    
+![cued_orgevents](https://github.com/AtulRajput01/cued-solution/assets/92659293/ebfbcfa8-5a80-44c2-81c1-8114c51a74cd)
+![cued_profile](https://github.com/AtulRajput01/cued-solution/assets/92659293/a5912b97-52e3-44d2-8790-f8b96392fb23)
 ![Screenshot from 2023-11-27 14-17-15](https://github.com/AtulRajput01/cued-solution/assets/92659293/a3480678-b14e-46ce-a63e-168690e0c1a1)
 
 
