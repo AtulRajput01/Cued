@@ -1,3 +1,7 @@
+
+### *RazeCued - Event Management App*
+
+
 RazeCued is an advanced event management app designed to streamline the event experience for users. Whether you're an event organizer or an enthusiastic participant, RazeCued offers a comprehensive platform to connect, discover, and engage in a variety of events.
 
 ## Features
