@@ -65,12 +65,6 @@ RazeCued is an advanced event management app designed to streamline the event ex
   - [React](https://reactjs.org/) - A declarative, efficient, and flexible JavaScript library for building user interfaces.
   - [React Native](https://reactnative.dev/) - Build mobile apps using React.
 
-- **Backend:**Tech Stack
-
-Frontend:
-- React - A declarative, efficient, and flexible JavaScript library for building user interfaces.
-- React Native - Build mobile apps using React.
-
 Backend:
 - AWS SAM - Infrastructure as Code for serverless application models.
 - Node.js - Event-driven JavaScript runtime for building scalable network applications.
