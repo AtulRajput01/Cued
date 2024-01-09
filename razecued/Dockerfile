@@ -21,5 +21,5 @@ EXPOSE 19001
 # Command to start Metro Bundler
 CMD ["npx", "react-native", "start", "--reset-cache"]
 
-# Optionally, you can use the following command to run the React Native app on Android
+# Optionally, you can use the following command to run the react-native app on Android
 # CMD ["npx", "react-native", "run-android"]
